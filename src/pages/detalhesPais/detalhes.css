@@ -1,0 +1,28 @@
+.coluna {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.coluna h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+
+.coluna h3 {
+    font-size: 18px;
+    margin: 5px 0;
+}
+
+.coluna h2 {
+    font-size: 20px;
+    margin-top: 20px;
+}
+
+.coluna img {
+    margin-top: 10px;
+    max-width: 100%;
+    height: auto;
+}

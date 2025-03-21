@@ -1,0 +1,68 @@
+body {
+    background-color: rgb(180, 180, 180);
+    margin: 0;
+    padding: 0;
+}
+
+.principal {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    height: 100vh;
+    text-align: center;
+}
+
+.coluna {
+    margin-bottom: 20px;
+}
+
+.pesquisar {
+    width: 300px;
+    padding: 10px;
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+
+.botao {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+.botao:hover {
+    background-color: #0056b3;
+}
+
+.lista-paises {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.pais {
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+}
+
+.link {
+    text-decoration: none;
+    color: #000;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+.info-pais {
+    display: flex;
+    align-items: center;
+}
+
+.nomePais {
+    margin-left: 10px;
+}
