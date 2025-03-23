@@ -19,7 +19,7 @@
 .carrossel-imagem {
     width: 100%;
     height: 60vh;
-    object-fit: fill;
+    object-fit: contain;
     border-radius: 10px;
 }
 
@@ -114,22 +114,36 @@
     color: #888;
 }
 
-/* Ajustes de altura do carrossel para telas menores */
+.imagem-canto-inferior-esquerdo {
+    position: absolute;
+    opacity: 0.3;
+    pointer-events: none;
+}
+
+.imagem-canto-superior-direito {
+    position: fixed;
+    top: 150px;
+    right: 100px;
+    width: 300px;
+    height: auto;
+    opacity: 0.6;
+}
+
+.imagem-canto-inferior-esquerdo {
+    position: fixed;
+    bottom: 100px;
+    left: 100px;
+    width: 300px;
+    height: auto;
+    opacity: 0.6;
+    pointer-events: none;
+}
+
 @media (max-width: 768px) {
     .carrossel-imagem {
         height: 40vh;
-        /* altura reduzida em telas menores */
     }
-}
 
-@media (max-width: 480px) {
-    .carrossel-imagem {
-        height: 30vh;
-        /* altura ainda mais reduzida em telas muito pequenas */
-    }
-}
-
-@media (max-width: 768px) {
     .informacoes-container {
         flex-direction: column;
         align-items: center;
@@ -146,5 +160,17 @@
 
     .colaborador {
         width: 80%;
+    }
+
+    .imagem-canto-superior-direito {
+        width: 150px;
+        top: 20px;
+        right: 20px;
+    }
+
+    .imagem-canto-inferior-esquerdo {
+        width: 120px;
+        bottom: 20px;
+        left: 20px;
     }
 }

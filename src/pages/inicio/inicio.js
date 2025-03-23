@@ -10,6 +10,8 @@ import banner3 from '../../assets/imagens/images.jpg';
 import colaborador1 from '../../assets/imagens/pikrepo-com.jpg';
 import colaborador2 from '../../assets/imagens/pikrepo-com.jpg';
 import colaborador3 from '../../assets/imagens/pikrepo-com.jpg';
+import imagemCantoSuperior from '../../assets/imagens/Vector.png';
+import imagemCantoInferior from '../../assets/imagens/Vector.png';
 
 function Inicio() {
   const carrosselImagens = [banner1, banner2, banner3];
@@ -51,7 +53,6 @@ function Inicio() {
         </div>
       </div>
 
-      {/* Seção Quem Somos */}
       <div className='quem-somos'>
         <div className='texto-quem-somos'>
           <h2>Quem Somos</h2>
@@ -62,7 +63,6 @@ function Inicio() {
           </p>
         </div>
 
-        {/* Seção Colaboradores */}
         <div className='colaboradores'>
           <div className='colaborador'>
             <img src={colaborador1} alt="Colaborador 1" className='foto-colaborador' />
@@ -79,9 +79,11 @@ function Inicio() {
             <h4>Carlos Souza</h4>
             <p>Membro desde: Julho 2021</p>
           </div>
-
         </div>
       </div>
+
+      <img src={imagemCantoSuperior} alt="Imagem Canto Superior" className='imagem-canto-superior-direito' />
+      <img src={imagemCantoInferior} alt="Imagem Canto Inferior" className='imagem-canto-inferior-esquerdo' />
     </div>
   );
 }
