@@ -1,24 +1,68 @@
-header {
-    width: 96%;
-    height: 30px;
-    background-color: #121212;
-    color: #fff;
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 30px;
+    height: 150px;
+    background-color: #fafafa;
+    /* Tom mais suave e acinzentado de #ffbf07 */
+    padding: 0 40px;
 }
 
-header a {
-    color: #fff;
-    font-size: 15px;
-    padding: 8px;
-    background-color: rgb(66, 116, 182);
+.logo-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+}
+
+.logo {
+    height: 140px;
+    width: auto;
+}
+
+.nav-links {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+.nav-links a {
     text-decoration: none;
-    border-radius: 20px;
-    margin: 4px;
+    color: #333;
+    font-size: 24px;
+    font-weight: bold;
 }
 
-header h2 {
-    color: white;
+.espaco-vazio {
+    flex: 1;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;700&display=swap');
+
+body {
+    font-family: 'Nunito', sans-serif;
+}
+
+@media (max-width: 768px) {
+    .header {
+        flex-direction: column;
+        height: auto;
+        padding: 20px;
+    }
+
+    .logo-container {
+        margin-bottom: 20px;
+    }
+
+    .nav-links {
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        align-items: center;
+    }
+
+    .nav-links a {
+        font-size: 18px;
+        text-align: center;
+    }
 }

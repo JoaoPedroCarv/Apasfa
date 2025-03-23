@@ -2,7 +2,7 @@ import { Routes, Route, } from 'react-router-dom'
 
 
 import Login from '../pages/login';
-import Inicio from '../pages/inicio';
+import Inicio from '../pages/inicio/inicio';
 import DetalhesPais from '../pages/detalhesPais';
 import CriarConta from '../pages/criarConta';
 import Comentarios from '../pages/comentarios';

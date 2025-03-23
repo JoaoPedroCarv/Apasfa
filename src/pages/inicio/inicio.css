@@ -1,68 +1,150 @@
-body {
-    background-color: rgb(180, 180, 180);
-    margin: 0;
-    padding: 0;
-}
-
 .principal {
+    background-color: #fafafa;
+    padding: 20px 0;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
-    height: 100vh;
-    text-align: center;
 }
 
-.coluna {
+.carrossel-container {
+    width: 90%;
+    max-width: 1200px;
+    margin-bottom: 40px;
+}
+
+.carrossel {
+    background-color: transparent;
+}
+
+.carrossel-imagem {
+    width: 100%;
+    height: 60vh;
+    object-fit: fill;
+    border-radius: 10px;
+}
+
+.informacoes-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.info-box {
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.info-box h3 {
+    font-size: 22px;
+    color: #333;
+}
+
+.info-box p {
+    font-size: 28px;
+    font-weight: bold;
+    color: #e0a800;
+}
+
+.quem-somos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 60px;
+    width: 90%;
+    max-width: 1200px;
+}
+
+.texto-quem-somos {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+.texto-quem-somos h2 {
+    font-size: 32px;
     margin-bottom: 20px;
 }
 
-.pesquisar {
-    width: 300px;
-    padding: 10px;
-    font-size: 16px;
+.colaboradores {
+    display: flex;
+    justify-content: space-around;
+    gap: 20px;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+.colaborador {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    width: 200px;
+    margin: 20px 0;
+}
+
+.foto-colaborador {
+    width: 150px;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 50%;
     margin-bottom: 10px;
 }
 
-.botao {
-    background-color: #007bff;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
+.colaborador h4 {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333;
+}
+
+.colaborador p {
     font-size: 16px;
-    cursor: pointer;
+    color: #888;
 }
 
-.botao:hover {
-    background-color: #0056b3;
+/* Ajustes de altura do carrossel para telas menores */
+@media (max-width: 768px) {
+    .carrossel-imagem {
+        height: 40vh;
+        /* altura reduzida em telas menores */
+    }
 }
 
-.lista-paises {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
+@media (max-width: 480px) {
+    .carrossel-imagem {
+        height: 30vh;
+        /* altura ainda mais reduzida em telas muito pequenas */
+    }
 }
 
-.pais {
-    display: flex;
-    align-items: center;
-    margin: 10px 0;
-}
+@media (max-width: 768px) {
+    .informacoes-container {
+        flex-direction: column;
+        align-items: center;
+    }
 
-.link {
-    text-decoration: none;
-    color: #000;
-}
+    .quem-somos {
+        width: 90%;
+    }
 
-.link:hover {
-    text-decoration: underline;
-}
+    .colaboradores {
+        flex-direction: column;
+        align-items: center;
+    }
 
-.info-pais {
-    display: flex;
-    align-items: center;
-}
-
-.nomePais {
-    margin-left: 10px;
+    .colaborador {
+        width: 80%;
+    }
 }
