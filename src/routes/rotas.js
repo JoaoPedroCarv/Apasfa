@@ -1,7 +1,7 @@
 import { Routes, Route, } from 'react-router-dom'
 
 
-import Login from '../pages/login';
+import Login from '../pages/login/login';
 import Inicio from '../pages/inicio/inicio';
 import DetalhesPais from '../pages/detalhesPais';
 import CriarConta from '../pages/criarConta';

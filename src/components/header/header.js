@@ -10,6 +10,8 @@ function Header() {
             </div>
             <nav className="nav-links">
                 <Link to="/">Início</Link>
+                <Link to="/logar">Login</Link>
+                <Link to="/registrar">Registrar</Link>
                 <Link to="/comentarios">Ver comentários</Link>
             </nav>
             <div className="espaco-vazio"></div>

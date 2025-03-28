@@ -1,0 +1,101 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+.footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background-color: #ffffff;
+    color: #422605;
+    padding: 15px 5px;
+    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center; 
+ }
+
+
+.footer .social-links {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px; /* Ajuste o espaçamento entre os ícones */
+}
+
+/* Estilo dos ícones de redes sociais */
+.footer .social-links a {
+    display: inline-block;
+}
+
+/* Tamanho e efeito dos ícones de redes sociais */
+.footer .social-icon {
+    width: 40px;  /* Tamanho ajustável conforme preferir */
+    height: 40px;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+/* Efeito de hover nos ícones */
+.footer .social-links a:hover .social-icon {
+    transform: scale(1.1); /* Aumenta o ícone quando o cursor passar por cima */
+    opacity: 0.8; /* Um leve efeito de opacidade ao passar o mouse */
+}
+
+/* Links adicionais no footer */
+.footer .nav-links {
+    display: flex;
+    justify-content: center;
+    gap: 18px;
+    margin-bottom: 10px;
+}
+
+.footer .nav-links a {
+    color: #422605;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    font-weight: bold;
+    text-decoration: none;
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+/* Hover nos links */
+.footer .nav-links a:hover {
+    color: #ffffff;
+    background-color: #422605;
+    text-shadow: 0 0 5px #fff;
+}
+
+
+.footer div {
+    text-decoration: #422605;
+}
+
+
+
+/* Responsividade para dispositivos móveis */
+@media (max-width: 768px) {
+    .footer {
+        padding: 15px 15px;
+    }
+
+    .footer .social-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer .social-icon {
+        width: 30px; /* Ajuste do tamanho dos ícones para telas menores */
+        height: 30px;
+    }
+
+    .footer .nav-links {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .footer .nav-links a {
+        font-size: 1rem;
+    }
+}

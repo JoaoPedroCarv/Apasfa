@@ -1,40 +1,128 @@
-.tudo {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: auto;
+/* Reset de margens e padding */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Container principal */
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 73vh;
+  background-image: url('../../assets/imagens/background2.png');
+  background-size: cover;
+  /* Garante que a imagem inteira seja exibida */
+  background-position: center;
+  background-color: #f0f4f0;
+  /* Tom de verde/marrom bem claro */
+  object-fit: no-repeat;
+}
+
+/* Formulário de login */
+.login-form {
+  background-color: #5cb3fa;
+  /* Branco */
+  padding: 50px;
+  /* Aumentado para dar mais espaço interno */
+  border-radius: 12px;
+  box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 500px;
+  /* Aumentado para expandir o formulário */
+  text-align: center;
+}
+
+/* Cabeçalho do formulário */
+.login-form h1 {
+  font-size: 2.2rem;
+  /* Pequeno aumento para se destacar */
+  color: #422605;
+  /* Verde/marrom escuro (cor predominante no nome APASFA) */
+  margin-bottom: 25px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* Campos de input */
+.input-field {
+  width: 100%;
+  padding: 14px;
+  /* Um pouco maior para melhor usabilidade */
+  margin: 12px 0;
+  border: 2px solid #422605;
+  /* Tom claro de verde/marrom para a borda */
+  border-radius: 6px;
+  font-size: 1.1rem;
+  color: #555;
+  background-color: #ffffff;
+  /* Cinza bem claro para o fundo */
+}
+
+.input-field:focus {
+  border-color: #435d36;
+  /* Verde/marrom escuro no foco */
+  outline: none;
+}
+
+/* Botão de login */
+.login-button {
+  width: 100%;
+  padding: 18px;
+  /* Aumentado para melhor interação */
+  background-color: #422605;
+  /* Verde/marrom escuro para o botão */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.3rem;
+  /* Um pouco maior para destaque */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.login-button:hover {
+  background-color: #422605;
+  /* Amarelo/laranja para o hover (destaque) */
+}
+
+/* Link para registrar */
+.signup-link {
+  display: block;
+  margin-top: 20px;
+  text-decoration: none;
+  color: #422605;
+  /* Verde/marrom escuro para o link */
+  font-size: 1.1rem;
+}
+
+.signup-link:hover {
+  color: #f9a825;
+  /* Amarelo/laranja no hover */
+  text-decoration: underline;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .login-form {
+    padding: 40px;
+    /* Ajuste para telas menores */
+    max-width: 90%;
+    /* Para não ocupar toda a tela */
   }
-  
-  .tudo input {
-    width: 95%;
-    padding: 10px;
-    margin-bottom: 20px;
+
+  .login-form h1 {
+    font-size: 2rem;
   }
-  
-  .tudo button {
-    background-color: #007bff;
-    color: #fff;
-    padding: 10px 20px;
-    margin-bottom: 10px;
-    border: none;
-    cursor: pointer;
+
+  .input-field {
+    font-size: 1rem;
+    padding: 12px;
   }
-  
-  .tudo button:hover {
-    background-color: #0056b3;
+
+  .login-button {
+    font-size: 1.1rem;
+    padding: 16px;
   }
-  
-  .link {
-    margin-top: 16px;
-  }
-  
-  .form {
-    max-width: 400px;
-    width: 100%;
-    padding: 20px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
-  }
-  
+}
