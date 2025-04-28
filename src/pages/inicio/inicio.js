@@ -4,6 +4,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './inicio.css';
 
+
 import banner1 from '../../assets/imagens/sorriso.jpg';
 import banner2 from '../../assets/imagens/images (1).jpg';
 import banner3 from '../../assets/imagens/gatinhos.jpg';
@@ -68,6 +69,8 @@ function Inicio() {
       Somos uma organização dedicada a resgatar, tratar e encontrar lares para animais em situação de rua.
       Trabalhamos com amor, dedicação e responsabilidade para fazer a diferença na vida de cada animal.
     </p>
+
+    
   </div>
 
   {/* Colaboradores */}
