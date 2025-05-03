@@ -1,127 +1,120 @@
-import { useState, useContext } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import { AuthContext } from '../../context/auth';
+import { useState } from 'react';
 import './admin.css';
 
-export default function CriarConta() {
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+export default function PainelAdmin() {
+    const [nome, setNome] = useState('');
+    const [idade, setIdade] = useState('');
+    const [tipo, setTipo] = useState('');
+    const [raca, setRaca] = useState('');
+    const [sexo, setSexo] = useState('');
+    const [descricao, setDescricao] = useState('');
+    const [foto, setFoto] = useState(null);
     const [error, setError] = useState('');
-    const [showPassword, setShowPassword] = useState(false);
-    const [opcao, setOpcao] = useState('');
+    const [solicitacoes, setSolicitacoes] = useState([
+        { id: 1, usuario: 'joao@email.com', animal: 'Luna', mensagem: 'Gostaria de adotar a Luna!' },
+        { id: 2, usuario: 'maria@email.com', animal: 'Rex', mensagem: 'Tenho interesse no Rex.' },
+        { id: 3, usuario: 'maria@email.com', animal: 'Rex', mensagem: 'Tenho interesse no Rex.' },
+        { id: 4, usuario: 'maria@email.com', animal: 'Rex', mensagem: 'Tenho interesse no Rex.' },
+    ]);
 
-    const { signUp, loadingAuth } = useContext(AuthContext);
-    const navigate = useNavigate();
-
-    async function handleSubmit(e) {
+    function handleSubmit(e) {
         e.preventDefault();
         setError('');
 
-        // Validações
-        if (!name || !email || !password || !confirmPassword) {
-            return setError('Preencha todos os campos!');
+        if (!nome || !idade || !tipo || !raca || !sexo || !foto) {
+            return setError('Preencha todos os campos obrigatórios!');
         }
 
-        if (password !== confirmPassword) {
-            return setError('As senhas não coincidem!');
-        }
+        // Simulação de cadastro
+        alert('Animal cadastrado com sucesso!');
+        setNome('');
+        setIdade('');
+        setTipo('');
+        setRaca('');
+        setSexo('');
+        setDescricao('');
+        setFoto(null);
+    }
 
-        if (password.length < 6) {
-            return setError('A senha deve ter no mínimo 6 caracteres.');
-        }
-
-        if (!/^\S+@\S+\.\S+$/.test(email)) {
-            return setError('Digite um e-mail válido.');
-        }
-
-        try {
-            await signUp(email, password, name);
-            navigate('/dashboard');
-        } catch (err) {
-            setError('Erro ao cadastrar. Tente novamente.');
-        }
+    function responderEmail(email) {
+        alert(`Abrir modal ou função para responder ${email}`);
     }
 
     return (
-        <div className="register-container">
-            <div className="register-card">
-                <div className="register-header">
-                    <h1>Adicone um novo animal</h1>
-                    <p>Preencha as informações</p>
-                </div>
-
+        <div className="admin-container">
+            {/* Lado Esquerdo: Cadastro de Animal */}
+            <div className="form-box">
+                <h1>Cadastro de Animal</h1>
                 {error && <div className="error-message">{error}</div>}
-
-                <form onSubmit={handleSubmit} className="register-form">
+                <form onSubmit={handleSubmit} encType="multipart/form-data">
                     <div className="input-group">
-                        <label htmlFor="name">Nome do Animal</label>
-                        <input
-                            id="name"
-                            type="text"
-                            placeholder="Digite o nome do animal"
-                            value={name}
-                            onChange={(e) => setName(e.target.value)}
-                        />
+                        <label>Nome do Animal</label>
+                        <input type="text" value={nome} onChange={(e) => setNome(e.target.value)} />
                     </div>
-
                     <div className="input-group">
-                        <label>Selecione o sexo</label>
-                        <div style={{ display: 'flex', gap: '1rem' }}>
-                            <label className="l-radio">
+                        <label>Idade</label>
+                        <input type="number" value={idade} onChange={(e) => setIdade(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label>Tipo</label>
+                        <input type="text" value={tipo} onChange={(e) => setTipo(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label>Raça</label>
+                        <input type="text" value={raca} onChange={(e) => setRaca(e.target.value)} />
+                    </div>
+                    <div className="input-group">
+                        <label>Sexo</label>
+                        <div className="radio-group">
+                            <label>
                                 <input
                                     type="radio"
-                                    name="opcao"
-                                    value="opcao1"
-                                    checked={opcao === 'opcao1'}
-                                    onChange={(e) => setOpcao(e.target.value)}
-                                />
-                                <span style={{ paddingLeft: '6px' }}>Opção 1</span>
+                                    name="sexo"
+                                    value="Macho"
+                                    checked={sexo === 'Macho'}
+                                    onChange={(e) => setSexo(e.target.value)}
+                                /> Macho
                             </label>
-
-                            <label className="l-radio">
+                            <label>
                                 <input
                                     type="radio"
-                                    name="opcao"
-                                    value="opcao2"
-                                    checked={opcao === 'opcao2'}
-                                    onChange={(e) => setOpcao(e.target.value)}
-                                />
-                                <span style={{ paddingLeft: '6px' }}>Opção 2</span>
+                                    name="sexo"
+                                    value="Fêmea"
+                                    checked={sexo === 'Fêmea'}
+                                    onChange={(e) => setSexo(e.target.value)}
+                                /> Fêmea
                             </label>
                         </div>
                     </div>
-
-
                     <div className="input-group">
-                        <label htmlFor="confirmPassword">Confirme sua senha</label>
-                        <input
-                            id="confirmPassword"
-                            type="password"
-                            placeholder="Digite novamente sua senha"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
+                        <label>Descrição</label>
+                        <textarea value={descricao} onChange={(e) => setDescricao(e.target.value)} />
                     </div>
-
-                    <button
-                        type="submit"
-                        disabled={loadingAuth}
-                        className={`submit-button ${loadingAuth ? 'loading' : ''}`}
-                    >
-                        {loadingAuth ? (
-                            <>
-                                <span className="spinner"></span>
-                                Cadastrando...
-                            </>
-                        ) : 'Criar conta'}
-                    </button>
+                    <div className="input-group">
+                        <label>Foto</label>
+                        <input type="file" accept="image/*" onChange={(e) => setFoto(e.target.files[0])} />
+                    </div>
+                    <button type="submit">Cadastrar Animal</button>
                 </form>
+            </div>
 
-                <div className="login-redirect">
-                    Já tem uma conta? <Link to="/logar">Faça login</Link>
-                </div>
+            {/* Lado Direito: Painel de Solicitações */}
+            <div className="dashboard-box">
+                <h2>Solicitações de Adoção</h2>
+                {solicitacoes.length === 0 ? (
+                    <p>Nenhuma solicitação no momento.</p>
+                ) : (
+                    <ul className="sollicitacoes-list">
+                        {solicitacoes.map((s) => (
+                            <li key={s.id} className="sollicitacao-item">
+                                <p><strong>Usuário:</strong> {s.usuario}</p>
+                                <p><strong>Animal:</strong> {s.animal}</p>
+                                <p><strong>Mensagem:</strong> {s.mensagem}</p>
+                                <button onClick={() => responderEmail(s.usuario)}>Responder por Email</button>
+                            </li>
+                        ))}
+                    </ul>
+                )}
             </div>
         </div>
     );
