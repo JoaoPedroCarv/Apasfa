@@ -17,7 +17,7 @@ function AuthProvider({ children }) {
 
   useEffect(() => {
     async function loadUser() {
-      const storageUser = localStorage.getItem('@ticketsPRO')
+      const storageUser = localStorage.getItem('usuario')
 
       if (storageUser) {
         setUser(JSON.parse(storageUser))
@@ -36,18 +36,20 @@ function AuthProvider({ children }) {
   async function signIn(email, password) {
     setLoadingAuth(true);
 
+    console.log(email + password)
+
     await signInWithEmailAndPassword(auth, email, password)
       .then(async (value) => {
         let uid = value.user.uid;
 
-        const docRef = doc(db, "users", uid);
+        const docRef = doc(db, "usuarios", uid);
         const docSnap = await getDoc(docRef)
 
         let data = {
           uid: uid,
           nome: docSnap.data().nome,
           email: value.user.email,
-          avatarUrl: docSnap.data().avatarUrl
+          admin: docSnap.data().admin
         }
 
         setUser(data);
@@ -103,12 +105,12 @@ function AuthProvider({ children }) {
 
 
   function storageUser(data) {
-    localStorage.setItem('@ticketsPRO', JSON.stringify(data))
+    localStorage.setItem('usuario', JSON.stringify(data))
   }
 
   async function logout() {
     await signOut(auth);
-    localStorage.removeItem('@ticketsPRO');
+    localStorage.removeItem('usuario');
     setUser(null);
   }
 
