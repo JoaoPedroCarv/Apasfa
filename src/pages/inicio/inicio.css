@@ -1,70 +1,52 @@
-/* Reset básico */
+/* Reset básico */ 
 .inicio-container {
-    position: relative;
-    padding: 2rem;
-    background: #f9f9f9;
-    overflow-x: hidden;
-  }
-  
-  /* Carrossel */
-  .carrossel-wrapper {
-    margin-bottom: 2rem;
-  }
-  
-  .carrossel-img {
-    width: 50%;
-    height: 620px;
-    object-fit: cover;
-    border-radius: 15px;
-    align-items: center;
-    margin-left: 30%;
-  }
-  
-  /* Informações rápidas */
-  .info-rapida {
-    display: flex;
-    justify-content: space-around;
-    margin: 3rem 0;
-    gap: 2rem;
-    flex-wrap: wrap;
-  }
-  
-  .info-card {
-    background: #fff;
-    padding: 1.5rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    text-align: center;
-    flex: 1;
-    min-width: 200px;
-    transition: transform 0.3s ease;
-  }
-  
-  .info-card:hover {
-    transform: translateY(-8px);
-  }
-  
-  /* Quem Somos */
-  .quem-somos {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 4rem;
-  }
-  
-  .texto {
-    max-width: 800px;
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  
-  .texto h2 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  
-  .quem-somos {
+  position: relative;
+  padding: 2rem;
+  background: #f9f9f9;
+  overflow-x: hidden;
+}
+
+/* Carrossel */
+.carrossel-wrapper {
+  margin-bottom: 2rem;
+}
+
+.carrossel-img {
+  width: 50%;
+  height: 620px;
+  object-fit: cover;
+  border-radius: 15px;
+  align-items: center;
+  margin-left: 30%;
+}
+
+/* Informações rápidas */
+.info-rapida {
+  display: flex;
+  justify-content: space-around;
+  margin: 3rem 0;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.info-card {
+  background: #fff;
+  padding: 1.5rem 2rem;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  text-align: center;
+  flex: 1;
+  min-width: 200px;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.info-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Quem Somos */
+.quem-somos {
   text-align: center;
   padding: 60px 20px;
   background-color: #f9f9f9;
@@ -96,20 +78,18 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
   padding: 20px;
   width: 260px;
-  transition: transform 0.3s ease, border-color 0.3s;
+  transition: transform 0.3s ease, border-color 0.3s ease;
   border: 2px solid #eee;
   opacity: 0;
   transform: translateY(30px);
-  animation: fadeInUp 0.9s forwards;
-  
+  animation: fadeInUp 1s ease forwards;
 }
 
 .colaborador-card:hover {
-    transform: translateY(0) scale(1.05);
-    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
-    border-color: #ccc;
-    transform: translateY(-8px);
-  }
+  transform: translateY(-8px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+  border-color: #ccc;
+}
 
 .foto-colaborador {
   width: 120px;
@@ -133,72 +113,203 @@
 /* Animação de entrada */
 @keyframes fadeInUp {
   to {
-    opacity: 1;
-    transform: translateY(0);
+      opacity: 1;
+      transform: translateY(0);
   }
 }
 
-  /* Imagens decorativas */
-  .decoracao-superior {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 100px;
-    opacity: 0.6;
-  }
-  
-  .decoracao-inferior {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 100px;
-    opacity: 0.6;
-  }
-  
-  /* Responsivo */
-  @media (max-width: 768px) {
-    .info-rapida {
+/* Imagens decorativas */
+.decoracao-superior {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 100px;
+  opacity: 0.6;
+}
+
+.decoracao-inferior {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100px;
+  opacity: 0.6;
+}
+
+/* Responsivo */
+@media (max-width: 768px) {
+  .info-rapida {
       flex-direction: column;
       align-items: center;
-    }
-  
-    .colaboradores {
-      flex-direction: column;
-    }
-  
-    .carrossel-img {
-      height: 250px;
-    }
   }
-  /* Animação Fade-In */
+
+  .colaboradores {
+      flex-direction: column;
+  }
+
+  .carrossel-img {
+      height: 250px;
+  }
+}
+
+/* Animação Fade-In */
 @keyframes fadeIn {
-    from {
+  from {
       opacity: 0;
       transform: translateY(30px);
-    }
-    to {
+  }
+  to {
       opacity: 1;
       transform: translateY(0);
-    }
   }
-  
-  /* Aplique a animação nos principais elementos */
-  .carrossel-wrapper,
-  .info-rapida,
-  .quem-somos,
-  .colaboradores {
-    animation: fadeIn 1s ease forwards;
-  }
-  
-  /* Pode também adicionar delay para cada grupo */
-  .info-rapida {
-    animation-delay: 0.5s;
-  }
-  
+}
 
-  
-  .colaboradores {
-    animation-delay: 1.5s;
+.carrossel-wrapper,
+.info-rapida,
+.quem-somos,
+.colaboradores {
+  animation: fadeIn 1s ease forwards;
+}
+
+/* Pode também adicionar delay para cada grupo */
+.info-rapida {
+  animation-delay: 0.5s;
+}
+
+.colaboradores {
+  animation-delay: 1.5s;
+}
+
+/* Histórias de Resgate */
+.historias-resgate {
+  padding: 60px 5vw;
+  background-color: #fafafa;
+  text-align: center;
+}
+
+.historias-resgate h2 {
+  font-size: 2rem;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.historias-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.historia-card-modern {
+  display: flex;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  cursor: pointer;
+}
+
+.historia-card-modern:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.historia-img-modern {
+  width: 40%;
+  object-fit: cover;
+  height: auto;
+}
+
+.historia-texto {
+  padding: 20px;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.historia-texto h3 {
+  font-size: 1.4rem;
+  color: #f76c6c;
+  margin-bottom: 10px;
+}
+
+.historia-texto p {
+  font-size: 1rem;
+  color: #555;
+}
+
+/* Botão de troca */
+.btn-trocar {
+  margin-top: 1rem;
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  background-color: #ff914d;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.btn-trocar:hover {
+  background-color: #e67e30;
+  transform: translateY(-3px);
+}
+
+/* Estilo das flechas */
+.arrow {
+  font-size: 2rem;
+  color: #fff;
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 10px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.arrow:hover {
+  background-color: rgba(0, 0, 0, 0.5);
+}
+
+.slick-prev {
+  left: 10px;
+}
+
+.slick-next {
+  right: 10px;
+}
+
+.arrow {
+  position: absolute;
+  top: 50%;
+  font-size: 2rem;
+  color: #fff; /* Escolha uma cor visível para as flechas */
+  cursor: pointer;
+  transform: translateY(-50%);
+  z-index: 10;
+}
+
+.arrow.next {
+  right: 10px; /* Ajuste a posição conforme necessário */
+}
+
+.arrow.prev {
+  left: 10px; /* Ajuste a posição conforme necessário */
+}
+
+
+/* Ajustar os botões de navegação do slick */
+.slick-prev, .slick-next {
+  z-index: 1000;  /* Garantir que as flechas fiquem acima das imagens */
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .historia-card-modern {
+      flex-direction: column;
   }
-  
-  
+
+
+}
