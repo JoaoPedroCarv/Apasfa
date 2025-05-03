@@ -9,6 +9,7 @@ import Comentarios from '../pages/comentarios';
 import CriarComentario from '../pages/novoComentario';
 import EditarComentario from '../pages/editarComentario';
 import doacao from '../pages/doacao';
+import Admin from '../pages/admin';
 
 
 
@@ -25,6 +26,7 @@ function RoutesApp() {
       <Route path="/comentarios" element={<Comentarios />} />
       <Route path='/novoComentario' element={<Private><CriarComentario /></Private>} />
       <Route path='/editarComentario/:id' element={<Private><EditarComentario /></Private>} />
+      <Route path="/admin" element={<Admin />} />
     </Routes>
   )
 }
