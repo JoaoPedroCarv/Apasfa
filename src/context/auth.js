@@ -36,8 +36,6 @@ function AuthProvider({ children }) {
   async function signIn(email, password) {
     setLoadingAuth(true);
 
-    console.log(email + password)
-
     await signInWithEmailAndPassword(auth, email, password)
       .then(async (value) => {
         let uid = value.user.uid;
@@ -75,9 +73,10 @@ function AuthProvider({ children }) {
       .then(async (value) => {
         let uid = value.user.uid
 
-        await setDoc(doc(db, "users", uid), {
+        await setDoc(doc(db, "usuarios", uid), {
           nome: name,
-          avatarUrl: null
+          email: email,
+          admin: false
         })
           .then(() => {
 
@@ -85,7 +84,7 @@ function AuthProvider({ children }) {
               uid: uid,
               nome: name,
               email: value.user.email,
-              avatarUrl: null
+              admin: false
             };
 
             setUser(data);

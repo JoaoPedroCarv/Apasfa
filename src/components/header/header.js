@@ -18,7 +18,7 @@ function Header() {
                 <Link to="/">Início</Link>
                 <Link to="/logar">Login</Link>
                 <Link to="/registrar">Registrar</Link>
-                <Link to="/comentarios">Ver comentários</Link>
+
                 {isAdmin && <Link to="/admin">Ver admin</Link>}
             </nav>
             <div className="espaco-vazio"></div>

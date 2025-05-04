@@ -29,11 +29,13 @@ body {
   min-height: 100vh;
   padding: 2rem;
   background-color: var(--background);
-  gap: 2rem; /* Espaçamento entre as duas caixas */
+  gap: 2rem;
+  /* Espaçamento entre as duas caixas */
 }
 
 .form-box {
-  width: 40%; /* Ajuste a largura do formulário conforme necessário */
+  width: 40%;
+  /* Ajuste a largura do formulário conforme necessário */
   background: var(--card-bg);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -45,15 +47,18 @@ body {
 }
 
 .dashboard-box {
-  flex: 1; /* Isso faz a dashboard ocupar o restante do espaço */
+  flex: 1;
+  /* Isso faz a dashboard ocupar o restante do espaço */
   padding: 2rem;
   background: rgba(255, 255, 255, 0.85);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 16px;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-  height: 100%; /* Garante que preenche a altura restante */
-  overflow-y: auto; /* Caso o conteúdo ultrapasse a altura, cria uma rolagem */
+  height: 100%;
+  /* Garante que preenche a altura restante */
+  overflow-y: auto;
+  /* Caso o conteúdo ultrapasse a altura, cria uma rolagem */
 }
 
 .input-group {
@@ -136,6 +141,51 @@ body {
   margin: 0.5rem 0;
 }
 
+.pagina-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  gap: 2rem;
+  background-color: #f4f4f4;
+}
+
+.opcao-container {
+  background-color: #ffffff;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  width: 250px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.opcao-container:hover {
+  transform: scale(1.05);
+}
+
+.opcao-container h2 {
+  color: #333;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+  font-weight: 600;
+}
+
+.opcao-container a {
+  text-decoration: none;
+  color: #4361ee;
+  font-size: 1.2rem;
+  font-weight: 600;
+  transition: color 0.3s ease;
+}
+
+.opcao-container a:hover {
+  color: #3a56d4;
+}
+
+
 button {
   background: var(--primary);
   color: white;
@@ -152,12 +202,21 @@ button:hover {
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(20px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @keyframes spin {
-  to { transform: rotate(360deg); }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 /* Responsividade */

@@ -8,8 +8,10 @@ import CriarConta from '../pages/criarConta';
 import Comentarios from '../pages/comentarios';
 import CriarComentario from '../pages/novoComentario';
 import EditarComentario from '../pages/editarComentario';
-import doacao from '../pages/doacao';
-import Admin from '../pages/admin';
+//import doacao from '../pages/doacao';
+import Admin from '../pages/admin/admin';
+import CadastroAnical from '../pages/admin/cadastroAnimal';
+import Solicitacoes from '../pages/admin/solicitacoes';
 
 
 
@@ -27,6 +29,8 @@ function RoutesApp() {
       <Route path='/novoComentario' element={<Private><CriarComentario /></Private>} />
       <Route path='/editarComentario/:id' element={<Private><EditarComentario /></Private>} />
       <Route path="/admin" element={<Admin />} />
+      <Route path="/cadastroAnimal" element={<CadastroAnical />} />
+      <Route path="/solicitacoes" element={<Solicitacoes />} />
     </Routes>
   )
 }
