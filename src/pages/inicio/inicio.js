@@ -4,6 +4,8 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './inicio.css';
+import './flipcards.css'; // novo css para o efeito flip
+import { motion } from "framer-motion";
 
 import banner1 from '../../assets/imagens/sorriso.jpg';
 import banner2 from '../../assets/imagens/images (1).jpg';
@@ -39,7 +41,7 @@ function Inicio() {
   const [indexAtual, setIndexAtual] = useState(0);
 
   const settings = {
-    arrow : true,
+    arrow: true,
     dots: true,
     infinite: true,
     speed: 600,
@@ -48,20 +50,32 @@ function Inicio() {
     autoplay: true,
     autoplaySpeed: 3500,
     cssEase: "ease-in-out",
-    nextArrow: <div className="arrow next">→</div>,  // Flecha para próximo
-    prevArrow: <div className="arrow prev">←</div>,  // Flecha para anterior
+    nextArrow: <div className="arrow next">→</div>,
+    prevArrow: <div className="arrow prev">←</div>,
   };
 
   const historia = historiasResgate[indexAtual];
 
-  
+  const compromissos = [
+    {
+      titulo: "Missão",
+      texto: "• Manter o abrigo dentro da capacidade.\n• Socorrer animais agonizantes.\n• Apoiar famílias carentes com seus animais.",
+    },
+    {
+      titulo: "Visão",
+      texto: "• Conscientizar e auxiliar no controle da espécie.\n• Participar de políticas públicas.\n• Educação em posse responsável.",
+    },
+    {
+      titulo: "Valores",
+      texto: "• Fiscalizar crueldade animal.\n• Promover adoção.\n• Difundir leis de proteção animal.",
+    }
+  ];
 
   return (
     <div className="inicio-container">
-      {/* Imagem decorativa no canto superior */}
       <img src={imagemCantoSuperior} alt="Decoração Superior" className="decoracao-superior" />
 
-      {/* Carrossel de imagens */}
+      {/* Carrossel */}
       <div className="carrossel-wrapper">
         <Slider {...settings}>
           {carrosselImagens.map((imagem, index) => (
@@ -74,45 +88,60 @@ function Inicio() {
 
       {/* Informações rápidas */}
       <section className="info-rapida">
-        <div className="info-card">
-          <h3>Animais Encontrados</h3>
-          <p>123</p>
-        </div>
-        <div className="info-card">
-          <h3>Animais Castrados</h3>
-          <p>56</p>
-        </div>
-        <div className="info-card">
-          <h3>Animais Recuperados</h3>
-          <p>78</p>
-        </div>
+        <div className="info-card"><h3>Animais Encontrados</h3><p>123</p></div>
+        <div className="info-card"><h3>Animais Castrados</h3><p>56</p></div>
+        <div className="info-card"><h3>Animais Recuperados</h3><p>78</p></div>
       </section>
 
-      {/* Quem Somos */}
-      <section className="quem-somos">
-        <div className="texto">
+     {/* Histórias + Quem Somos */}
+<section className="resumo-e-historia">
+  <div className="bloco-historia">
+    
+
+    <TransitionGroup>
+      <CSSTransition key={historia.nome} timeout={500} classNames="fade">
+        <div className="historia-card-modern">
+
+          {/* Conteúdo do card */}
+          <img src={historia.imagem} alt={`Foto de ${historia.nome}`} className="historia-img-modern" />
+          <div className="historia-texto">
+            <h3>{historia.nome}</h3>
+            <p>{historia.descricao}</p>
+          </div>
+
+          {/* Botão da direita */}
+          <button
+            className="pata-btn direita"
+            onClick={() =>
+              setIndexAtual(prev => prev === historiasResgate.length - 1 ? 0 : prev + 1)
+            }
+          >
+            🐾
+          </button>
+        </div>
+      </CSSTransition>
+    </TransitionGroup>
+  </div>
+
+
+        {/* Quem Somos - com Flip Cards */}
+        <div className="quem-somos">
           <h2>Quem Somos</h2>
-          <p>
-            Somos uma organização dedicada a resgatar, tratar e encontrar lares para animais em situação de rua.
-            Trabalhamos com amor, dedicação e responsabilidade para fazer a diferença na vida de cada animal.
-          </p>
-        </div>
-      </section>
-
-      {/* Histórias de Resgate */}
-      <section className="historias-resgate">
-        <h2>Histórias de Resgate</h2>
-        <TransitionGroup>
-          <CSSTransition key={historia.nome} timeout={500} classNames="fade">
-            <div className="historia-card-modern">
-              <img src={historia.imagem} alt={`Foto de ${historia.nome}`} className="historia-img-modern" />
-              <div className="historia-texto">
-                <h3>{historia.nome}</h3>
-                <p>{historia.descricao}</p>
+          <div className="flip-card-container">
+            {compromissos.map((item, idx) => (
+              <div className="flip-card" key={idx}>
+                <div className="flip-card-inner">
+                  <div className="flip-card-front">
+                    <h3>{item.titulo}</h3>
+                  </div>
+                  <div className="flip-card-back">
+                    <pre>{item.texto}</pre>
+                  </div>
+                </div>
               </div>
-            </div>
-          </CSSTransition>
-        </TransitionGroup>
+            ))}
+          </div>
+        </div>
       </section>
 
       {/* Colaboradores */}
@@ -130,7 +159,6 @@ function Inicio() {
         ))}
       </div>
 
-      {/* Imagem decorativa no canto inferior */}
       <img src={imagemCantoInferior} alt="Decoração Inferior" className="decoracao-inferior" />
     </div>
   );
