@@ -1,53 +1,90 @@
 .flip-card-container {
-    display: flex;
-    gap: 40px;
-    justify-content: center;
-    flex-wrap: wrap;
-  }
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.flip-card {
+  background-color: transparent;
+  width: 220px;
+  height: 200px;
+  perspective: 1000px;
+  transition: opacity 0.3s;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  transition: transform 0.7s;
+  transform-style: preserve-3d;
+}
+
+.flip-card:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  width: 110%;
+  height: 110%;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+}
+
+.flip-card-front {
+  background: rgba(112, 76, 22, 0.61);
+  font-size: 1.2rem;
+  font-weight: bold;
+  background-image: url(../../assets/imagens/Logo\ apasfa\ sem\ fundo\ 2.png);
+  background-size: cover;      
+  background-position: center; 
+  background-repeat: no-repeat; 
   
-  .flip-card {
-    background-color: transparent;
-    width: 220px;
-    height: 200px;
-    perspective: 1000px;
-  }
   
-  .flip-card-inner {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    transition: transform 0.7s;
-    transform-style: preserve-3d;
-  }
   
-  .flip-card:hover .flip-card-inner {
-    transform: rotateY(180deg);
-  }
+
+
+}
+
+.flip-card-back {
+  background: rgba(100, 72, 29, 0.671);
+  transform: rotateY(180deg);
+  font-size: 0.95rem;
+  width: 300px;
+  align-items: flex-start;
+  margin-left: -40px;
+  white-space: pre-wrap; 
+  word-wrap: break-word;
+  text-align:initial;
   
-  .flip-card-front, .flip-card-back {
-    position: absolute;
-    width: 110%;
-    height: 110%;
-    backface-visibility: hidden;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 15px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-  }
-  
-  .flip-card-front {
-    background: #f3f3f3;
-    font-size: 1.2rem;
-    font-weight: bold;
-  }
-  
-  .flip-card-back {
-    background: #d1f5d3;
-    transform: rotateY(180deg);
-    font-size: 0.95rem;
-    white-space: pre-wrap;
-  }
-  
+}
+
+
+
+.flip-card-container:hover .flip-card {
+  opacity: 0.3;
+}
+
+
+.flip-card-container .flip-card:hover {
+  opacity: 1;
+}
+
+.flip-card-back h3 {
+  color: #e74c3c; /* Cor do título */
+}
+
+.flip-card-back {
+  color: #E0FFFF;
+}

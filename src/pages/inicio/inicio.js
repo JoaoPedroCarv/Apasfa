@@ -59,16 +59,34 @@ function Inicio() {
   const compromissos = [
     {
       titulo: "Missão",
-      texto: "• Manter o abrigo dentro da capacidade.\n• Socorrer animais agonizantes.\n• Apoiar famílias carentes com seus animais.",
+      texto: 
+        "• Manter o abrigo dentro da capacidade.\n" +
+        "• Socorrer animais agonizantes.\n" +
+        "• Apoiar famílias carentes com seus animais.\n" +
+        "• Promover a castração para evitar a superpopulação.\n" +
+        "• Reabilitar física e emocionalmente os animais resgatados.\n"
     },
     {
       titulo: "Visão",
-      texto: "• Conscientizar e auxiliar no controle da espécie.\n• Participar de políticas públicas.\n• Educação em posse responsável.",
+      texto: 
+        "• Conscientizar e auxiliar no controle da espécie.\n" +
+        "• Participar de políticas públicas.\n" +
+        "• Educação em posse responsável.\n" +
+        "• Ser referência regional em proteção e bem-estar animal.\n" +
+        "• Criar programas de voluntariado e engajamento comunitário.\n" +
+        "• Desenvolver campanhas contínuas de adoção e castração."
     },
     {
       titulo: "Valores",
-      texto: "• Fiscalizar crueldade animal.\n• Promover adoção.\n• Difundir leis de proteção animal.",
+      texto: 
+        "• Fiscalizar crueldade animal.\n" +
+        "• Promover adoção.\n" +
+        "• Difundir leis de proteção animal.\n" +
+        "• Transparência e ética na gestão da ONG.\n" +
+        "• Respeito à vida em todas as suas formas.\n" +
+        "• Comprometimento com o bem-estar animal e social."
     }
+    
   ];
 
   return (
@@ -127,21 +145,29 @@ function Inicio() {
         {/* Quem Somos - com Flip Cards */}
         <div className="quem-somos">
           <h2>Quem Somos</h2>
+          <p>A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização sem fins lucrativos que visa proteger e promover o bem-estar dos animais, resgatando-os de situações de maus-tratos e negligência e buscando lares responsáveis para os animais sob seus cuidados.</p>
           <div className="flip-card-container">
             {compromissos.map((item, idx) => (
               <div className="flip-card" key={idx}>
+                <h3>{item.titulo}</h3>
                 <div className="flip-card-inner">
                   <div className="flip-card-front">
-                    <h3>{item.titulo}</h3>
                   </div>
                   <div className="flip-card-back">
-                    <pre>{item.texto}</pre>
+                    {/* Substituindo as quebras de linha */}
+                    {item.texto.split('\n').map((line, index) => (
+                      <React.Fragment key={index}>
+                        {line}
+                        <br />
+                      </React.Fragment>
+                    ))}
                   </div>
                 </div>
               </div>
             ))}
           </div>
         </div>
+
       </section>
 
       {/* Colaboradores */}
