@@ -145,7 +145,7 @@
 .botao-pata {
   background: rgba(255, 255, 255, 0.9);
   border: none;
-  font-size: 1.8rem;
+  font-size: 5.0rem;
   padding: 0.5rem 0.8rem;
   border-radius: 50%;
   cursor: pointer;
@@ -172,7 +172,7 @@
 .quem-somos {
   align : center;
   flex: 1;
-  min-width: 300px;
+  min-width: 500px;
   background: #ffffff;
   padding: 2rem;
   border-radius: 15px;
@@ -208,6 +208,7 @@
   flex-wrap: wrap;
   gap: 30px;
   margin-top: 3rem;
+  padding-right: 65%;
 }
 
 .colaborador-card {

@@ -150,6 +150,7 @@ function Inicio() {
           { img: colaborador1, nome: 'João Silva', membro: 'Janeiro 2020' }, 
           { img: colaborador2, nome: 'Maria Oliveira', membro: 'Março 2019' }, 
           { img: colaborador3, nome: 'Carlos Souza', membro: 'Julho 2021' } 
+          
         ].map((colab, idx) => (
           <div key={idx} className="colaborador-card" style={{ animationDelay: `${idx * 0.2}s` }}>
             <img src={colab.img} alt={`Foto de ${colab.nome}`} className="foto-colaborador" />
