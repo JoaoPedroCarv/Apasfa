@@ -15,6 +15,12 @@ const admin = () => {
                     <Link to="/solicitacoes">Ver solicitações de adoção</Link>
                 </h2>
             </div>
+            <div className="opcao-container">
+  <h2>
+                    <Link to="/cadastrarEvento">Cadastrar eventos</Link>
+  </h2>
+</div>
+
         </div>
     );
 }

@@ -2,7 +2,7 @@
 .inicio-container {
   position: relative;
   padding: 2rem;
-  background: rgba(100, 72, 29, 0.671);
+  background: rgba(148, 114, 64, 0.082);
   overflow-x: hidden;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
@@ -10,8 +10,6 @@
 /* Carrossel */
 .carrossel-wrapper {
   justify-content: center;
-  
-
   margin-bottom: 3rem;
   position: relative;
   border-radius: 20px;
@@ -25,7 +23,6 @@
   object-fit: cover;
   display: block;
 }
-
 
 /* Informações rápidas */
 .info-rapida {
@@ -54,7 +51,7 @@
 .info-card h3 {
   font-size: 1.3rem;
   margin-bottom: 10px;
-  color: rgba(71, 44, 3, 0.979);;
+  color: rgba(71, 44, 3, 0.979);
 }
 
 .info-card p {
@@ -75,7 +72,6 @@
 .bloco-historia {
   flex: 1;
   min-width: 320px;
-  
 }
 
 .navegacao-historias {
@@ -100,7 +96,6 @@
 }
 
 .historia-card-modern {
-  
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
@@ -108,6 +103,10 @@
   padding: 20px;
   border-radius: 16px;
   box-shadow: 0 6px 14px rgba(0, 0, 0, 0.1);
+  position: relative;
+  align-items: center;
+  justify-content: space-between;
+  background: #E0FFFF;
 }
 
 .historia-img-modern {
@@ -126,23 +125,11 @@
   margin-bottom: 10px;
   font-size: 1.5rem;
   color: rgba(71, 44, 3, 0.979);
-
 }
 
 .historia-texto p {
   font-size: 1.1rem;
   color: rgba(71, 44, 3, 0.979);
-}
-
-.historia-card-modern {
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem;
-  background: #E0FFFF;
-  border-radius: 1rem;
-  box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 .botao-pata {
@@ -161,15 +148,12 @@
   transform: scale(1.1);
 }
 
-
-
 .botao-pata.direita {
   position: absolute;
   right: -15px;
   top: 50%;
   transform: translateY(-50%);
 }
-
 
 /* Quem Somos */
 .quem-somos {
@@ -182,19 +166,19 @@
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
   text-align: center;
 }
+
 .quem-somos h3 {
   color: rgba(71, 44, 3, 0.979);
 }
-.quem-somos p {
-  margin:3%;
-  color: rgba(71, 44, 3, 0.979);
 
+.quem-somos p {
+  margin: 3%;
+  color: rgba(71, 44, 3, 0.979);
 }
 
 .quem-somos h2 {
   margin-bottom: 1rem;
   color: rgba(71, 44, 3, 0.979);
-
 }
 
 .quem-somos-cards {
@@ -249,6 +233,44 @@
   margin-bottom: 1rem;
 }
 
+/* Eventos */
+.eventos {
+  margin-top: 3rem;
+  padding: 2rem;
+  background: #fefefe;
+  border-radius: 16px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.eventos h2 {
+  color: #472c03;
+  margin-bottom: 2rem;
+}
+
+.eventos-lista {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.evento-card {
+  width: 280px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem;
+}
+
+.evento-img {
+  width: 100%;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
 /* Decoração */
 .decoracao-superior,
 .decoracao-inferior {
@@ -301,5 +323,10 @@
 
   .carrossel-img {
     height: 250px;
+  }
+
+  .eventos-lista {
+    flex-direction: column;
+    align-items: center;
   }
 }
