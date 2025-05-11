@@ -5,7 +5,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './inicio.css';
 import './flipcards.css';
-import { motion } from "framer-motion";
+//import { motion } from "framer-motion";
 
 import { db } from '../../services/firebaseConnection';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
