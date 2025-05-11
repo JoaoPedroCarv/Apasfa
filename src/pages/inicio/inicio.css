@@ -293,17 +293,40 @@
 .fade-enter {
   opacity: 0;
 }
+
 .fade-enter-active {
   opacity: 1;
   transition: opacity 500ms;
 }
+
 .fade-exit {
   opacity: 1;
 }
+
 .fade-exit-active {
   opacity: 0;
   transition: opacity 500ms;
 }
+
+.colaboradores-e-eventos {
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  padding: 2rem;
+  flex-wrap: wrap;
+}
+
+.colaboradores,
+.eventos {
+  flex: 1;
+  min-width: 300px;
+}
+
+.eventos .evento-card {
+  margin-top: 1rem;
+  transition: all 0.4s ease;
+}
+
 
 /* Responsivo */
 @media (max-width: 768px) {

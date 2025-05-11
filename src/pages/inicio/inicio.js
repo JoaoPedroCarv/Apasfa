@@ -5,7 +5,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import './inicio.css';
 import './flipcards.css';
-//import { motion } from "framer-motion";
 
 import { db } from '../../services/firebaseConnection';
 import { collection, getDocs, query, orderBy } from 'firebase/firestore';
@@ -43,6 +42,7 @@ const historiasResgate = [
 function Inicio() {
   const [indexAtual, setIndexAtual] = useState(0);
   const [eventos, setEventos] = useState([]);
+  const [eventoAtualIndex, setEventoAtualIndex] = useState(0);
 
   useEffect(() => {
     async function carregarEventos() {
@@ -55,6 +55,16 @@ function Inicio() {
 
     carregarEventos();
   }, []);
+
+  // Troca automática de evento (carrossel simples)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setEventoAtualIndex(prev =>
+        eventos.length === 0 ? 0 : (prev + 1) % eventos.length
+      );
+    }, 4000);
+    return () => clearInterval(interval);
+  }, [eventos]);
 
   const settings = {
     arrow: true,
@@ -150,7 +160,6 @@ function Inicio() {
           </TransitionGroup>
         </div>
 
-        {/* Quem Somos - com Flip Cards */}
         <div className="quem-somos">
           <h2>Quem Somos</h2>
           <p>A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização sem fins lucrativos que visa proteger e promover o bem-estar dos animais.</p>
@@ -175,36 +184,48 @@ function Inicio() {
         </div>
       </section>
 
-      {/* Colaboradores */}
-      <div className="colaboradores">
-        {[
-          { img: colaborador1, nome: 'João Silva', membro: 'Janeiro 2020' },
-          { img: colaborador2, nome: 'Maria Oliveira', membro: 'Março 2019' },
-          { img: colaborador3, nome: 'Carlos Souza', membro: 'Julho 2021' }
-        ].map((colab, idx) => (
-          <div key={idx} className="colaborador-card" style={{ animationDelay: `${idx * 0.2}s` }}>
-            <img src={colab.img} alt={`Foto de ${colab.nome}`} className="foto-colaborador" />
-            <h4>{colab.nome}</h4>
-            <p>Membro desde: {colab.membro}</p>
-          </div>
-        ))}
-      </div>
+      {/* Colaboradores + Eventos lado a lado */}
+      <div className="colaboradores-e-eventos">
+        <div className="colaboradores">
 
-      {/* Eventos */}
-      {eventos.length > 0 && (
+          {[
+            { img: colaborador1, nome: 'João Silva', membro: 'Janeiro 2020' },
+            { img: colaborador2, nome: 'Maria Oliveira', membro: 'Março 2019' },
+            { img: colaborador3, nome: 'Carlos Souza', membro: 'Julho 2021' }
+          ].map((colab, idx) => (
+            <div key={idx} className="colaborador-card" style={{ animationDelay: `${idx * 0.2}s` }}>
+              <img src={colab.img} alt={`Foto de ${colab.nome}`} className="foto-colaborador" />
+              <h4>{colab.nome}</h4>
+              <p>Membro desde: {colab.membro}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="eventos">
           <h2>Próximos Eventos</h2>
-          <div className="eventos-lista">
-            {eventos.map(evento => (
-              <div className="evento-card" key={evento.id}>
-                <img src={evento.imagemUrl} alt={evento.titulo} className="evento-img" />
-                <h3>{evento.titulo}</h3>
-                <p><strong>Data:</strong> {evento.data}</p>
+          <TransitionGroup>
+            <CSSTransition key={eventos[eventoAtualIndex]?.id || 'placeholder'} timeout={500} classNames="fade">
+              <div className="evento-card historia-card-modern">
+                {eventos.length > 0 ? (
+                  <>
+                    <img
+                      src={eventos[eventoAtualIndex].imagemUrl}
+                      alt={eventos[eventoAtualIndex].titulo}
+                      className="historia-img-modern"
+                    />
+                    <div className="historia-texto">
+                      <h3>{eventos[eventoAtualIndex].titulo}</h3>
+                      <p><strong>Data:</strong> {eventos[eventoAtualIndex].data}</p>
+                    </div>
+                  </>
+                ) : (
+                  <p>Nenhum evento disponível</p>
+                )}
               </div>
-            ))}
-          </div>
+            </CSSTransition>
+          </TransitionGroup>
         </div>
-      )}
+      </div>
 
       <img src={imagemCantoInferior} alt="Decoração Inferior" className="decoracao-inferior" />
     </div>
