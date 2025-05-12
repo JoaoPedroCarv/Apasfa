@@ -56,7 +56,6 @@ function Inicio() {
     carregarEventos();
   }, []);
 
-  // Troca automática de evento (carrossel simples)
   useEffect(() => {
     const interval = setInterval(() => {
       setEventoAtualIndex(prev =>
@@ -118,7 +117,6 @@ function Inicio() {
     <div className="inicio-container">
       <img src={imagemCantoSuperior} alt="Decoração Superior" className="decoracao-superior" />
 
-      {/* Carrossel */}
       <div className="carrossel-wrapper">
         <Slider {...settings}>
           {carrosselImagens.map((imagem, index) => (
@@ -129,14 +127,12 @@ function Inicio() {
         </Slider>
       </div>
 
-      {/* Informações rápidas */}
       <section className="info-rapida">
         <div className="info-card"><h3>Animais Encontrados</h3><p>123</p></div>
         <div className="info-card"><h3>Animais Castrados</h3><p>56</p></div>
         <div className="info-card"><h3>Animais Recuperados</h3><p>78</p></div>
       </section>
 
-      {/* Histórias + Quem Somos */}
       <section className="resumo-e-historia">
         <div className="bloco-historia">
           <TransitionGroup>
@@ -172,8 +168,7 @@ function Inicio() {
                   <div className="flip-card-back">
                     {item.texto.split('\n').map((line, index) => (
                       <React.Fragment key={index}>
-                        {line}
-                        <br />
+                        {line}<br />
                       </React.Fragment>
                     ))}
                   </div>
@@ -184,10 +179,8 @@ function Inicio() {
         </div>
       </section>
 
-      {/* Colaboradores + Eventos lado a lado */}
       <div className="colaboradores-e-eventos">
         <div className="colaboradores">
-
           {[
             { img: colaborador1, nome: 'João Silva', membro: 'Janeiro 2020' },
             { img: colaborador2, nome: 'Maria Oliveira', membro: 'Março 2019' },

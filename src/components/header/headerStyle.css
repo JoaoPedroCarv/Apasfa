@@ -11,18 +11,22 @@
     justify-content: space-between;
     align-items: center;
     background-color: #ffffff;
-    /* Verde que remete à natureza */
     padding: 10px 25px;
-    /* Ajustado para um bom espaçamento interno */
     color: white;
     box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
     height: 120px;
-    /* Mantém um pouco maior que a logo sem exagero */
+    position: relative;
+}
+
+.logo-e-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    flex: 1;
 }
 
 /* Container da logo */
 .logo-container {
-    flex: 1;
     display: flex;
     align-items: center;
 }
@@ -31,7 +35,6 @@
 .logo {
     width: 150px;
     height: auto;
-    /* Mantém proporção */
 }
 
 /* Estilo da navegação */
@@ -42,7 +45,6 @@
     justify-content: center;
 }
 
-/* Links de navegação */
 .nav-links a {
     text-decoration: none;
     color: #422605;
@@ -52,34 +54,62 @@
     transition: color 0.3s ease, text-shadow 0.3s ease;
 }
 
-/* Hover nos links */
 .nav-links a:hover {
     color: #5cb3fa;
     text-shadow: 0 0 5px #5cb3fa;
 }
 
-/* Espaço vazio, caso necessário para alinhamento */
 .espaco-vazio {
     flex: 1;
 }
 
-/* Responsividade para dispositivos móveis */
+.menu-toggle {
+    display: none;
+    font-size: 2rem;
+    background: none;
+    border: none;
+    color: #422605;
+    cursor: pointer;
+}
+
+/* Responsividade */
 @media (max-width: 768px) {
-    .header {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px 15px;
-        height: auto;
-        /* Ajusta a altura automaticamente */
+    .menu-toggle {
+        display: block;
     }
 
     .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: #ffffff;
         flex-direction: column;
-        gap: 10px;
+        align-items: flex-start;
+        padding: 1rem 2rem;
+        gap: 1rem;
+        display: none;
+        z-index: 1000;
+    }
+
+    .nav-links.ativo {
+        display: flex;
+    }
+
+    .nav-links a {
+        font-size: 1rem;
+    }
+
+    .espaco-vazio {
+        display: none;
+    }
+
+    .header {
+        flex-wrap: wrap;
+        height: auto;
     }
 
     .logo {
-        width: 140px;
-        /* Ajuste para telas menores */
+        width: 130px;
     }
 }

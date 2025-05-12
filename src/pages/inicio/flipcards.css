@@ -1,13 +1,16 @@
+/* Container principal dos cards */
 .flip-card-container {
   display: flex;
   gap: 40px;
   justify-content: center;
   flex-wrap: wrap;
+  padding-top: 1rem;
 }
 
+/* Estrutura do card */
 .flip-card {
   background-color: transparent;
-  width: 220px;
+  width: 250px;
   height: 200px;
   perspective: 1000px;
   transition: opacity 0.3s;
@@ -18,7 +21,7 @@
   width: 100%;
   height: 100%;
   text-align: center;
-  transition: transform 0.7s;
+  transition: transform 0.7s ease;
   transform-style: preserve-3d;
 }
 
@@ -29,8 +32,8 @@
 .flip-card-front,
 .flip-card-back {
   position: absolute;
-  width: 110%;
-  height: 110%;
+  width: 100%;
+  height: 100%;
   backface-visibility: hidden;
   border-radius: 12px;
   display: flex;
@@ -38,53 +41,41 @@
   justify-content: center;
   padding: 15px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  white-space: pre-wrap; 
+  white-space: pre-wrap;
   word-wrap: break-word;
 }
 
 .flip-card-front {
   background: rgba(112, 76, 22, 0.61);
-  font-size: 1.2rem;
-  font-weight: bold;
   background-image: url(../../assets/imagens/Logo\ apasfa\ sem\ fundo\ 2.png);
-  background-size: cover;      
-  background-position: center; 
-  background-repeat: no-repeat; 
-  
-  
-  
-
-
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .flip-card-back {
-  background: rgba(100, 72, 29, 0.671);
+  background: rgba(100, 72, 29, 0.88);
   transform: rotateY(180deg);
   font-size: 0.95rem;
-  width: 300px;
-  align-items: flex-start;
-  margin-left: -40px;
-  white-space: pre-wrap; 
-  word-wrap: break-word;
-  text-align:initial;
-  
+  color: #E0FFFF;
+  text-align: left;
+  padding: 1rem;
+  overflow-y: auto;
+  line-height: 1.4;
 }
 
+.flip-card-back h3 {
+  color: #ffcccb;
+  margin-bottom: 0.5rem;
+}
 
-
+/* Efeito de destaque ao passar o mouse */
 .flip-card-container:hover .flip-card {
   opacity: 0.3;
 }
 
-
 .flip-card-container .flip-card:hover {
   opacity: 1;
-}
-
-.flip-card-back h3 {
-  color: #e74c3c; /* Cor do título */
-}
-
-.flip-card-back {
-  color: #E0FFFF;
+  transform: scale(1.03);
+  transition: transform 0.3s ease;
 }
