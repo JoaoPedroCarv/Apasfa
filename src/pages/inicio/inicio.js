@@ -56,15 +56,6 @@ function Inicio() {
     carregarEventos();
   }, []);
 
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setEventoAtualIndex(prev =>
-        eventos.length === 0 ? 0 : (prev + 1) % eventos.length
-      );
-    }, 4000);
-    return () => clearInterval(interval);
-  }, [eventos]);
-
   const settings = {
     arrow: true,
     dots: true,
@@ -181,15 +172,11 @@ function Inicio() {
 
       <div className="colaboradores-e-eventos">
         <div className="colaboradores">
-          {[
-            { img: colaborador1, nome: 'João Silva', membro: 'Janeiro 2020' },
-            { img: colaborador2, nome: 'Maria Oliveira', membro: 'Março 2019' },
-            { img: colaborador3, nome: 'Carlos Souza', membro: 'Julho 2021' }
-          ].map((colab, idx) => (
+          {[colaborador1, colaborador2, colaborador3].map((img, idx) => (
             <div key={idx} className="colaborador-card" style={{ animationDelay: `${idx * 0.2}s` }}>
-              <img src={colab.img} alt={`Foto de ${colab.nome}`} className="foto-colaborador" />
-              <h4>{colab.nome}</h4>
-              <p>Membro desde: {colab.membro}</p>
+              <img src={img} alt={`Foto de colaborador ${idx + 1}`} className="foto-colaborador" />
+              <h4>{['João Silva', 'Maria Oliveira', 'Carlos Souza'][idx]}</h4>
+              <p>Membro desde: {['Janeiro 2020', 'Março 2019', 'Julho 2021'][idx]}</p>
             </div>
           ))}
         </div>
@@ -210,6 +197,14 @@ function Inicio() {
                       <h3>{eventos[eventoAtualIndex].titulo}</h3>
                       <p><strong>Data:</strong> {eventos[eventoAtualIndex].data}</p>
                     </div>
+                    <button
+                      className="pata-btn-direita-evento"
+                      onClick={() =>
+                        setEventoAtualIndex(prev => prev === eventos.length - 1 ? 0 : prev + 1)
+                      }
+                    >
+                      🐾
+                    </button>
                   </>
                 ) : (
                   <p>Nenhum evento disponível</p>
