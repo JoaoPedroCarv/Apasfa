@@ -1,4 +1,13 @@
-/* Reset de margens e padding */
+:root {
+    --brown: #8b5a2b;
+    --orange-light: #f4a460;
+    --white: #fff;
+    --gray: #8d99ae;
+    --primary: #4361ee;
+    --primary-dark: #3a56d4;
+}
+
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -7,109 +16,104 @@
 
 /* Estilo do header */
 .header {
+    width: 100%;
+    background: var(--white);
+    box-shadow: 0 4px 24px 0 rgba(67, 97, 238, 0.07), 0 1.5px 0 #eaeaea;
     display: flex;
+    align-items: center;
     justify-content: space-between;
-    align-items: center;
-    background-color: #ffffff;
-    padding: 10px 25px;
-    color: white;
-    box-shadow: 0px -4px 10px rgba(0, 0, 0, 0.1);
-    height: 120px;
-    position: relative;
+    min-height: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    transition: box-shadow 0.2s;
+    padding: 0 2rem;
+    border-radius: 0;
 }
 
-.logo-e-menu {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1;
-}
 
-/* Container da logo */
+/* Logo */
 .logo-container {
     display: flex;
     align-items: center;
+    gap: 10px;
 }
-
-/* Estilo da logo */
 .logo {
-    width: 150px;
+    width: 120px;
     height: auto;
+    transition: filter 0.2s;
+    filter: drop-shadow(0 2px 8px #f4a46033);
 }
 
-/* Estilo da navegação */
-.nav-links {
+/* Botão ☰ sempre visível */
+.menu-toggle {
+    font-size: 1.8rem;
+    background: none;
+    border: none;
+    color: var(--brown);
+    cursor: pointer;
+    position: relative;
+    z-index: 1100;
+}
+
+/* Sidebar (menu lateral escondido inicialmente) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* escondido */
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
     display: flex;
-    gap: 18px;
-    flex: 2;
-    justify-content: center;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
 }
 
-.nav-links a {
+/* Sidebar visível */
+.sidebar.ativo {
+    left: 0;
+}
+
+/* Links do menu lateral */
+.sidebar a {
+    margin: 10px 0;
     text-decoration: none;
-    color: #422605;
+    color: var(--brown);
     font-size: 1.1rem;
-    text-transform: uppercase;
-    font-weight: bold;
-    transition: color 0.3s ease, text-shadow 0.3s ease;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+.sidebar a:hover {
+    background-color: rgba(244, 164, 96, 0.13);
+    color: var(--primary);
 }
 
-.nav-links a:hover {
-    color: #5cb3fa;
-    text-shadow: 0 0 5px #5cb3fa;
+/* Botão fechar (X) */
+.fechar-menu {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    color: var(--brown);
 }
 
+/* Espaço auxiliar */
 .espaco-vazio {
     flex: 1;
 }
 
-.menu-toggle {
-    display: none;
-    font-size: 2rem;
-    background: none;
-    border: none;
-    color: #422605;
-    cursor: pointer;
-}
-
-/* Responsividade */
+/* Responsividade opcional */
 @media (max-width: 768px) {
-    .menu-toggle {
-        display: block;
-    }
-
-    .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: #ffffff;
-        flex-direction: column;
-        align-items: flex-start;
-        padding: 1rem 2rem;
-        gap: 1rem;
-        display: none;
-        z-index: 1000;
-    }
-
-    .nav-links.ativo {
-        display: flex;
-    }
-
-    .nav-links a {
-        font-size: 1rem;
-    }
-
-    .espaco-vazio {
-        display: none;
-    }
-
-    .header {
-        flex-wrap: wrap;
-        height: auto;
-    }
-
     .logo {
-        width: 130px;
+        width: 100px;
     }
 }

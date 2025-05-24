@@ -1,76 +1,113 @@
 import React, { useState, useEffect } from 'react';
-import Slider from 'react-slick';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import 'slick-carousel/slick/slick.css';
-import 'slick-carousel/slick/slick-theme.css';
 import './inicio.css';
-import './flipcards.css';
+import { Link } from 'react-router-dom';
 
-import { db } from '../../services/firebaseConnection';
-import { collection, getDocs, query, orderBy } from 'firebase/firestore';
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../services/firebaseConnection"; // ajuste o caminho se necessário
 
-import banner1 from '../../assets/imagens/sorriso.jpg';
-import banner2 from '../../assets/imagens/images (1).jpg';
-import banner3 from '../../assets/imagens/gatinhos.jpg';
-import banner4 from '../../assets/imagens/obrigado.png';
-import colaborador1 from '../../assets/imagens/pikrepo-com.jpg';
-import colaborador2 from '../../assets/imagens/pikrepo-com.jpg';
-import colaborador3 from '../../assets/imagens/pikrepo-com.jpg';
-import imagemCantoSuperior from '../../assets/imagens/Vector.png';
-import imagemCantoInferior from '../../assets/imagens/Vector.png';
 
-const carrosselImagens = [banner1, banner2, banner3, banner4];
-
-const historiasResgate = [
-  {
-    imagem: banner1,
-    nome: "Luna",
-    descricao: "Resgatada com fome e frio, hoje vive feliz em um novo lar."
-  },
-  {
-    imagem: banner2,
-    nome: "Bidu",
-    descricao: "Machucado na rua, recebeu cuidados e muito amor."
-  },
-  {
-    imagem: banner3,
-    nome: "Mimi",
-    descricao: "Sobreviveu a maus-tratos e agora está saudável e brincalhona."
-  }
+// Imagens reais de pets e colaboradores (Unsplash e RandomUser)
+const carrosselImagens = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80"
 ];
 
+const historiaLuna = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+const historiaBidu = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+const historiaMimi = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+
+const pet1 = "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80";
+const pet2 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+const pet3 = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80";
+const pet4 = "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80";
+const pet5 = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80";
+const pet6 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+
+const colaborador1 = "https://randomuser.me/api/portraits/men/32.jpg";
+const colaborador2 = "https://randomuser.me/api/portraits/women/44.jpg";
+const colaborador3 = "https://randomuser.me/api/portraits/men/65.jpg";
+
+const eventoImg = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80";
+
 function Inicio() {
-  const [indexAtual, setIndexAtual] = useState(0);
+  // Carrossel funcional simples
+  const [carrosselIndex, setCarrosselIndex] = useState(0);
+  const nextSlide = () => setCarrosselIndex((carrosselIndex + 1) % carrosselImagens.length);
+  const prevSlide = () => setCarrosselIndex((carrosselIndex - 1 + carrosselImagens.length) % carrosselImagens.length);
+
+  const historiasResgate = [
+    {
+      nome: "Luna",
+      descricao: "Resgatada com fome e frio, hoje vive feliz em um novo lar.",
+      imagem: historiaLuna,
+    },
+    {
+      nome: "Bidu",
+      descricao: "Machucado na rua, recebeu cuidados e muito amor.",
+      imagem: historiaBidu,
+    },
+    {
+      nome: "Mimi",
+      descricao: "Sobreviveu a maus-tratos e agora está saudável e brincalhona.",
+      imagem: historiaMimi,
+    },
+  ];
+
+
+  const [pets, setPets] = useState([]);
   const [eventos, setEventos] = useState([]);
-  const [eventoAtualIndex, setEventoAtualIndex] = useState(0);
+  const [eventoIndex, setEventoIndex] = useState(0);
+  
 
-  useEffect(() => {
-    async function carregarEventos() {
-      const eventosRef = collection(db, "eventos");
-      const q = query(eventosRef, orderBy("criadoEm", "desc"));
-      const snapshot = await getDocs(q);
-      const lista = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
-      setEventos(lista);
+
+useEffect(() => {
+  const fetchPets = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "animais"));
+      const petsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setPets(petsData);
+    } catch (error) {
+      console.error("Erro ao buscar animais:", error);
     }
-
-    carregarEventos();
-  }, []);
-
-  const settings = {
-    arrow: true,
-    dots: true,
-    infinite: true,
-    speed: 600,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 3500,
-    cssEase: "ease-in-out",
-    nextArrow: <div className="arrow next">→</div>,
-    prevArrow: <div className="arrow prev">←</div>,
   };
 
-  const historia = historiasResgate[indexAtual];
+  fetchPets();
+
+ const fetchEventos = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "eventos"));
+      const eventosData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setEventos(eventosData);
+    } catch (error) {
+      console.error("Erro ao buscar eventos:", error);
+    
+    }
+  };
+
+  fetchEventos();
+
+
+
+
+}, []);
+
+const proximoEvento = () => {
+  setEventoIndex((prev) => (prev + 1) % eventos.length);
+};
+
+
+  const colaboradores = [
+    { nome: "João Silva", membroDesde: "Janeiro 2020", imagem: colaborador1 },
+    { nome: "Maria Oliveira", membroDesde: "Março 2019", imagem: colaborador2 },
+    { nome: "Carlos Souza", membroDesde: "Julho 2021", imagem: colaborador3 },
+  ];
 
   const compromissos = [
     {
@@ -80,7 +117,7 @@ function Inicio() {
         "• Socorrer animais agonizantes.\n" +
         "• Apoiar famílias carentes com seus animais.\n" +
         "• Promover a castração para evitar a superpopulação.\n" +
-        "• Reabilitar física e emocionalmente os animais resgatados.\n"
+        "• Reabilitar física e emocionalmente os animais resgatados.\n",
     },
     {
       titulo: "Visão",
@@ -90,7 +127,7 @@ function Inicio() {
         "• Educação em posse responsável.\n" +
         "• Ser referência regional em proteção e bem-estar animal.\n" +
         "• Criar programas de voluntariado e engajamento comunitário.\n" +
-        "• Desenvolver campanhas contínuas de adoção e castração."
+        "• Desenvolver campanhas contínuas de adoção e castração.",
     },
     {
       titulo: "Valores",
@@ -100,122 +137,412 @@ function Inicio() {
         "• Difundir leis de proteção animal.\n" +
         "• Transparência e ética na gestão da ONG.\n" +
         "• Respeito à vida em todas as suas formas.\n" +
-        "• Comprometimento com o bem-estar animal e social."
-    }
+        "• Comprometimento com o bem-estar animal e social.",
+    },
   ];
 
   return (
-    <div className="inicio-container">
-      <img src={imagemCantoSuperior} alt="Decoração Superior" className="decoracao-superior" />
-
-      <div className="carrossel-wrapper">
-        <Slider {...settings}>
-          {carrosselImagens.map((imagem, index) => (
-            <div key={index}>
-              <img src={imagem} alt={`Slide ${index + 1}`} className="carrossel-img" />
+    <div className="container">
+      <main>
+        {/* Carrossel funcional */}
+        <section className="carrossel-section">
+          <div className="carrossel-wrapper">
+            <div className="carrossel-slide">
+              <img
+                src={carrosselImagens[carrosselIndex]}
+                alt={`Slide ${carrosselIndex + 1}`}
+                className="carrossel-img"
+              />
             </div>
-          ))}
-        </Slider>
-      </div>
+          </div>
+          <div className="carrossel-controls">
+            <button className="carrossel-arrow prev" onClick={prevSlide}>🐾</button>
+            <div className="carrossel-dots">
+              {carrosselImagens.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`carrossel-dot${carrosselIndex === idx ? " active" : ""}`}
+                  onClick={() => setCarrosselIndex(idx)}
+                ></span>
+              ))}
+            </div>
+            <button className="carrossel-arrow next" onClick={nextSlide}>🐾</button>
+          </div>
+        </section>
 
-      <section className="info-rapida">
-        <div className="info-card"><h3>Animais Encontrados</h3><p>123</p></div>
-        <div className="info-card"><h3>Animais Castrados</h3><p>56</p></div>
-        <div className="info-card"><h3>Animais Recuperados</h3><p>78</p></div>
-      </section>
+        <section className="info-rapida">
+          <div className="info-card">
+            <h3>Animais Encontrados</h3>
+            <p>123</p>
+          </div>
+          <div className="info-card">
+            <h3>Animais Castrados</h3>
+            <p>56</p>
+          </div>
+          <div className="info-card">
+            <h3>Animais Recuperados</h3>
+            <p>78</p>
+          </div>
+        </section>
 
-      <section className="resumo-e-historia">
-        <div className="bloco-historia">
-          <TransitionGroup>
-            <CSSTransition key={historia.nome} timeout={500} classNames="fade">
-              <div className="historia-card-modern">
-                <img src={historia.imagem} alt={`Foto de ${historia.nome}`} className="historia-img-modern" />
-                <div className="historia-texto">
-                  <h3>{historia.nome}</h3>
-                  <p>{historia.descricao}</p>
-                </div>
-                <button
-                  className="pata-btn direita"
-                  onClick={() =>
-                    setIndexAtual(prev => prev === historiasResgate.length - 1 ? 0 : prev + 1)
-                  }
-                >
-                  🐾
-                </button>
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
-        </div>
-
-        <div className="quem-somos">
-          <h2>Quem Somos</h2>
-          <p>A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização sem fins lucrativos que visa proteger e promover o bem-estar dos animais.</p>
-          <div className="flip-card-container">
-            {compromissos.map((item, idx) => (
-              <div className="flip-card" key={idx}>
-                <h3>{item.titulo}</h3>
-                <div className="flip-card-inner">
-                  <div className="flip-card-front"></div>
-                  <div className="flip-card-back">
-                    {item.texto.split('\n').map((line, index) => (
-                      <React.Fragment key={index}>
-                        {line}<br />
-                      </React.Fragment>
-                    ))}
+        <section id="sobre" className="section">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Quem Somos</h2>
+              <p className="section-description">
+                A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização
+                sem fins lucrativos que visa proteger e promover o bem-estar dos animais.
+              </p>
+            </div>
+            <div className="flip-card-container">
+              {compromissos.map((item, idx) => (
+                <div className="flip-card" key={idx}>
+                  <h3>{item.titulo}</h3>
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front"></div>
+                    <div className="flip-card-back">
+                      {item.texto.split("\n").map((line, index) => (
+                        <p key={index}>{line}</p>
+                      ))}
+                    </div>
                   </div>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div className="colaboradores-e-eventos">
-        <div className="colaboradores">
-          {[colaborador1, colaborador2, colaborador3].map((img, idx) => (
-            <div key={idx} className="colaborador-card" style={{ animationDelay: `${idx * 0.2}s` }}>
-              <img src={img} alt={`Foto de colaborador ${idx + 1}`} className="foto-colaborador" />
-              <h4>{['João Silva', 'Maria Oliveira', 'Carlos Souza'][idx]}</h4>
-              <p>Membro desde: {['Janeiro 2020', 'Março 2019', 'Julho 2021'][idx]}</p>
+              ))}
             </div>
-          ))}
-        </div>
+          </div>
+        </section>
 
-        <div className="eventos">
-          <h2>Próximos Eventos</h2>
-          <TransitionGroup>
-            <CSSTransition key={eventos[eventoAtualIndex]?.id || 'placeholder'} timeout={500} classNames="fade">
-              <div className="evento-card historia-card-modern">
-                {eventos.length > 0 ? (
-                  <>
+        <section className="section section-light-blue">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Histórias de Resgate</h2>
+              <p className="section-description">
+                Conheça algumas das histórias de animais que resgatamos e transformamos suas vidas.
+              </p>
+            </div>
+            <div className="historias-container">
+              {historiasResgate.map((historia, index) => (
+                <div key={index} className="historia-card">
+                  <div className="historia-img">
                     <img
-                      src={eventos[eventoAtualIndex].imagemUrl}
-                      alt={eventos[eventoAtualIndex].titulo}
-                      className="historia-img-modern"
+                      src={historia.imagem}
+                      alt={`Foto de ${historia.nome}`}
                     />
-                    <div className="historia-texto">
-                      <h3>{eventos[eventoAtualIndex].titulo}</h3>
-                      <p><strong>Data:</strong> {eventos[eventoAtualIndex].data}</p>
-                    </div>
-                    <button
-                      className="pata-btn-direita-evento"
-                      onClick={() =>
-                        setEventoAtualIndex(prev => prev === eventos.length - 1 ? 0 : prev + 1)
-                      }
-                    >
-                      🐾
-                    </button>
-                  </>
-                ) : (
-                  <p>Nenhum evento disponível</p>
-                )}
-              </div>
-            </CSSTransition>
-          </TransitionGroup>
-        </div>
-      </div>
+                  </div>
+                  <div className="historia-texto">
+                    <h3>{historia.nome}</h3>
+                    <p>{historia.descricao}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
-      <img src={imagemCantoInferior} alt="Decoração Inferior" className="decoracao-inferior" />
+
+        <section id="adocao" className="section section-light-orange">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Adote um Amigo</h2>
+              <p className="section-description">
+                Conheça alguns dos nossos animais que estão à espera de um lar amoroso. Todos são vacinados, castrados e
+                acompanhados por nossa equipe.
+              </p>
+            </div>
+            <div className="pets-grid">
+              {pets.map((pet, idx) => (
+                <div key={idx} className="pet-card">
+                  <div className="pet-image">
+                    <img
+                       src={pet.fotoUrl || "https://via.placeholder.com/400x300?text=Sem+Imagem"}
+                      alt={`Animal para adoção ${pet.nome}`}
+                  />
+
+                  </div>
+                  <div className="pet-info">
+                    <h3 className="pet-name">{pet.nome}</h3>
+                    <p className="pet-details">
+                      {pet.raca} • {pet.idade} anos • {pet.sexo}
+                    </p>
+                    
+                  </div>
+                </div>
+              ))}
+            </div>
+           <div className="center-button">
+          <Link to="/adocao">
+              <button className="btn btn-brown">Ver Todos os Animais</button>
+          </Link>
+</div>
+
+          </div>
+        </section>
+
+
+        <section id="como-ajudar" className="section">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Como Você Pode Ajudar</h2>
+              <p className="section-description">
+                Existem várias maneiras de contribuir com nossa causa e fazer a diferença na vida dos animais.
+              </p>
+            </div>
+            <div className="help-grid">
+              <div className="help-card card-blue">
+                <h3 className="help-title">Faça uma Doação</h3>
+                <p className="help-description">
+                  Sua contribuição financeira ajuda a custear tratamentos veterinários, alimentação, medicamentos e
+                  manutenção do nosso abrigo.
+                </p>
+                <div className="bank-info">
+                  <p className="bank-title">Dados Bancários:</p>
+                  <p className="bank-detail">Banco: Exemplo</p>
+                  <p className="bank-detail">Agência: 0000</p>
+                  <p className="bank-detail">Conta: 00000-0</p>
+                  <p className="bank-detail">PIX: exemplo@apasfa.org.br</p>
+                </div>
+                <button className="btn btn-primary">Doar Agora</button>
+              </div>
+              <div className="help-options">
+                <div className="help-option card-orange">
+                  <h3 className="help-title">Seja Voluntário</h3>
+                  <p className="help-description">
+                    Doe seu tempo e habilidades. Precisamos de ajuda com passeios, limpeza, eventos de adoção e
+                    divulgação nas redes sociais.
+                  </p>
+                  <button
+                        className="btn btn-outline"
+                        onClick={() => {
+                          const contatoSection = document.getElementById('contato');
+                          if (contatoSection) {
+                            contatoSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                      >
+                        Saiba Mais
+                      </button>
+
+                </div>
+                <div className="help-option card-blue">
+                  <h3 className="help-title">Doe Suprimentos</h3>
+                  <p className="help-description">
+                    Aceitamos doações de ração, medicamentos, produtos de limpeza, cobertores, caminhas e brinquedos.
+                  </p>
+                  <button className="btn btn-outline">Ver Lista de Necessidades</button>
+                </div>
+                <div className="help-option card-orange">
+                  <h3 className="help-title">Apadrinhe um Animal</h3>
+                  <p className="help-description">
+                    Contribua mensalmente para o cuidado de um animal específico enquanto ele aguarda por adoção.
+                  </p>
+                  <button className="btn btn-outline">Apadrinhar</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+        <section className="section section-light-blue">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Nossos Colaboradores</h2>
+              <p className="section-description">
+                Conheça as pessoas que dedicam seu tempo e esforço para fazer a diferença na vida dos animais.
+              </p>
+            </div>
+            <div className="colaboradores-grid">
+              {colaboradores.map((colab, idx) => (
+                <div key={idx} className="colaborador-card">
+                  <div className="colaborador-img">
+                    <img
+                      src={colab.imagem}
+                      alt={`Foto de ${colab.nome}`}
+                    />
+                  </div>
+                  <h4 className="colaborador-nome">{colab.nome}</h4>
+                  <p className="colaborador-info">Membro desde: {colab.membroDesde}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+
+        <section className="section">
+  <div className="section-content">
+    <div className="section-header">
+      <h2 className="section-title">Próximos Eventos</h2>
+      <p className="section-description">
+        Fique por dentro dos nossos eventos e participe das nossas ações.
+      </p>
+    </div>
+
+    {eventos.length > 0 && (
+      <div className="evento-card">
+        <div className="evento-img">
+          <img
+            src={eventos[eventoIndex].imagemUrl || "https://via.placeholder.com/600x400?text=Sem+Imagem"}
+            alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
+          />
+        </div>
+        <div className="evento-info">
+          <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
+          <p className="evento-data">
+            <strong>Data:</strong> {eventos[eventoIndex].data}
+          </p>
+          <p className="evento-descricao">{eventos[eventoIndex].descricao}</p>
+          
+        </div>
+        <button className="pata-btn" onClick={proximoEvento}>
+          🐾
+        </button>
+      </div>
+    )}
+  </div>
+</section>
+
+
+
+
+        <section id="contato" className="section">
+          <div className="section-content">
+            <div className="contact-grid">
+              <div className="contact-info">
+                <h2 className="contact-title">Entre em Contato</h2>
+                <p className="contact-description">
+                  Estamos à disposição para esclarecer dúvidas, receber sugestões ou conversar sobre como você pode
+                  ajudar.
+                </p>
+                <div className="contact-details">
+                  <div className="contact-item">
+                    <svg
+                      className="contact-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+                    </svg>
+                    <span>(00) 0000-0000</span>
+                  </div>
+                  <div className="contact-item">
+                    <svg
+                      className="contact-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect width="20" height="16" x="2" y="4" rx="2" />
+                      <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                    </svg>
+                    <span>contato@apasfa.org.br</span>
+                  </div>
+                  <div className="contact-item">
+                    <svg
+                      className="contact-icon"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="20"
+                      height="20"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" />
+                      <circle cx="12" cy="10" r="3" />
+                    </svg>
+                    <span>Rua Exemplo, 123 - Prudentópolis, PR</span>
+                  </div>
+                </div>
+                <div className="social-links">
+                  <a href="#" className="social-link">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
+                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
+                    </svg>
+                    <span className="visually-hidden">Instagram</span>
+                  </a>
+                  <a href="#" className="social-link">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    >
+                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+                    </svg>
+                    <span className="visually-hidden">Facebook</span>
+                  </a>
+                </div>
+              </div>
+              <div className="contact-form-container">
+                <form className="contact-form">
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="name" className="form-label">
+                        Nome
+                      </label>
+                      <input id="name" className="form-input" placeholder="Seu nome" />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email" className="form-label">
+                        Email
+                      </label>
+                      <input id="email" type="email" className="form-input" placeholder="seu.email@exemplo.com" />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="subject" className="form-label">
+                      Assunto
+                    </label>
+                    <input id="subject" className="form-input" placeholder="Assunto da mensagem" />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="message" className="form-label">
+                      Mensagem
+                    </label>
+                    <textarea id="message" className="form-textarea" placeholder="Digite sua mensagem aqui..." />
+                  </div>
+                  <button className="btn btn-primary btn-full">Enviar Mensagem</button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+
     </div>
   );
 }

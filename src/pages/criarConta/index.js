@@ -78,21 +78,46 @@ export default function CriarConta() {
 
                     <div className="input-group">
                         <label htmlFor="password">Senha</label>
-                        <div className="password-input">
+                        <div className="password-input" style={{ display: 'flex', alignItems: 'center' }}>
                             <input
                                 id="password"
                                 type={showPassword ? "text" : "password"}
                                 placeholder="Mínimo 6 caracteres"
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)}
+                                autoComplete="new-password"
+                                style={{
+                                  flex: 1,
+                                  paddingRight: '2.5rem',
+                                }}
                             />
-                            <button 
-                                type="button" 
+                            <span
+                                style={{
+                                  position: 'absolute',
+                                  right: '16px',
+                                  top: '50%',
+                                  transform: 'translateY(-50%)',
+                                  display: 'flex',
+                                  alignItems: 'center',
+                                  cursor: 'pointer',
+                                  height: '100%',
+                                  zIndex: 2
+                                }}
                                 onClick={() => setShowPassword(!showPassword)}
-                                className="toggle-password"
+                                tabIndex={-1}
+                                aria-label="Mostrar/ocultar senha"
                             >
-                                {showPassword ? "👁️" : "👁️‍🗨️"}
-                            </button>
+                                {showPassword ? (
+                                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                    <path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7S1 12 1 12z" stroke="#8d99ae" strokeWidth="2" />
+                                    <circle cx="12" cy="12" r="3.5" stroke="#8d99ae" strokeWidth="2" />
+                                  </svg>
+                                ) : (
+                                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none">
+                                    <path d="M17.94 17.94C16.11 19.24 14.13 20 12 20c-7 0-11-8-11-8a21.77 21.77 0 0 1 5.06-6.06M9.53 9.53A3.5 3.5 0 0 1 12 8.5c1.93 0 3.5 1.57 3.5 3.5 0 .47-.09.92-.26 1.33M1 1l22 22" stroke="#8d99ae" strokeWidth="2"/>
+                                  </svg>
+                                )}
+                            </span>
                         </div>
                     </div>
 
