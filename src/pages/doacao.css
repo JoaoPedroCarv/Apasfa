@@ -10,6 +10,11 @@
     --background: #f8f9fa;
     --card-bg: #ffffff;
     --border: #e9ecef;
+    --brown: #8b5a2b;
+    --orange-light: #f4a460;
+    --blue-light: #add8e6;
+    --white: #fff;
+    --gray: #8d99ae;
   }
   
   /* Reset e estilos base */
@@ -98,6 +103,7 @@
     border-radius: 8px;
     font-size: 1rem;
     transition: all 0.3s ease;
+    background: var(--white);
   }
   
   .input-group textarea {
@@ -148,8 +154,8 @@
   
   .donate-button {
     padding: 1rem;
-    background-color: var(--primary);
-    color: white;
+    background-color: var(--orange-light);
+    color: var(--white);
     border: none;
     border-radius: 8px;
     font-size: 1rem;
@@ -160,7 +166,7 @@
   }
   
   .donate-button:hover {
-    background-color: var(--primary-dark);
+    background-color: #e9967a;
     transform: translateY(-2px);
   }
   
@@ -214,4 +220,3 @@
       padding: 1.5rem;
     }
   }
-  

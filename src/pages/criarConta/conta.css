@@ -8,6 +8,11 @@
   --background: #f8f9fa;
   --card-bg: #ffffff;
   --border: #e9ecef;
+  --brown: #8b5a2b;
+  --orange-light: #f4a460;
+  --blue-light: #add8e6;
+  --white: #fff;
+  --gray: #8d99ae;
 }
 
 /* Reset e estilos base */
@@ -39,9 +44,9 @@ body {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   padding: 3rem;
   animation: fadeIn 0.5s ease;
-  background: rgba(255, 255, 255, 0.85);
+  background: rgba(255,255,255,0.85);
   backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+  border: 1px solid rgba(255,255,255,0.2);
   margin-bottom: 52px;
 }
 
@@ -86,6 +91,7 @@ body {
   border-radius: 8px;
   font-size: 1rem;
   transition: all 0.3s ease;
+  background: var(--white);
 }
 
 .input-group input:focus {
@@ -96,25 +102,27 @@ body {
 
 .password-input {
   position: relative;
+  display: flex;
+  align-items: center;
 }
 
 .toggle-password {
-  position: absolute;
-  right: 12px;
-  top: 50%;
-  transform: translateY(-50%);
+  /* Remova position absolute para não sobrepor o input */
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-light);
   font-size: 1.2rem;
   padding: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .submit-button {
   padding: 1rem;
-  background-color: var(--primary);
-  color: white;
+  background-color: var(--orange-light);
+  color: var(--white);
   border: none;
   border-radius: 8px;
   font-size: 1rem;
@@ -128,7 +136,7 @@ body {
 }
 
 .submit-button:hover {
-  background-color: var(--primary-dark);
+  background-color: #e9967a;
 }
 
 .submit-button:disabled {

@@ -1,21 +1,67 @@
-import React from 'react';
+import React, { useState } from 'react';
 import './inicio.css';
 
+// Imagens reais de pets e colaboradores (Unsplash e RandomUser)
+const carrosselImagens = [
+  "https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=1200&q=80",
+  "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=1200&q=80"
+];
+
+const historiaLuna = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+const historiaBidu = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+const historiaMimi = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
+
+const pet1 = "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80";
+const pet2 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+const pet3 = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80";
+const pet4 = "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80";
+const pet5 = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80";
+const pet6 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+
+const colaborador1 = "https://randomuser.me/api/portraits/men/32.jpg";
+const colaborador2 = "https://randomuser.me/api/portraits/women/44.jpg";
+const colaborador3 = "https://randomuser.me/api/portraits/men/65.jpg";
+
+const eventoImg = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80";
+
 function Inicio() {
-  // Dados para histórias de resgate
+  // Carrossel funcional simples
+  const [carrosselIndex, setCarrosselIndex] = useState(0);
+  const nextSlide = () => setCarrosselIndex((carrosselIndex + 1) % carrosselImagens.length);
+  const prevSlide = () => setCarrosselIndex((carrosselIndex - 1 + carrosselImagens.length) % carrosselImagens.length);
+
   const historiasResgate = [
     {
       nome: "Luna",
       descricao: "Resgatada com fome e frio, hoje vive feliz em um novo lar.",
+      imagem: historiaLuna,
     },
     {
       nome: "Bidu",
       descricao: "Machucado na rua, recebeu cuidados e muito amor.",
+      imagem: historiaBidu,
     },
     {
       nome: "Mimi",
       descricao: "Sobreviveu a maus-tratos e agora está saudável e brincalhona.",
+      imagem: historiaMimi,
     },
+  ];
+
+  const pets = [
+    { nome: "Rex", tipo: "Cachorro", idade: 3, sexo: "Macho", imagem: pet1 },
+    { nome: "Lili", tipo: "Gato", idade: 2, sexo: "Fêmea", imagem: pet2 },
+    { nome: "Thor", tipo: "Cachorro", idade: 4, sexo: "Macho", imagem: pet3 },
+    { nome: "Mel", tipo: "Gato", idade: 1, sexo: "Fêmea", imagem: pet4 },
+    { nome: "Bob", tipo: "Cachorro", idade: 5, sexo: "Macho", imagem: pet5 },
+    { nome: "Nina", tipo: "Gato", idade: 2, sexo: "Fêmea", imagem: pet6 },
+  ];
+
+  const colaboradores = [
+    { nome: "João Silva", membroDesde: "Janeiro 2020", imagem: colaborador1 },
+    { nome: "Maria Oliveira", membroDesde: "Março 2019", imagem: colaborador2 },
+    { nome: "Carlos Souza", membroDesde: "Julho 2021", imagem: colaborador3 },
   ];
 
   const compromissos = [
@@ -52,27 +98,30 @@ function Inicio() {
 
   return (
     <div className="container">
-
       <main>
+        {/* Carrossel funcional */}
         <section className="carrossel-section">
           <div className="carrossel-wrapper">
             <div className="carrossel-slide">
               <img
-                src="/colocar"
-                alt="Slide 1"
+                src={carrosselImagens[carrosselIndex]}
+                alt={`Slide ${carrosselIndex + 1}`}
                 className="carrossel-img"
               />
             </div>
           </div>
           <div className="carrossel-controls">
-            <button className="carrossel-arrow prev">←</button>
+            <button className="carrossel-arrow prev" onClick={prevSlide}>←</button>
             <div className="carrossel-dots">
-              <span className="carrossel-dot active"></span>
-              <span className="carrossel-dot"></span>
-              <span className="carrossel-dot"></span>
-              <span className="carrossel-dot"></span>
+              {carrosselImagens.map((_, idx) => (
+                <span
+                  key={idx}
+                  className={`carrossel-dot${carrosselIndex === idx ? " active" : ""}`}
+                  onClick={() => setCarrosselIndex(idx)}
+                ></span>
+              ))}
             </div>
-            <button className="carrossel-arrow next">→</button>
+            <button className="carrossel-arrow next" onClick={nextSlide}>→</button>
           </div>
         </section>
 
@@ -131,7 +180,7 @@ function Inicio() {
                 <div key={index} className="historia-card">
                   <div className="historia-img">
                     <img
-                      src={`colocar=${historia.nome}`}
+                      src={historia.imagem}
                       alt={`Foto de ${historia.nome}`}
                     />
                   </div>
@@ -156,18 +205,18 @@ function Inicio() {
               </p>
             </div>
             <div className="pets-grid">
-              {[1, 2, 3, 4, 5, 6].map((pet) => (
-                <div key={pet} className="pet-card">
+              {pets.map((pet, idx) => (
+                <div key={idx} className="pet-card">
                   <div className="pet-image">
                     <img
-                      src={`colocar${pet}`}
-                      alt={`Animal para adoção ${pet}`}
+                      src={pet.imagem}
+                      alt={`Animal para adoção ${pet.nome}`}
                     />
                   </div>
                   <div className="pet-info">
-                    <h3 className="pet-name">Nome do Animal {pet}</h3>
+                    <h3 className="pet-name">{pet.nome}</h3>
                     <p className="pet-details">
-                      {pet % 2 === 0 ? "Cachorro" : "Gato"} • {pet + 1} anos • {pet % 2 === 0 ? "Macho" : "Fêmea"}
+                      {pet.tipo} • {pet.idade} anos • {pet.sexo}
                     </p>
                     <button className="btn btn-outline btn-full">Saiba Mais</button>
                   </div>
@@ -243,16 +292,16 @@ function Inicio() {
               </p>
             </div>
             <div className="colaboradores-grid">
-              {["João Silva", "Maria Oliveira", "Carlos Souza"].map((nome, idx) => (
+              {colaboradores.map((colab, idx) => (
                 <div key={idx} className="colaborador-card">
                   <div className="colaborador-img">
                     <img
-                      src="colocar"
-                      alt={`Foto de ${nome}`}
+                      src={colab.imagem}
+                      alt={`Foto de ${colab.nome}`}
                     />
                   </div>
-                  <h4 className="colaborador-nome">{nome}</h4>
-                  <p className="colaborador-info">Membro desde: {["Janeiro 2020", "Março 2019", "Julho 2021"][idx]}</p>
+                  <h4 className="colaborador-nome">{colab.nome}</h4>
+                  <p className="colaborador-info">Membro desde: {colab.membroDesde}</p>
                 </div>
               ))}
             </div>
@@ -269,7 +318,7 @@ function Inicio() {
             <div className="evento-card">
               <div className="evento-img">
                 <img
-                  src="colocar"
+                  src={eventoImg}
                   alt="Imagem do evento"
                 />
               </div>

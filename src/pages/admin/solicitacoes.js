@@ -11,24 +11,21 @@ export default function SolicitacoesAdocao() {
     }
 
     return (
-        <div className="admin-container">
-            <div className="dashboard-box">
-                <h2>Solicitações de Adoção</h2>
-                {solicitacoes.length === 0 ? (
-                    <p>Nenhuma solicitação no momento.</p>
-                ) : (
-                    <ul className="sollicitacoes-list">
-                        {solicitacoes.map((s) => (
-                            <li key={s.id} className="sollicitacao-item">
-                                <p><strong>Usuário:</strong> {s.usuario}</p>
-                                <p><strong>Animal:</strong> {s.animal}</p>
-                                <p><strong>Mensagem:</strong> {s.mensagem}</p>
-                                <button onClick={() => responderEmail(s.usuario)}>Responder por Email</button>
-                            </li>
-                        ))}
-                    </ul>
-                )}
-            </div>
+        <div>
+            {solicitacoes.length === 0 ? (
+                <p>Nenhuma solicitação no momento.</p>
+            ) : (
+                <ul className="sollicitacoes-list">
+                    {solicitacoes.map((s) => (
+                        <li key={s.id} className="sollicitacao-item">
+                            <p><strong>Usuário:</strong> {s.usuario}</p>
+                            <p><strong>Animal:</strong> {s.animal}</p>
+                            <p><strong>Mensagem:</strong> {s.mensagem}</p>
+                            <button onClick={() => responderEmail(s.usuario)}>Responder por Email</button>
+                        </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 }

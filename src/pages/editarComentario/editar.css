@@ -8,17 +8,26 @@
   
   .meio input {
     width: 95%;
-    padding: 10px;
+    padding: 1rem;
     margin-bottom: 20px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    background: #fff;
+    transition: all 0.3s ease;
   }
   
   .meio button {
-    background-color: #007bff;
+    background-color: #f4a460;
     color: #fff;
-    padding: 10px 20px;
+    padding: 1rem 2rem;
     margin-bottom: 10px;
     border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 600;
     cursor: pointer;
+    transition: background 0.3s;
   }
   
   .btn1 {
@@ -30,7 +39,7 @@
   }
   
   .meio button:hover {
-    background-color: #0056b3;
+    background-color: #e9967a;
   }
 
   .link {
@@ -45,4 +54,3 @@
     border-radius: 5px;
     box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
   }
-  
