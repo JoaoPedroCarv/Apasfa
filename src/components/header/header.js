@@ -21,12 +21,13 @@ function Header() {
                 ☰
             </button>
 
-            <nav className={`nav-links ${menuAberto ? 'ativo' : ''}`}>
-                <Link to="/" onClick={() => setMenuAberto(false)}>Início</Link>
-                <Link to="/logar" onClick={() => setMenuAberto(false)}>Login</Link>
-                <Link to="/registrar" onClick={() => setMenuAberto(false)}>Registrar</Link>
-                {isAdmin && <Link to="/admin" onClick={() => setMenuAberto(false)}>Ver admin</Link>}
-            </nav>
+            <nav className={`sidebar ${menuAberto ? 'ativo' : ''}`}>
+    <button className="fechar-menu" onClick={toggleMenu}>×</button><Link to="/" onClick={toggleMenu}>Início</Link>
+    <Link to="/logar" onClick={toggleMenu}>Login</Link>
+    <Link to="/registrar" onClick={toggleMenu}>Registrar</Link>
+    {isAdmin && <Link to="/admin" onClick={toggleMenu}>Ver admin</Link>}
+</nav>
+
 
             <div className="espaco-vazio"></div>
         </header>

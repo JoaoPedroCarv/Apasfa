@@ -7,7 +7,7 @@
     --primary-dark: #3a56d4;
 }
 
-/* Reset de margens e padding */
+/* Reset */
 * {
     margin: 0;
     padding: 0;
@@ -16,45 +16,30 @@
 
 /* Estilo do header */
 .header {
-    width: 95%;
-    margin: 32px auto 0 auto;
+    width: 100%;
     background: var(--white);
     box-shadow: 0 4px 24px 0 rgba(67, 97, 238, 0.07), 0 1.5px 0 #eaeaea;
     display: flex;
     align-items: center;
-    justify-content: center;
-    min-height: 80px;
-    position: sticky;
-    z-index: 100;
-    top: 2%;
-    transition: box-shadow 0.2s;
-    border-radius: 24px;
-}
-
-.header-content {
-    width: 100%;
-    max-width: 1200px;
-    display: flex;
-    align-items: center;
     justify-content: space-between;
+    min-height: 80px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    transition: box-shadow 0.2s;
     padding: 0 2rem;
+    border-radius: 0;
 }
 
-.logo-e-menu {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-    flex: 1;
-}
 
-/* Container da logo */
+/* Logo */
 .logo-container {
     display: flex;
     align-items: center;
     gap: 10px;
 }
-
-/* Estilo da logo */
 .logo {
     width: 120px;
     height: auto;
@@ -62,97 +47,73 @@
     filter: drop-shadow(0 2px 8px #f4a46033);
 }
 
-/* Estilo da navegação */
-.nav-links {
-    display: flex;
-    gap: 2rem;
-    align-items: center;
-    justify-content: right;
-    flex: 1;
-    transition: all 0.3s;
-}
-
-.nav-links a {
-    color: var(--brown);
-    font-size: 1.08rem;
-    font-weight: 600;
-    text-decoration: none;
-    padding: 8px 18px;
-    border-radius: 8px;
-    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
-    position: relative;
-    letter-spacing: 0.5px;
-    padding: 20px
-}
-
-.nav-links a.active,
-.nav-links a:focus {
-    background: var(--orange-light);
-    color: var(--white);
-    box-shadow: 0 2px 8px #f4a46033;
-}
-
-.nav-links a:hover {
-    background: rgba(244, 164, 96, 0.13);
-    color: var(--primary);
-}
-
+/* Botão ☰ sempre visível */
 .menu-toggle {
-    display: none;
+    font-size: 1.8rem;
     background: none;
     border: none;
     color: var(--brown);
-    font-size: 2.2rem;
     cursor: pointer;
-    margin-left: 1rem;
-    transition: color 0.2s;
+    position: relative;
+    z-index: 1100;
 }
 
-.menu-toggle:active {
-    color: var(--orange-light);
+/* Sidebar (menu lateral escondido inicialmente) */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: -250px; /* escondido */
+    width: 250px;
+    height: 100%;
+    background-color: #fff;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    padding: 1.5rem 1rem;
+    transition: left 0.3s ease-in-out;
+    z-index: 1000;
 }
 
-/* Responsividade */
-@media (max-width: 900px) {
-    .header-content {
-        padding: 0 1rem;
-    }
-    .nav-links {
-        gap: 1.2rem;
-    }
+/* Sidebar visível */
+.sidebar.ativo {
+    left: 0;
 }
 
+/* Links do menu lateral */
+.sidebar a {
+    margin: 10px 0;
+    text-decoration: none;
+    color: var(--brown);
+    font-size: 1.1rem;
+    font-weight: 600;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s;
+}
+.sidebar a:hover {
+    background-color: rgba(244, 164, 96, 0.13);
+    color: var(--primary);
+}
+
+/* Botão fechar (X) */
+.fechar-menu {
+    align-self: flex-end;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    color: var(--brown);
+}
+
+/* Espaço auxiliar */
+.espaco-vazio {
+    flex: 1;
+}
+
+/* Responsividade opcional */
 @media (max-width: 768px) {
-    .header-content {
-        flex-wrap: wrap;
-        padding: 0 0.5rem;
-    }
     .logo {
         width: 100px;
     }
-    .nav-links {
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: var(--white);
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-        padding: 1.2rem 2rem 1.5rem 2rem;
-        box-shadow: 0 8px 24px 0 rgba(67, 97, 238, 0.07);
-        display: none;
-        animation: slideDown 0.3s;
-    }
-    .nav-links.ativo {
-        display: flex;
-    }
-    .menu-toggle {
-        display: block;
-    }
-}
-
-@keyframes slideDown {
-    from { opacity: 0; transform: translateY(-10px);}
-    to { opacity: 1; transform: translateY(0);}
 }

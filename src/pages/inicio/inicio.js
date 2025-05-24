@@ -1,5 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './inicio.css';
+import { Link } from 'react-router-dom';
+
+import { collection, getDocs } from "firebase/firestore";
+import { db } from "../../services/firebaseConnection"; // ajuste o caminho se necessário
+
 
 // Imagens reais de pets e colaboradores (Unsplash e RandomUser)
 const carrosselImagens = [
@@ -49,14 +54,54 @@ function Inicio() {
     },
   ];
 
-  const pets = [
-    { nome: "Rex", tipo: "Cachorro", idade: 3, sexo: "Macho", imagem: pet1 },
-    { nome: "Lili", tipo: "Gato", idade: 2, sexo: "Fêmea", imagem: pet2 },
-    { nome: "Thor", tipo: "Cachorro", idade: 4, sexo: "Macho", imagem: pet3 },
-    { nome: "Mel", tipo: "Gato", idade: 1, sexo: "Fêmea", imagem: pet4 },
-    { nome: "Bob", tipo: "Cachorro", idade: 5, sexo: "Macho", imagem: pet5 },
-    { nome: "Nina", tipo: "Gato", idade: 2, sexo: "Fêmea", imagem: pet6 },
-  ];
+
+  const [pets, setPets] = useState([]);
+  const [eventos, setEventos] = useState([]);
+  const [eventoIndex, setEventoIndex] = useState(0);
+  
+
+
+useEffect(() => {
+  const fetchPets = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "animais"));
+      const petsData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setPets(petsData);
+    } catch (error) {
+      console.error("Erro ao buscar animais:", error);
+    }
+  };
+
+  fetchPets();
+
+ const fetchEventos = async () => {
+    try {
+      const querySnapshot = await getDocs(collection(db, "eventos"));
+      const eventosData = querySnapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      }));
+      setEventos(eventosData);
+    } catch (error) {
+      console.error("Erro ao buscar eventos:", error);
+    
+    }
+  };
+
+  fetchEventos();
+
+
+
+
+}, []);
+
+const proximoEvento = () => {
+  setEventoIndex((prev) => (prev + 1) % eventos.length);
+};
+
 
   const colaboradores = [
     { nome: "João Silva", membroDesde: "Janeiro 2020", imagem: colaborador1 },
@@ -111,7 +156,7 @@ function Inicio() {
             </div>
           </div>
           <div className="carrossel-controls">
-            <button className="carrossel-arrow prev" onClick={prevSlide}>←</button>
+            <button className="carrossel-arrow prev" onClick={prevSlide}>🐾</button>
             <div className="carrossel-dots">
               {carrosselImagens.map((_, idx) => (
                 <span
@@ -121,7 +166,7 @@ function Inicio() {
                 ></span>
               ))}
             </div>
-            <button className="carrossel-arrow next" onClick={nextSlide}>→</button>
+            <button className="carrossel-arrow next" onClick={nextSlide}>🐾</button>
           </div>
         </section>
 
@@ -209,23 +254,27 @@ function Inicio() {
                 <div key={idx} className="pet-card">
                   <div className="pet-image">
                     <img
-                      src={pet.imagem}
+                       src={pet.fotoUrl || "https://via.placeholder.com/400x300?text=Sem+Imagem"}
                       alt={`Animal para adoção ${pet.nome}`}
-                    />
+                  />
+
                   </div>
                   <div className="pet-info">
                     <h3 className="pet-name">{pet.nome}</h3>
                     <p className="pet-details">
-                      {pet.tipo} • {pet.idade} anos • {pet.sexo}
+                      {pet.raca} • {pet.idade} anos • {pet.sexo}
                     </p>
-                    <button className="btn btn-outline btn-full">Saiba Mais</button>
+                    
                   </div>
                 </div>
               ))}
             </div>
-            <div className="center-button">
+           <div className="center-button">
+          <Link to="/adocao">
               <button className="btn btn-brown">Ver Todos os Animais</button>
-            </div>
+          </Link>
+</div>
+
           </div>
         </section>
 
@@ -261,7 +310,18 @@ function Inicio() {
                     Doe seu tempo e habilidades. Precisamos de ajuda com passeios, limpeza, eventos de adoção e
                     divulgação nas redes sociais.
                   </p>
-                  <button className="btn btn-outline">Saiba Mais</button>
+                  <button
+                        className="btn btn-outline"
+                        onClick={() => {
+                          const contatoSection = document.getElementById('contato');
+                          if (contatoSection) {
+                            contatoSection.scrollIntoView({ behavior: 'smooth' });
+                          }
+                        }}
+                      >
+                        Saiba Mais
+                      </button>
+
                 </div>
                 <div className="help-option card-blue">
                   <h3 className="help-title">Doe Suprimentos</h3>
@@ -310,32 +370,39 @@ function Inicio() {
 
 
         <section className="section">
-          <div className="section-content">
-            <div className="section-header">
-              <h2 className="section-title">Próximos Eventos</h2>
-              <p className="section-description">Fique por dentro dos nossos eventos e participe das nossas ações.</p>
-            </div>
-            <div className="evento-card">
-              <div className="evento-img">
-                <img
-                  src={eventoImg}
-                  alt="Imagem do evento"
-                />
-              </div>
-              <div className="evento-info">
-                <h3 className="evento-titulo">Feira de Adoção</h3>
-                <p className="evento-data">
-                  <strong>Data:</strong> 15/06/2025
-                </p>
-                <p className="evento-descricao">
-                  Venha conhecer nossos animais disponíveis para adoção e encontre seu novo melhor amigo.
-                </p>
-                <button className="btn btn-primary">Saiba Mais</button>
-              </div>
-              <button className="pata-btn">🐾</button>
-            </div>
-          </div>
-        </section>
+  <div className="section-content">
+    <div className="section-header">
+      <h2 className="section-title">Próximos Eventos</h2>
+      <p className="section-description">
+        Fique por dentro dos nossos eventos e participe das nossas ações.
+      </p>
+    </div>
+
+    {eventos.length > 0 && (
+      <div className="evento-card">
+        <div className="evento-img">
+          <img
+            src={eventos[eventoIndex].imagemUrl || "https://via.placeholder.com/600x400?text=Sem+Imagem"}
+            alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
+          />
+        </div>
+        <div className="evento-info">
+          <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
+          <p className="evento-data">
+            <strong>Data:</strong> {eventos[eventoIndex].data}
+          </p>
+          <p className="evento-descricao">{eventos[eventoIndex].descricao}</p>
+          
+        </div>
+        <button className="pata-btn" onClick={proximoEvento}>
+          🐾
+        </button>
+      </div>
+    )}
+  </div>
+</section>
+
+
 
 
         <section id="contato" className="section">
