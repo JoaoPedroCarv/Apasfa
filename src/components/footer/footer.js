@@ -2,7 +2,7 @@ import './footer.css';
 import facebookIcon from '../../assets/imagens/facebook.png';
 import instagramIcon from '../../assets/imagens/instagram.png';
 import twitterIcon from '../../assets/imagens/x.png';
-import pixQrCode from '../../assets/imagens/qrcode.png';
+//import pixQrCode from '../../assets/imagens/qrcode.png';
 
 function Footer() {
     return (
@@ -24,7 +24,7 @@ function Footer() {
                 </div>
             </div>
 
-            
+
         </footer>
     );
 }

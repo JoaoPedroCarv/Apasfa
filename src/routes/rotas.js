@@ -13,6 +13,7 @@ import Admin from '../pages/admin/admin';
 import CadastroAnical from '../pages/admin/cadastroAnimal';
 import Solicitacoes from '../pages/admin/solicitacoes';
 import CadastrarEvento from '../pages/admin/cadastrarEvento';
+import EventosAdmin from '../pages/admin/editar/editar';
 
 
 
@@ -38,6 +39,7 @@ function RoutesApp() {
       <Route path="/cadastroAnimal" element={<Private><CadastroAnical /></Private>} />
       <Route path="/solicitacoes" element={<Private><Solicitacoes /></Private>} />
       <Route path="/cadastrarEvento" element={<Private><CadastrarEvento /></Private>} />
+      <Route path="/eventosAdmin" element={<Private><EventosAdmin /></Private>} />
 
     </Routes>
   )

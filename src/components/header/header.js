@@ -25,6 +25,7 @@ function Header() {
                     <Link to="/logar" onClick={toggleMenu}>Login</Link>
                     <Link to="/registrar" onClick={toggleMenu}>Registrar</Link>
                     {isAdmin && <Link to="/admin" onClick={toggleMenu}>Ver admin</Link>}
+                    {isAdmin && <Link to="/eventosAdmin" onClick={toggleMenu}>Editar eventos/animais</Link>}
                 </div>
             </nav>
 
