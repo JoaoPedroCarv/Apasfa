@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import './inicio.css';
 import { Link } from 'react-router-dom';
+import pixQrCode from '../../assets/imagens/qrcode.png';
 
 import { collection, getDocs } from "firebase/firestore";
 import { db } from "../../services/firebaseConnection"; // ajuste o caminho se necessário
@@ -278,69 +279,74 @@ function Inicio() {
           </div>
         </section>
 
+<section id="como-ajudar" className="section-ajuda">
+  <div className="section-content">
+    <div className="section-header">
+      <h2 className="section-title">Como Você Pode Ajudar</h2>
+      <p className="section-description">
+        Existem várias maneiras de contribuir com nossa causa e fazer a diferença na vida dos animais.
+      </p>
+    </div>
 
-        <section id="como-ajudar" className="section">
-          <div className="section-content">
-            <div className="section-header">
-              <h2 className="section-title">Como Você Pode Ajudar</h2>
-              <p className="section-description">
-                Existem várias maneiras de contribuir com nossa causa e fazer a diferença na vida dos animais.
-              </p>
-            </div>
-            <div className="help-grid">
-              <div className="help-card card-blue">
-                <h3 className="help-title">Faça uma Doação</h3>
-                <p className="help-description">
-                  Sua contribuição financeira ajuda a custear tratamentos veterinários, alimentação, medicamentos e
-                  manutenção do nosso abrigo.
-                </p>
-                <div className="bank-info">
-                  <p className="bank-title">Dados Bancários:</p>
-                  <p className="bank-detail">Banco: Exemplo</p>
-                  <p className="bank-detail">Agência: 0000</p>
-                  <p className="bank-detail">Conta: 00000-0</p>
-                  <p className="bank-detail">PIX: exemplo@apasfa.org.br</p>
-                </div>
-                <button className="btn btn-primary">Doar Agora</button>
-              </div>
-              <div className="help-options">
-                <div className="help-option card-orange">
-                  <h3 className="help-title">Seja Voluntário</h3>
-                  <p className="help-description">
-                    Doe seu tempo e habilidades. Precisamos de ajuda com passeios, limpeza, eventos de adoção e
-                    divulgação nas redes sociais.
-                  </p>
-                  <button
-                    className="btn btn-outline"
-                    onClick={() => {
-                      const contatoSection = document.getElementById('contato');
-                      if (contatoSection) {
-                        contatoSection.scrollIntoView({ behavior: 'smooth' });
-                      }
-                    }}
-                  >
-                    Saiba Mais
-                  </button>
+    <div className="help-grid">
+      <div className="help-card card-blue">
+        <h3 className="help-title">Faça uma Doação</h3>
+        <p className="help-description">
+          Sua contribuição financeira ajuda a custear tratamentos veterinários, alimentação, medicamentos e
+          manutenção do nosso abrigo.
+        </p>
 
-                </div>
-                <div className="help-option card-blue">
-                  <h3 className="help-title">Doe Suprimentos</h3>
-                  <p className="help-description">
-                    Aceitamos doações de ração, medicamentos, produtos de limpeza, cobertores, caminhas e brinquedos.
-                  </p>
-                  <button className="btn btn-outline">Ver Lista de Necessidades</button>
-                </div>
-                <div className="help-option card-orange">
-                  <h3 className="help-title">Apadrinhe um Animal</h3>
-                  <p className="help-description">
-                    Contribua mensalmente para o cuidado de um animal específico enquanto ele aguarda por adoção.
-                  </p>
-                  <button className="btn btn-outline">Apadrinhar</button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
+        <div className="bank-info">
+          <p className="bank-title">Dados Bancários:</p>
+          <p className="bank-detail">Banco: Exemplo</p>
+          <p className="bank-detail">Agência: 0000</p>
+          <p className="bank-detail">Conta: 00000-0</p>
+          <p className="bank-detail">PIX: exemplo@apasfa.org.br</p>
+        </div>
+
+        <a href="https://pagseguro.uol.com.br/checkout/v2/pre-approvals/nc/sender-identification.jhtml?t=b5fcc89f3048a0932b111aa41ae873aa&e=true#rmcl" target="_blank" rel="noopener noreferrer">
+          <button className="btn btn-primary">Doar Agora</button>
+        </a>
+
+        <div className="donation-section">
+          <h4>Ajude a causa! Faça uma doação via Pix</h4>
+          <p>Chave Pix:<br /><strong>apasfaprudentopolis@gmail.com</strong></p>
+          <img src={pixQrCode} alt="QR Code para doação via Pix" className="pix-qrcode" />
+        </div>
+      </div>
+
+      <div className="help-option card-orange">
+        <h3 className="help-title">Gostou do nosso projeto? Seja Voluntário!!</h3>
+        <p className="help-description">
+         Doe seu tempo e faça parte da transformação na vida de muitos animais resgatados. O trabalho voluntário é essencial para manter nossas atividades e garantir que cada animal receba amor, cuidado e uma chance real de ser adotado.
+
+          Precisamos de pessoas dispostas a ajudar em tarefas do dia a dia, como passear com os cães, colaborar com a limpeza dos espaços, organizar eventos de adoção e também contribuir com a divulgação nas redes sociais.
+        </p>
+        <button
+          className="btn btn-outline"
+          onClick={() => {
+            const contatoSection = document.getElementById('contato');
+            if (contatoSection) {
+              contatoSection.scrollIntoView({ behavior: 'smooth' });
+            }
+            
+          }}
+        >
+          Saiba Mais
+        </button> <img
+            src={require('../../assets/imagens/abrigo.png')}
+            alt="Imagem do Abrigo"
+            className="volunteer-image"
+          />
+
+        
+
+        
+      </div>
+    </div>
+  </div>
+</section>
+
 
 
         <section className="section section-light-blue">
@@ -469,42 +475,7 @@ function Inicio() {
                     <span>Rua Exemplo, 123 - Prudentópolis, PR</span>
                   </div>
                 </div>
-                <div className="social-links">
-                  <a href="#" className="social-link">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
-                      <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
-                      <line x1="17.5" x2="17.51" y1="6.5" y2="6.5" />
-                    </svg>
-                    <span className="visually-hidden">Instagram</span>
-                  </a>
-                  <a href="#" className="social-link">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
-                    </svg>
-                    <span className="visually-hidden">Facebook</span>
-                  </a>
-                </div>
+                
               </div>
               <div className="contact-form-container">
                 <form className="contact-form">

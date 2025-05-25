@@ -12,7 +12,7 @@ const solicitacaoPlaceholder = "https://via.placeholder.com/120?text=Solicita√ß√
 function AdminDashboard() {
   return (
     <div className="admin-dashboard-container" style={{ justifyContent: 'center' }}>
-      <main className="admin-main-content" style={{ maxWidth: 1100, width: '100%' }}>
+      <main className="admin-main-content" style={{ maxWidth: '100%', width: '100%' }}>
         <h2 style={{
           color: 'var(--primary)',
           fontWeight: 700,

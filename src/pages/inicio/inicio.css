@@ -472,61 +472,161 @@
 }
 
 /* Como Ajudar */
+.section-ajuda {
+  padding: 4rem 2rem;
+  background-color: #f9fafc;
+}
+
+.section-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section-title {
+  font-size: 2.5rem;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.section-description {
+  font-size: 1.2rem;
+  color: #555;
+}
+
 .help-grid {
   display: grid;
-  gap: 1.5rem;
-  margin-top: 3rem;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 2rem;
+  justify-content: center;
 }
 
-@media (min-width: 1024px) {
-  .help-grid {
-    grid-template-columns: 1fr 1fr;
-    gap: 3rem;
-  }
-}
-
-.help-card {
-  padding: 1.5rem;
-  border-radius: 0.5rem;
-}
-
-.help-options {
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-}
-
+.help-card,
 .help-option {
-  padding: 1.5rem;
-  border-radius: 0.5rem;
+  background-color: #fff;
+  border-radius: 20px;
+  padding: 2rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.07);
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.help-card:hover,
+.help-option:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.1);
+}
+
+.card-blue {
+  border-left: 6px solid #3094e6;
+}
+
+.card-orange {
+  border-left: 6px solid #f5b47bb7;
 }
 
 .help-title {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: var(--brown);
+  font-size: 1.5rem;
+  color: #333;
   margin-bottom: 1rem;
 }
 
 .help-description {
-  font-size: 0.875rem;
-  color: var(--gray);
-  margin-bottom: 1rem;
+  font-size: 1rem;
+  color: #666;
+  margin-bottom: 1.5rem;
 }
 
 .bank-info {
-  margin: 1rem 0;
+  background-color: #f0f4ff;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1.5rem;
 }
 
 .bank-title {
-  font-weight: 500;
-  color: var(--brown);
+  font-weight: bold;
   margin-bottom: 0.5rem;
+  color: #333;
 }
 
 .bank-detail {
-  font-size: 0.875rem;
+  font-size: 0.95rem;
+  color: #444;
 }
+
+.btn {
+  padding: 0.7rem 1.5rem;
+  font-size: 1rem;
+  border: none;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  color: white;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+}
+
+.btn-outline {
+  background-color: transparent;
+  border: 2px solid #ff7a00;
+  color: #ff7a00;
+}
+
+.btn-outline:hover {
+  background-color: #ff7a00;
+  color: white;
+}
+
+.donation-section {
+  margin-top: 2rem;
+  background-color: #f8fbff;
+  padding: 1.5rem;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.03);
+}
+
+.donation-section h4 {
+  font-size: 1.2rem;
+  color: #222;
+  margin-bottom: 1rem;
+}
+
+.donation-section p {
+  font-size: 1rem;
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.donation-section strong {
+  color: #007bff;
+}
+
+.pix-qrcode {
+  width: 160px;
+  height: auto;
+  border-radius: 12px;
+  border: 2px solid #ddd;
+}
+
+
+.volunteer-image {
+  margin-top: 120px;
+  width: 100%;
+  height: auto; 
+  max-height: 400px; 
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease;
+  display: block; 
+}
+
 
 /* Colaboradores */
 .colaboradores-grid {
@@ -607,7 +707,7 @@
 
 .pata-btn {
   position: absolute;
-  bottom: 20px;
+  bottom: 15px;
   right: 20px;
   background: none;
   border: none;

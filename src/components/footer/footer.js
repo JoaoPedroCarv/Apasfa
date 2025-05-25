@@ -24,11 +24,7 @@ function Footer() {
                 </div>
             </div>
 
-            <div className="donation-section">
-                <h4>Ajude a causa! Faça uma doação via Pix</h4>
-                <p>Chave Pix:<br /><strong>apasfaprudentopolis@gmail.com</strong></p>
-                <img src={pixQrCode} alt="QR Code para doação via Pix" className="pix-qrcode" />
-            </div>
+            
         </footer>
     );
 }

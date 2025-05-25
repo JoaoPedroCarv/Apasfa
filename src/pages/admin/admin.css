@@ -37,7 +37,10 @@
 
 .admin-cards-wrapper {
   display: grid;
-  grid-template-columns: repeat(3, minmax(340px, 1fr));
+  
+  grid-template-columns: 2fr 1fr 1fr;
+
+
   gap: 2.5rem;
   width: 100%;
   min-height: 400px;
@@ -249,12 +252,14 @@ button:disabled,
 .sollicitacao-item {
   background: var(--blue-light);
   border-radius: 10px;
-  margin-bottom: 1.2rem;
-  padding: 1.2rem 1rem;
-  box-shadow: 0 2px 8px #e3eaff33;
+  margin-bottom: 0.8rem; /* antes era 1.2rem */
+  padding: 0.8rem 0.7rem; /* antes era 1.2rem 1rem */
+  box-shadow: 0 2px 6px #e3eaff33;
   border: 1px solid var(--border);
   width: 100%;
+  font-size: 0.95rem; /* ajuste opcional */
 }
+
 
 .sollicitacao-item p {
   margin: 0.5rem 0;
