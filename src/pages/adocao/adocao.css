@@ -1,7 +1,14 @@
+.animais-container {
+  padding: 8rem 1rem 2rem 1rem;
+
+  text-align: center;
+}
+
+
 .pets-grid {
-padding-top: 200px;
+  padding-top: 200px;
   display: grid;
-  gap: 0.75rem;
+  gap: 1.25rem;
   margin-top: 1.5rem;
   padding: 0 0.5rem;
 }
@@ -22,16 +29,16 @@ padding-top: 200px;
   background: #fff;
   border-radius: 0.75rem;
   overflow: hidden;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
-  transition: transform 0.15s ease;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease;
 }
 
 .pet-card:hover {
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 .pet-image {
-    width: 350px;
+  width: 100%;
   height: 250px;
   background-color: #f2f2f2;
 }
@@ -44,26 +51,105 @@ padding-top: 200px;
 }
 
 .pet-info {
-  padding: 0.5rem 0.75rem;
-  align-items: left;
+  padding: 0.75rem 1rem;
+  text-align: left;
 }
 
 .pet-name {
-  font-weight: 600;
-  font-size: 0.95rem;
+  font-weight: 700;
+  font-size: 1.1rem;
   color: #4e342e;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.5rem;
 }
 
 .pet-details {
-  font-size: 0.75rem;
-  color: #555;
-  line-height: 1.3;
-    align-items: left;
+  font-size: 0.85rem;
+  color: #444;
+  line-height: 1.4;
 }
 
-.center-button {
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
   display: flex;
   justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modal {
+  background: #fff;
+  padding: 2rem;
+  border-radius: 12px;
+  max-width: 450px;
+  width: 100%;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.3);
+}
+
+.modal h2 {
+  margin-bottom: 1.5rem;
+  color: #4e342e;
+}
+
+.modal label {
+  display: block;
+  margin-bottom: 1rem;
+  font-weight: bold;
+  color: #333;
+  text-align: left;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  margin-top: 0.5rem;
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  box-sizing: border-box;
+}
+
+.modal textarea {
+  resize: vertical;
+  min-height: 80px;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
   margin-top: 1rem;
+}
+
+.btn {
+  padding: 10px 16px;
+  border: none;
+  cursor: pointer;
+  font-weight: bold;
+  border-radius: 6px;
+  transition: background 0.2s;
+}
+
+.btn-brown {
+  background-color: #8b5e3c;
+  color: white;
+}
+
+.btn-brown:hover {
+  background-color: #6f4327;
+}
+
+.btn-light {
+  background-color: #ddd;
+  color: #333;
+}
+
+.btn-light:hover {
+  background-color: #ccc;
 }

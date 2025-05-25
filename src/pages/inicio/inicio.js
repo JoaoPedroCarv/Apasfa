@@ -17,18 +17,18 @@ const historiaLuna = "https://images.unsplash.com/photo-1518715308788-3005759c61
 const historiaBidu = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
 const historiaMimi = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=600&q=80";
 
-const pet1 = "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80";
-const pet2 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
-const pet3 = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80";
-const pet4 = "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80";
-const pet5 = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80";
-const pet6 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+// const pet1 = "https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80";
+// const pet2 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
+// const pet3 = "https://images.unsplash.com/photo-1518717758536-85ae29035b6d?auto=format&fit=crop&w=400&q=80";
+// const pet4 = "https://images.unsplash.com/photo-1465101046530-73398c7f28ca?auto=format&fit=crop&w=400&q=80";
+// const pet5 = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=400&q=80";
+// const pet6 = "https://images.unsplash.com/photo-1518715308788-3005759c61d3?auto=format&fit=crop&w=400&q=80";
 
 const colaborador1 = "https://randomuser.me/api/portraits/men/32.jpg";
 const colaborador2 = "https://randomuser.me/api/portraits/women/44.jpg";
 const colaborador3 = "https://randomuser.me/api/portraits/men/65.jpg";
 
-const eventoImg = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80";
+// const eventoImg = "https://images.unsplash.com/photo-1500534314209-a25ddb2bd429?auto=format&fit=crop&w=600&q=80";
 
 function Inicio() {
   // Carrossel funcional simples
@@ -58,49 +58,49 @@ function Inicio() {
   const [pets, setPets] = useState([]);
   const [eventos, setEventos] = useState([]);
   const [eventoIndex, setEventoIndex] = useState(0);
-  
 
 
-useEffect(() => {
-  const fetchPets = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "animais"));
-      const petsData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setPets(petsData);
-    } catch (error) {
-      console.error("Erro ao buscar animais:", error);
-    }
+
+  useEffect(() => {
+    const fetchPets = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "animais"));
+        const petsData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setPets(petsData);
+      } catch (error) {
+        console.error("Erro ao buscar animais:", error);
+      }
+    };
+
+    fetchPets();
+
+    const fetchEventos = async () => {
+      try {
+        const querySnapshot = await getDocs(collection(db, "eventos"));
+        const eventosData = querySnapshot.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        }));
+        setEventos(eventosData);
+      } catch (error) {
+        console.error("Erro ao buscar eventos:", error);
+
+      }
+    };
+
+    fetchEventos();
+
+
+
+
+  }, []);
+
+  const proximoEvento = () => {
+    setEventoIndex((prev) => (prev + 1) % eventos.length);
   };
-
-  fetchPets();
-
- const fetchEventos = async () => {
-    try {
-      const querySnapshot = await getDocs(collection(db, "eventos"));
-      const eventosData = querySnapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-      }));
-      setEventos(eventosData);
-    } catch (error) {
-      console.error("Erro ao buscar eventos:", error);
-    
-    }
-  };
-
-  fetchEventos();
-
-
-
-
-}, []);
-
-const proximoEvento = () => {
-  setEventoIndex((prev) => (prev + 1) % eventos.length);
-};
 
 
   const colaboradores = [
@@ -250,13 +250,13 @@ const proximoEvento = () => {
               </p>
             </div>
             <div className="pets-grid">
-              {pets.map((pet, idx) => (
+              {pets.slice(0, 6).map((pet, idx) => (
                 <div key={idx} className="pet-card">
                   <div className="pet-image">
                     <img
-                       src={pet.fotoUrl || "https://via.placeholder.com/400x300?text=Sem+Imagem"}
+                      src={pet.fotoUrl || "https://via.placeholder.com/400x300?text=Sem+Imagem"}
                       alt={`Animal para adoção ${pet.nome}`}
-                  />
+                    />
 
                   </div>
                   <div className="pet-info">
@@ -264,16 +264,16 @@ const proximoEvento = () => {
                     <p className="pet-details">
                       {pet.raca} • {pet.idade} anos • {pet.sexo}
                     </p>
-                    
+
                   </div>
                 </div>
               ))}
             </div>
-           <div className="center-button">
-          <Link to="/adocao">
-              <button className="btn btn-brown">Ver Todos os Animais</button>
-          </Link>
-</div>
+            <div className="center-button">
+              <Link to="/adocao">
+                <button className="btn btn-brown">Ver Todos os Animais</button>
+              </Link>
+            </div>
 
           </div>
         </section>
@@ -311,16 +311,16 @@ const proximoEvento = () => {
                     divulgação nas redes sociais.
                   </p>
                   <button
-                        className="btn btn-outline"
-                        onClick={() => {
-                          const contatoSection = document.getElementById('contato');
-                          if (contatoSection) {
-                            contatoSection.scrollIntoView({ behavior: 'smooth' });
-                          }
-                        }}
-                      >
-                        Saiba Mais
-                      </button>
+                    className="btn btn-outline"
+                    onClick={() => {
+                      const contatoSection = document.getElementById('contato');
+                      if (contatoSection) {
+                        contatoSection.scrollIntoView({ behavior: 'smooth' });
+                      }
+                    }}
+                  >
+                    Saiba Mais
+                  </button>
 
                 </div>
                 <div className="help-option card-blue">
@@ -370,37 +370,37 @@ const proximoEvento = () => {
 
 
         <section className="section">
-  <div className="section-content">
-    <div className="section-header">
-      <h2 className="section-title">Próximos Eventos</h2>
-      <p className="section-description">
-        Fique por dentro dos nossos eventos e participe das nossas ações.
-      </p>
-    </div>
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Próximos Eventos</h2>
+              <p className="section-description">
+                Fique por dentro dos nossos eventos e participe das nossas ações.
+              </p>
+            </div>
 
-    {eventos.length > 0 && (
-      <div className="evento-card">
-        <div className="evento-img">
-          <img
-            src={eventos[eventoIndex].imagemUrl || "https://via.placeholder.com/600x400?text=Sem+Imagem"}
-            alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
-          />
-        </div>
-        <div className="evento-info">
-          <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
-          <p className="evento-data">
-            <strong>Data:</strong> {eventos[eventoIndex].data}
-          </p>
-          <p className="evento-descricao">{eventos[eventoIndex].descricao}</p>
-          
-        </div>
-        <button className="pata-btn" onClick={proximoEvento}>
-          🐾
-        </button>
-      </div>
-    )}
-  </div>
-</section>
+            {eventos.length > 0 && (
+              <div className="evento-card">
+                <div className="evento-img">
+                  <img
+                    src={eventos[eventoIndex].imagemUrl || "https://via.placeholder.com/600x400?text=Sem+Imagem"}
+                    alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
+                  />
+                </div>
+                <div className="evento-info">
+                  <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
+                  <p className="evento-data">
+                    <strong>Data:</strong> {eventos[eventoIndex].data}
+                  </p>
+                  <p className="evento-descricao">{eventos[eventoIndex].descricao}</p>
+
+                </div>
+                <button className="pata-btn" onClick={proximoEvento}>
+                  🐾
+                </button>
+              </div>
+            )}
+          </div>
+        </section>
 
 
 

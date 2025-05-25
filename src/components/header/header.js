@@ -13,23 +13,26 @@ function Header() {
 
     return (
         <header className="header">
-            <div className="logo-container">
-                <img src={logo} alt="Logo" className="logo" />
-            </div>
+
 
             <button className="menu-toggle" onClick={toggleMenu}>
                 ☰
             </button>
 
             <nav className={`sidebar ${menuAberto ? 'ativo' : ''}`}>
-    <button className="fechar-menu" onClick={toggleMenu}>×</button><Link to="/" onClick={toggleMenu}>Início</Link>
-    <Link to="/logar" onClick={toggleMenu}>Login</Link>
-    <Link to="/registrar" onClick={toggleMenu}>Registrar</Link>
-    {isAdmin && <Link to="/admin" onClick={toggleMenu}>Ver admin</Link>}
-</nav>
+                <div className="menu-espaco">
+                    <Link to="/" onClick={toggleMenu}>Início</Link>
+                    <Link to="/logar" onClick={toggleMenu}>Login</Link>
+                    <Link to="/registrar" onClick={toggleMenu}>Registrar</Link>
+                    {isAdmin && <Link to="/admin" onClick={toggleMenu}>Ver admin</Link>}
+                </div>
+            </nav>
 
-
+            <div className="logo-container">
+                <img src={logo} alt="Logo" className="logo" />
+            </div>
             <div className="espaco-vazio"></div>
+
         </header>
     );
 }

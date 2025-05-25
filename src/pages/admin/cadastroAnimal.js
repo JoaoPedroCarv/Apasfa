@@ -7,7 +7,7 @@ import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 export default function CadastroAnimal() {
     const [nome, setNome] = useState('');
     const [idade, setIdade] = useState('');
-    const [tipo, setTipo] = useState('');
+
     const [raca, setRaca] = useState('');
     const [sexo, setSexo] = useState('');
     const [descricao, setDescricao] = useState('');
@@ -18,7 +18,7 @@ export default function CadastroAnimal() {
         e.preventDefault();
         setError('');
 
-        if (!nome || !idade ||  !raca || !sexo || !foto) {
+        if (!nome || !idade || !raca || !sexo || !foto) {
             return setError('Preencha todos os campos obrigatórios!');
         }
 
@@ -34,7 +34,7 @@ export default function CadastroAnimal() {
             await addDoc(collection(db, "animais"), {
                 nome,
                 idade,
-               
+
                 raca,
                 sexo,
                 descricao,
@@ -47,7 +47,7 @@ export default function CadastroAnimal() {
             // Resetar formulário
             setNome('');
             setIdade('');
-           
+
             setRaca('');
             setSexo('');
             setDescricao('');
@@ -72,7 +72,7 @@ export default function CadastroAnimal() {
                         <label>Idade</label>
                         <input type="number" value={idade} onChange={(e) => setIdade(e.target.value)} />
                     </div>
-                  
+
                     <div className="input-group">
                         <label>Raça</label>
                         <input type="text" value={raca} onChange={(e) => setRaca(e.target.value)} />

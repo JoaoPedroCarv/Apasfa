@@ -40,6 +40,7 @@
     align-items: center;
     gap: 10px;
 }
+
 .logo {
     width: 120px;
     height: auto;
@@ -62,7 +63,8 @@
 .sidebar {
     position: fixed;
     top: 0;
-    left: -250px; /* escondido */
+    left: -250px;
+    /* escondido */
     width: 250px;
     height: 100%;
     background-color: #fff;
@@ -90,20 +92,17 @@
     border-radius: 8px;
     transition: background 0.2s, color 0.2s;
 }
+
+.menu-espaco {
+    margin-top: 100px;
+    display: flex;
+    flex-direction: column;
+    margin-left: 16px;
+}
+
 .sidebar a:hover {
     background-color: rgba(244, 164, 96, 0.13);
     color: var(--primary);
-}
-
-/* Botão fechar (X) */
-.fechar-menu {
-    align-self: flex-end;
-    background: none;
-    border: none;
-    font-size: 1.5rem;
-    cursor: pointer;
-    margin-bottom: 1rem;
-    color: var(--brown);
 }
 
 /* Espaço auxiliar */
