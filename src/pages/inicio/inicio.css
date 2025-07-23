@@ -128,107 +128,163 @@
   max-width: 150px;
 }
 
-/* Carrossel */
+/* =========================================================
+   CSS REFINADO - CARROSSEL E INFO RÁPIDA
+   ========================================================= */
+
+/* --- Carrossel --- */
+/* =========================================================
+   CSS REFINADO - CARROSSEL IMERSIVO (FULL-WIDTH)
+   ========================================================= */
+
 .carrossel-section {
-  padding-top: 130px;
-  width: 100%;
-
+  width: 100vw; /* O truque para ocupar a tela inteira */
   position: relative;
-  margin-bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+
+  /* A altura e a margem inferior permanecem */
+  height: 65vh;
+  min-height: 450px;
+  max-height: 600px;
+  margin-bottom: 8rem; /* Espaço para a sobreposição dos cards */
+  overflow: hidden; /* Garante que nada vaze */
 }
 
-.carrossel-wrapper {
+/* Novo: Um overlay para dar mais contraste e profundidade */
+.carrossel-wrapper::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 100%;
-  overflow: hidden;
-}
-
-.carrossel-slide {
-  width: 100%;
-}
+  height: 100%;
+  background: linear-gradient top, rgba(0,0,0,0)
+   }
 
 .carrossel-img {
   width: 100%;
-  height: auto;
+  height: 60vh; /* Usa a altura da viewport para ser mais responsivo */
+  min-height: 400px;
+  max-height: 550px;
   object-fit: cover;
-  max-height: 500px;
+  display: block;
 }
 
 .carrossel-controls {
+  position: absolute;
+  bottom: 25px;
+  left: 0;
+  right: 0;
+  z-index: 2; /* Para ficar acima do gradiente da imagem, se houver */
+
+  /* Alinhamento com o resto do site */
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+
+  /* O truque do layout: Setas nas pontas, pontos no meio */
   display: flex;
   justify-content: space-between;
   align-items: center;
-  position: absolute;
-  bottom: 20px;
-  left: 0;
-  right: 0;
-  padding: 0 20px;
 }
 
+/* --- Setas Aprimoradas --- */
 .carrossel-arrow {
-  background: rgba(255, 255, 255, 0.7);
-  border: none;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 50%;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.2rem;
   cursor: pointer;
-  transition: background 0.3s;
+  color: #333;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
 }
+/* Recomendo usar '‹' e '›' no seu HTML/JS no lugar de '🐾' para um visual de seta limpo */
 
 .carrossel-arrow:hover {
-  background: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 1);
+  transform: scale(1.1);
+  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
 }
 
+/* --- Pontos com Animação --- */
 .carrossel-dots {
   display: flex;
-  gap: 8px;
+  align-items: center;
+  gap: 12px;
+  /* Fim do fundo tipo "pílula" para um visual mais limpo */
 }
 
 .carrossel-dot {
-  width: 10px;
   height: 10px;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.5);
+  width: 10px; /* Tamanho padrão do ponto inativo */
+  border-radius: 20px; /* Totalmente arredondado */
+  background: rgba(255, 255, 255, 0.6);
   cursor: pointer;
+  border: 1px solid rgba(0,0,0,0.05);
+  /* Transição suave para a mudança de largura e cor */
+  transition: width 0.4s ease, background-color 0.4s ease;
+}
+
+.carrossel-dot:hover:not(.active) {
+  background: rgba(255, 255, 255, 0.9);
 }
 
 .carrossel-dot.active {
+  width: 35px; /* Ponto ativo se expande para uma pílula */
   background: var(--white);
 }
 
-/* Info Rápida */
+/* --- Info Rápida (com sobreposição) --- */
 .info-rapida {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 1rem;
+  gap: 1.5rem;
   max-width: 1200px;
-  margin: 0 auto 2rem;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
+  position: relative;
+  z-index: 10;
+  /* O truque da sobreposição: margem negativa puxa a seção para cima */
+  margin: -6rem auto 3rem;
 }
 
 .info-card {
-  background-color: var(--blue-light);
+  background-color: var(--white);
   padding: 1.5rem;
-  border-radius: 0.5rem;
+  border-radius: 12px;
   text-align: center;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  /* Sombra mais suave e profissional */
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  /* Substituída a borda grossa por uma borda superior sutil e colorida */
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--accent, #f5a623); /* Use sua cor de destaque aqui */
+  border-bottom: 4px solid var(--accent, #3094e6);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
 
-  border: 4px solid rgba(219, 170, 106, 0.753); 
+.info-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
 }
 
 .info-card h3 {
-  color: var(--brown);
-  margin-bottom: 0.5rem;
-  font-size: 1.25rem;
+  color: var(--text-light, #6c757d);
+  margin-bottom: 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
 }
 
 .info-card p {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
-  color: var(--brown);
+  color: var(--primary-dark, #1a2c50);
 }
 
 /* Seções */

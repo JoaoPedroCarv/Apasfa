@@ -98,40 +98,29 @@ export default function EventosAdmin() {
             {eventos.length === 0 ? (
                 <p>Nenhum evento encontrado.</p>
             ) : (
-                <ul className="eventos-list">
+                <ul className="edit-list"> {/* CLASSE ATUALIZADA */}
                     {eventos.map((evento) => (
-                        <li key={evento.id} className="evento-item">
-                            <p><strong>Título:</strong> {evento.titulo}</p>
-                            <p><strong>Data:</strong> {evento.data}</p>
-                            {evento.imagemUrl && (
-                                <img
-                                    src={evento.imagemUrl}
-                                    alt={evento.titulo}
-                                    style={{ width: '200px', borderRadius: '8px', marginTop: '0.5rem' }}
-                                />
-                            )}
-                            <button onClick={() => abrirModalEdicao(evento)}>Editar</button>
-                            <button
-                                onClick={() => excluirEvento(evento.id)}
-                                style={{ marginLeft: '10px', color: 'red', background: 'none', border: 'none', cursor: 'pointer' }}
-                            >
-                                Excluir
-                            </button>
+                        <li key={evento.id} className="edit-item"> {/* CLASSE ATUALIZADA */}
+                            <div className="edit-item-content">
+                                {evento.imagemUrl && (
+                                    <img src={evento.imagemUrl} alt={evento.titulo} className="edit-item-image" />
+                                )}
+                                <p><strong>Título:</strong> {evento.titulo}</p>
+                                <p><strong>Data:</strong> {evento.data}</p>
+                            </div>
+                            <div className="edit-item-actions"> {/* CLASSE NOVA */}
+                                <button className="btn-edit" onClick={() => abrirModalEdicao(evento)}>Editar</button>
+                                <button className="btn-delete" onClick={() => excluirEvento(evento.id)}>Excluir</button>
+                            </div>
                         </li>
                     ))}
                 </ul>
             )}
 
-            {/* Modal de edição simplificado */}
+            {/* Modal de edição usando as classes do CSS */}
             {eventoEditando && (
-                <div style={{
-                    position: 'fixed',
-                    top: 0, left: 0, right: 0, bottom: 0,
-                    backgroundColor: 'rgba(0,0,0,0.5)',
-                    display: 'flex', justifyContent: 'center', alignItems: 'center',
-                    zIndex: 9999,
-                }}>
-                    <div style={{ maxWidth: '400px', width: '90%', background: 'white', padding: '1rem', borderRadius: '8px' }}>
+                <div className="modal-overlay">
+                    <div className="modal-content">
                         <h3>Editar Evento</h3>
                         <div>
                             <label>Título:</label>
@@ -139,28 +128,22 @@ export default function EventosAdmin() {
                         </div>
                         <div>
                             <label>Data:</label>
-                            <input name="data" value={eventoEditando.data} onChange={handleInputChange} />
+                            <input type="date" name="data" value={eventoEditando.data} onChange={handleInputChange} />
                         </div>
                         <div>
                             <label>Imagem:</label>
                             <input type="file" accept="image/*" onChange={handleFileChange} />
                             {eventoEditando.imagemUrl && !imagemFile && (
-                                <img
-                                    src={eventoEditando.imagemUrl}
-                                    alt="Imagem atual"
-                                    style={{ width: '200px', borderRadius: '8px', marginTop: '0.5rem' }}
-                                />
+                                <img src={eventoEditando.imagemUrl} alt="Imagem atual" className="modal-foto-preview" />
                             )}
-                            {imagemFile && <p>Arquivo selecionado: {imagemFile.name}</p>}
                         </div>
-                        <div style={{ marginTop: '10px', display: 'flex', justifyContent: 'flex-start' }}>
-                            <button onClick={salvarEdicao}>Salvar</button>
-                            <button onClick={fecharModal} style={{ marginLeft: '10px' }}>Cancelar</button>
+                        <div className="modal-buttons">
+                            <button className="btn-brown" onClick={salvarEdicao}>Salvar</button>
+                            <button className="btn-light" onClick={fecharModal}>Cancelar</button>
                         </div>
                     </div>
                 </div>
             )}
         </div>
     );
-
 }

@@ -1,32 +1,35 @@
-/* Container principal dos cards */
+/* =========================================================
+   CSS SURPREENDENTE PARA FLIP CARDS
+   ========================================================= */
+
 .flip-card-container {
-  display: flex;
-  gap: 40px;
-  justify-content: center;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
   padding-top: 1rem;
 }
 
-/* Estrutura do card */
 .flip-card {
   background-color: transparent;
-  width: 250px;
-  height: 200px;
-  perspective: 1000px;
-  transition: opacity 0.3s;
+  height: 320px; /* Um pouco mais alto para mais impacto */
+  perspective: 1500px;
+  border: none;
 }
 
 .flip-card-inner {
   position: relative;
   width: 100%;
   height: 100%;
-  text-align: center;
-  transition: transform 0.7s ease;
+  transition: transform 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* A mágica do "impulso" */
   transform-style: preserve-3d;
+  /* Sombra aplicada aqui para um efeito 3D mais realista */
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 16px;
 }
 
 .flip-card:hover .flip-card-inner {
   transform: rotateY(180deg);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
 }
 
 .flip-card-front,
@@ -35,47 +38,68 @@
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
-  border-radius: 12px;
+  border-radius: 16px;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 15px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  white-space: pre-wrap;
-  word-wrap: break-word;
+  padding: 1.5rem;
+  box-sizing: border-box;
 }
 
+/* --- Frente do Card (Visual Novo) --- */
 .flip-card-front {
-  background: rgba(112, 76, 22, 0.61);
-  background-image: url(../../assets/imagens/Logo\ apasfa\ sem\ fundo\ 2.png);
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
+  background-image: linear-gradient(45deg, #1976d2 0%, #42a5f5 100%);
+  color: white;
 }
 
+.flip-card-front h3 {
+  font-size: 1.6rem;
+  font-weight: 700;
+  margin: 0;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+}
+
+/* Ícone sutil que incentiva a interação */
+.flip-card-front .flip-icon {
+  margin-top: 1rem;
+  font-size: 1rem;
+  font-weight: 300;
+  opacity: 0.8;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  transition: all 0.3s;
+}
+.flip-card-front .flip-icon::after {
+  content: 'Veja mais ↻';
+}
+.flip-card:hover .flip-card-front .flip-icon {
+  opacity: 0;
+  transform: scale(0.8);
+}
+
+
+/* --- Verso do Card (Visual Novo) --- */
 .flip-card-back {
-  background: rgba(100, 72, 29, 0.88);
+  background-image: linear-gradient(225deg, #1f2c47 0%, #2f4575 100%);
+  color: #e0f7fa;
   transform: rotateY(180deg);
-  font-size: 0.95rem;
-  color: #E0FFFF;
   text-align: left;
-  padding: 1rem;
+  align-items: flex-start;
+  justify-content: flex-start;
   overflow-y: auto;
-  line-height: 1.4;
 }
 
-.flip-card-back h3 {
-  color: #ffcccb;
-  margin-bottom: 0.5rem;
+/* Animação em camadas: o conteúdo aparece após o flip */
+.flip-card-back p {
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 0.5rem 0;
+  opacity: 0; /* Inicialmente invisível */
+  transition: opacity 0.4s ease 0.3s; /* Aparece com um atraso de 0.3s */
 }
 
-/* Efeito de destaque ao passar o mouse */
-.flip-card-container:hover .flip-card {
-  opacity: 0.3;
-}
-
-.flip-card-container .flip-card:hover {
-  opacity: 1;
-  transform: scale(1.03);
-  transition: transform 0.3s ease;
+.flip-card:hover .flip-card-back p {
+  opacity: 1; /* Torna-se visível no hover */
 }

@@ -186,32 +186,43 @@ function Inicio() {
           </div>
         </section>
 
-        <section id="sobre" className="section">
-          <div className="section-content">
-            <div className="section-header">
-              <h2 className="section-title">Quem Somos</h2>
-              <p className="section-description">
-                A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização
-                sem fins lucrativos que visa proteger e promover o bem-estar dos animais.
-              </p>
+       <section id="sobre" className="section">
+  <div className="section-content">
+    <div className="section-header">
+      <h2 className="section-title">Quem Somos</h2>
+      <p className="section-description">
+        A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização
+        sem fins lucrativos que visa proteger e promover o bem-estar dos animais.
+      </p>
+    </div>
+
+    {/* Container dos cards com a lógica de mapeamento correta */}
+    <div className="flip-card-container">
+      {compromissos.map((item, idx) => (
+        // A 'key' deve estar no elemento mais externo retornado pelo map
+        <div className="flip-card" key={idx}>
+          <div className="flip-card-inner">
+
+            {/* Face da Frente */}
+            <div className="flip-card-front">
+              <h3>{item.titulo}</h3>
+              <span className="flip-icon"></span>
             </div>
-            <div className="flip-card-container">
-              {compromissos.map((item, idx) => (
-                <div className="flip-card" key={idx}>
-                  <h3>{item.titulo}</h3>
-                  <div className="flip-card-inner">
-                    <div className="flip-card-front"></div>
-                    <div className="flip-card-back">
-                      {item.texto.split("\n").map((line, index) => (
-                        <p key={index}>{line}</p>
-                      ))}
-                    </div>
-                  </div>
-                </div>
+
+            {/* Face de Trás */}
+            <div className="flip-card-back">
+              {item.texto.split("\n").map((line, index) => (
+                <p key={index}>{line}</p>
               ))}
             </div>
+
           </div>
-        </section>
+        </div>
+      ))}
+    </div>
+    
+  </div>
+</section>
 
         <section className="section section-light-blue">
           <div className="section-content">

@@ -109,36 +109,26 @@ export default function EditarAnimais() {
     if (loading) return <p>Carregando animais...</p>;
 
     return (
-        <section className="admin-section">
-
+        <div>
             {animais.length === 0 ? (
                 <p>Nenhum animal encontrado.</p>
             ) : (
-                <ul className="animais-list">
+                <ul className="edit-list"> {/* CLASSE ATUALIZADA */}
                     {animais.map(animal => (
-                        <li key={animal.id} className="animal-item">
-                            {animal.fotoUrl && (
-                                <img
-                                    src={animal.fotoUrl}
-                                    alt={animal.nome}
-                                    className="animal-foto"
-                                />
-                            )}
-                            <div className="animal-info">
+                        <li key={animal.id} className="edit-item"> {/* CLASSE ATUALIZADA */}
+                             <div className="edit-item-content">
+                                {animal.fotoUrl && (
+                                    <img src={animal.fotoUrl} alt={animal.nome} className="edit-item-image" />
+                                )}
                                 <p><strong>Nome:</strong> {animal.nome}</p>
-                                <p><strong>Descrição:</strong> {animal.descricao}</p>
-                                <p><strong>Idade:</strong> {animal.idade}</p>
+                                <p><strong>Idade:</strong> {animal.idade} anos</p>
                                 <p><strong>Raça:</strong> {animal.raca}</p>
                                 <p><strong>Sexo:</strong> {animal.sexo}</p>
+                                <p><strong>Descrição:</strong> {animal.descricao}</p>
                             </div>
-                            <div className="animal-actions">
+                            <div className="edit-item-actions">
                                 <button className="btn-edit" onClick={() => abrirModalEdicao(animal)}>Editar</button>
-                                <button
-                                    className="btn-delete"
-                                    onClick={() => excluirAnimal(animal.id)}
-                                >
-                                    Excluir
-                                </button>
+                                <button className="btn-delete" onClick={() => excluirAnimal(animal.id)}>Excluir</button>
                             </div>
                         </li>
                     ))}
@@ -149,38 +139,43 @@ export default function EditarAnimais() {
                 <div className="modal-overlay">
                     <div className="modal-content">
                         <h3>Editar Animal</h3>
-
-                        <label>Nome:</label>
-                        <input name="nome" value={animalEditando.nome} onChange={handleInputChange} />
-
-                        <label>Descrição:</label>
-                        <input name="descricao" value={animalEditando.descricao} onChange={handleInputChange} />
-
-                        <label>Idade:</label>
-                        <input name="idade" value={animalEditando.idade} onChange={handleInputChange} />
-
-                        <label>Raça:</label>
-                        <input name="raca" value={animalEditando.raca} onChange={handleInputChange} />
-
-                        <label>Sexo:</label>
-                        <input name="sexo" value={animalEditando.sexo} onChange={handleInputChange} />
-
-                        <label>Foto:</label>
-                        <input type="file" accept="image/*" onChange={handleFileChange} />
-                        {animalEditando.fotoUrl && !fotoFile && (
-                            <img src={animalEditando.fotoUrl} alt="Foto atual" className="animal-foto-preview" />
-                        )}
-                        {fotoFile && <p>Arquivo selecionado: {fotoFile.name}</p>}
+                        <div>
+                            <label>Nome:</label>
+                            <input name="nome" value={animalEditando.nome} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label>Descrição:</label>
+                            <textarea name="descricao" value={animalEditando.descricao} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label>Idade:</label>
+                            <input type="number" name="idade" value={animalEditando.idade} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label>Raça:</label>
+                            <input name="raca" value={animalEditando.raca} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label>Sexo:</label>
+                            <input name="sexo" value={animalEditando.sexo} onChange={handleInputChange} />
+                        </div>
+                        <div>
+                            <label>Foto:</label>
+                            <input type="file" accept="image/*" onChange={handleFileChange} />
+                            {animalEditando.fotoUrl && !fotoFile && (
+                                <img src={animalEditando.fotoUrl} alt="Foto atual" className="modal-foto-preview" />
+                            )}
+                        </div>
 
                         <div className="modal-buttons">
-                            <button disabled={salvando} onClick={salvarEdicao}>
+                            <button className="btn-brown" disabled={salvando} onClick={salvarEdicao}>
                                 {salvando ? 'Salvando...' : 'Salvar'}
                             </button>
-                            <button onClick={fecharModal}>Cancelar</button>
+                            <button className="btn-light" onClick={fecharModal}>Cancelar</button>
                         </div>
                     </div>
                 </div>
             )}
-        </section>
+        </div>
     );
 }
