@@ -3,6 +3,7 @@
 import React from 'react';
 import EventosAdmin from './eventos';
 import AnimaisAdmin from './animais';
+import EditarEstatisticas from './editarEstatisticas';
 import '../admin.css'; 
 
 const Editar = () => {
@@ -12,6 +13,11 @@ const Editar = () => {
                 <h2>
                     Editar Informações
                 </h2>
+
+                <section className="admin-section-card">
+                    <h3>Estatísticas da Página Inicial</h3>
+                    <EditarEstatisticas />
+                </section>
 
                 {/* Seção de Eventos */}
                 <section className="admin-section-card">

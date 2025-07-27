@@ -85,24 +85,27 @@
 .btn-outline {
   background-color: transparent;
   border: 1px solid var(--brown);
-  color: var(--brown);
+  color: #e9967a;
 }
 
 .btn-outline:hover {
-  background-color: rgba(139, 90, 43, 0.1);
+  background-color: #e9967a;
 }
 
-.btn-brown {
-  background-color: var(--brown);
+.btn-accent {
+  background-color: transparent;
+  /* Define a borda e o texto com a cor de destaque (laranja) */
+  border-color: var(--accent, #f5a623);
+  color: var(--accent, #f5a623);
+  font-weight: 600;
+}
+
+.btn-accent:hover {
+  /* No hover, o fundo fica laranja e o texto branco */
+  background-color: var(--accent, #f5a623);
   color: var(--white);
-}
-
-.btn-brown:hover {
-  background-color: rgba(139, 90, 43, 0.8);
-}
-
-.btn-full {
-  width: 100%;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(245, 166, 35, 0.3);
 }
 
 /* Decorações */
@@ -128,120 +131,205 @@
   max-width: 150px;
 }
 
-/* =========================================================
-   CSS REFINADO - CARROSSEL E INFO RÁPIDA
-   ========================================================= */
 
-/* --- Carrossel --- */
-/* =========================================================
-   CSS REFINADO - CARROSSEL IMERSIVO (FULL-WIDTH)
-   ========================================================= */
 
-.carrossel-section {
-  width: 100vw; /* O truque para ocupar a tela inteira */
-  position: relative;
-  left: 50%;
-  transform: translateX(-50%);
-
-  /* A altura e a margem inferior permanecem */
-  height: 65vh;
-  min-height: 450px;
-  max-height: 600px;
-  margin-bottom: 8rem; /* Espaço para a sobreposição dos cards */
-  overflow: hidden; /* Garante que nada vaze */
+.hero-section {
+  width: 100%;
+  padding: 4rem 1.5rem; 
+  background-color: var(--blue-light, #c08121bd); 
+  display: flex;
+  align-items: center;
+  min-height: 80vh;
 }
 
-/* Novo: Um overlay para dar mais contraste e profundidade */
-.carrossel-wrapper::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient top, rgba(0,0,0,0)
-   }
-
-.carrossel-img {
-  width: 100%;
-  height: 60vh; /* Usa a altura da viewport para ser mais responsivo */
-  min-height: 400px;
-  max-height: 550px;
-  object-fit: cover;
-  display: block;
-}
-
-.carrossel-controls {
-  position: absolute;
-  bottom: 25px;
-  left: 0;
-  right: 0;
-  z-index: 2; /* Para ficar acima do gradiente da imagem, se houver */
-
-  /* Alinhamento com o resto do site */
+.hero-content {
   max-width: 1280px;
   margin: 0 auto;
-  padding: 0 1.5rem;
-
-  /* O truque do layout: Setas nas pontas, pontos no meio */
-  display: flex;
-  justify-content: space-between;
+  display: grid;
+  grid-template-columns: 1fr 1fr; /* O layout dividido */
   align-items: center;
+  gap: 3rem;
 }
 
-/* --- Setas Aprimoradas --- */
-.carrossel-arrow {
-  background: rgba(255, 255, 255, 0.75);
-  backdrop-filter: blur(5px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 50%;
-  width: 44px;
-  height: 44px;
+/* --- Lado Esquerdo: Texto e Ações --- */
+.hero-text {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.hero-title {
+  font-size: 3.5rem; /* Título de alto impacto */
+  font-weight: 800;
+  color: var(--primary-dark, #1a2c50);
+  line-height: 1.1;
+  margin-bottom: 1.5rem;
+}
+
+.hero-description {
   font-size: 1.2rem;
-  cursor: pointer;
-  color: #333;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-  transition: background-color 0.2s, transform 0.2s, box-shadow 0.2s;
-}
-/* Recomendo usar '‹' e '›' no seu HTML/JS no lugar de '🐾' para um visual de seta limpo */
-
-.carrossel-arrow:hover {
-  background-color: rgba(255, 255, 255, 1);
-  transform: scale(1.1);
-  box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+  color: var(--text-light, #6c757d);
+  line-height: 1.6;
+  margin-bottom: 2rem;
+  max-width: 500px;
 }
 
-/* --- Pontos com Animação --- */
-.carrossel-dots {
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* Estilos de botões que você já deve ter (apenas como referência) */
+.btn {
+  padding: 0.8rem 1.8rem;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+
+/* =========================================================
+   CSS CORRIGIDO E REFINADO - HERO SECTION
+   ========================================================= */
+
+/* --- Container da Seção de Herói --- */
+.hero-section {
+  width: 100%;
+  /* ALTURA AJUSTADA: Usamos padding em vez de min-height para um tamanho mais natural */
+  padding: 5rem 1.5rem;
+  background-color: var(--blue-light, #244668);
   display: flex;
   align-items: center;
-  gap: 12px;
-  /* Fim do fundo tipo "pílula" para um visual mais limpo */
+    padding-bottom: 10rem;
 }
 
-.carrossel-dot {
-  height: 10px;
-  width: 10px; /* Tamanho padrão do ponto inativo */
-  border-radius: 20px; /* Totalmente arredondado */
-  background: rgba(255, 255, 255, 0.6);
-  cursor: pointer;
-  border: 1px solid rgba(0,0,0,0.05);
-  /* Transição suave para a mudança de largura e cor */
-  transition: width 0.4s ease, background-color 0.4s ease;
+.hero-content {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 3rem;
 }
 
-.carrossel-dot:hover:not(.active) {
-  background: rgba(255, 255, 255, 0.9);
+/* --- Lado Esquerdo: Texto e Ações --- */
+.hero-text {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
 }
 
-.carrossel-dot.active {
-  width: 35px; /* Ponto ativo se expande para uma pílula */
-  background: var(--white);
+.hero-title {
+  /* TAMANHO DA FONTE REDUZIDO para um visual mais refinado */
+  font-size: 3rem;
+  font-weight: 800;
+  color: var(--primary-dark, #1a2c50);
+  line-height: 1.15;
+  margin-bottom: 1.25rem; /* Margem ajustada */
 }
 
+.hero-description {
+  /* TAMANHO DA FONTE AJUSTADO */
+  font-size: 1.1rem;
+  color: var(--text-light, #6c757d);
+  line-height: 1.6;
+  margin-bottom: 2.5rem; /* Espaço maior antes dos botões para hierarquia */
+  max-width: 500px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* --- Lado Direito: Galeria de Fotos Dinâmica (sem alterações, já está ótimo) --- */
+.hero-gallery {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-template-rows: repeat(2, 2fr);
+  gap: 1rem;
+  transform: perspective(1000px) rotateY(-10deg);
+  transition: transform 0.5s ease;
+}
+
+.hero-gallery:hover {
+  transform: perspective(1000px) rotateY(10deg);
+}
+
+.gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 30px rgba(0,0,0,0.2);
+  z-index: 5;
+}
+
+.gallery-img.img-1 { grid-row: span 2; }
+.gallery-img.img-4 { grid-column: span 2; }
+
+
+
+.info-rapida {
+ 
+  position: relative;
+  z-index: 1;         
+  margin: 3rem auto;  
+
+  /* O resto do estilo permanece o mesmo */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  max-width: 1200px;
+  padding: 0 1.5rem;
+}
+
+
+/* --- Responsividade para Celulares (mantida) --- */
+@media (max-width: 900px) {
+  .hero-section {
+    padding: 3rem 1.5rem; /* Menos padding em telas menores */
+  }
+  .hero-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .hero-text {
+    align-items: center;
+    order: 2;
+  }
+  .hero-gallery {
+    order: 1;
+    transform: none;
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
+
+
+/* --- Responsividade para Celulares --- */
+@media (max-width: 900px) {
+  .hero-content {
+    grid-template-columns: 1fr; /* Empilha as colunas */
+    text-align: center;
+  }
+  .hero-text {
+    align-items: center; /* Centraliza o texto e botões */
+    order: 2; /* Coloca o texto DEPOIS da galeria */
+  }
+  .hero-gallery {
+    order: 1; /* Galeria vem primeiro em telas pequenas */
+    transform: none; /* Remove o efeito 3D em mobile */
+  }
+  .hero-title {
+    font-size: 2.5rem;
+  }
+}
 /* --- Info Rápida (com sobreposição) --- */
 .info-rapida {
   display: grid;

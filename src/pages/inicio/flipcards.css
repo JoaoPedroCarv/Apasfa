@@ -1,5 +1,5 @@
 /* =========================================================
-   CSS SURPREENDENTE PARA FLIP CARDS
+   CSS FINAL E CORRIGIDO PARA FLIP CARDS
    ========================================================= */
 
 .flip-card-container {
@@ -11,7 +11,7 @@
 
 .flip-card {
   background-color: transparent;
-  height: 320px; /* Um pouco mais alto para mais impacto */
+  height: 320px;
   perspective: 1500px;
   border: none;
 }
@@ -20,9 +20,8 @@
   position: relative;
   width: 100%;
   height: 100%;
-  transition: transform 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* A mágica do "impulso" */
+  transition: transform 0.8s cubic-bezier(0.68, -0.6, 0.32, 1.6); /* Animação com "impulso" */
   transform-style: preserve-3d;
-  /* Sombra aplicada aqui para um efeito 3D mais realista */
   box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
   border-radius: 16px;
 }
@@ -44,10 +43,10 @@
   align-items: center;
   justify-content: center;
   padding: 1.5rem;
-  box-sizing: border-box;
+  box-sizing: border-box; /* Garante que padding e borda não alterem o tamanho */
 }
 
-/* --- Frente do Card (Visual Novo) --- */
+/* --- Frente do Card --- */
 .flip-card-front {
   background-image: linear-gradient(45deg, #1976d2 0%, #42a5f5 100%);
   color: white;
@@ -60,7 +59,6 @@
   text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
 }
 
-/* Ícone sutil que incentiva a interação */
 .flip-card-front .flip-icon {
   margin-top: 1rem;
   font-size: 1rem;
@@ -80,26 +78,29 @@
 }
 
 
-/* --- Verso do Card (Visual Novo) --- */
+/* --- Verso do Card (com a borda azul) --- */
 .flip-card-back {
-  background-image: linear-gradient(225deg, #1f2c47 0%, #2f4575 100%);
+  background-image: linear-gradient(225deg, #ca8a42c5 0%, #2f4575 100%);
   color: #e0f7fa;
   transform: rotateY(180deg);
   text-align: left;
   align-items: flex-start;
   justify-content: flex-start;
   overflow-y: auto;
+  
+  /* A SOLUÇÃO CORRETA USANDO BOX-SHADOW INSET */
+  box-shadow: inset 0 0 0 3px var(--primary, #e9967a);
 }
 
-/* Animação em camadas: o conteúdo aparece após o flip */
+/* Animação do texto do verso */
 .flip-card-back p {
   font-size: 0.95rem;
   line-height: 1.6;
   margin: 0 0 0.5rem 0;
-  opacity: 0; /* Inicialmente invisível */
-  transition: opacity 0.4s ease 0.3s; /* Aparece com um atraso de 0.3s */
+  opacity: 0;
+  transition: opacity 0.4s ease 0.3s;
 }
 
 .flip-card:hover .flip-card-back p {
-  opacity: 1; /* Torna-se visível no hover */
+  opacity: 1;
 }
