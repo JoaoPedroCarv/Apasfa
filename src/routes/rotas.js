@@ -35,11 +35,11 @@ function RoutesApp() {
       {/* <Route path="/comentarios" element={<Comentarios />} /> */}
       {/* <Route path='/novoComentario' element={<Private><CriarComentario /></Private>} />
       <Route path='/editarComentario/:id' element={<Private><EditarComentario /></Private>} /> */}
-      <Route path="/admin" element={<Private><Admin /></Private>} />
+      <Route path="/admin" element={<Private adminOnly={true}><Admin /></Private>} />
       <Route path="/cadastroAnimal" element={<Private><CadastroAnical /></Private>} />
       <Route path="/solicitacoes" element={<Private><Solicitacoes /></Private>} />
-      <Route path="/cadastrarEvento" element={<Private><CadastrarEvento /></Private>} />
-      <Route path="/eventosAdmin" element={<Private><EventosAdmin /></Private>} />
+      <Route path="/cadastrarEvento" element={<Private adminOnly={true}><CadastrarEvento /></Private>} />
+      <Route path="/eventosAdmin" element={<Private adminOnly={true}><EventosAdmin /></Private>} />
 
     </Routes>
   )

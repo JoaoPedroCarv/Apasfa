@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  padding-top: 80px; /* Espaço para o header fixo */
+}
+
+/* Prevenir scroll horizontal em dispositivos móveis */
+html, body {
+  overflow-x: hidden;
 }
 
 code {

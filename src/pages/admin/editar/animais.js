@@ -1,10 +1,7 @@
 import { useEffect, useState } from 'react';
 import { collection, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../../../services/firebaseConnection';
 import '../admin.css';
-
-const storage = getStorage();
 
 export default function EditarAnimais() {
     const [animais, setAnimais] = useState([]);
@@ -66,9 +63,8 @@ export default function EditarAnimais() {
             let fotoUrlAtualizada = animalEditando.fotoUrl;
 
             if (fotoFile) {
-                const fotoRef = ref(storage, `animais/${animalEditando.id}/${fotoFile.name}`);
-                await uploadBytes(fotoRef, fotoFile);
-                fotoUrlAtualizada = await getDownloadURL(fotoRef);
+                // Converter nova foto para Base64
+                fotoUrlAtualizada = await convertToBase64(fotoFile);
             }
 
             const animalRef = doc(db, 'animais', animalEditando.id);
@@ -94,6 +90,16 @@ export default function EditarAnimais() {
         }
     }
 
+    // Função para converter arquivo para Base64
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
     async function excluirAnimal(id) {
         if (!window.confirm('Tem certeza que deseja excluir este animal?')) return;
 
@@ -117,9 +123,12 @@ export default function EditarAnimais() {
                     {animais.map(animal => (
                         <li key={animal.id} className="edit-item"> {/* CLASSE ATUALIZADA */}
                              <div className="edit-item-content">
-                                {animal.fotoUrl && (
-                                    <img src={animal.fotoUrl} alt={animal.nome} className="edit-item-image" />
-                                )}
+                                <img
+                                    src={animal.fotoUrl && (animal.fotoUrl.startsWith('http') || animal.fotoUrl.startsWith('data:')) ? animal.fotoUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                                    alt={animal.nome}
+                                    className="edit-item-image"
+                                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                                />
                                 <p><strong>Nome:</strong> {animal.nome}</p>
                                 <p><strong>Idade:</strong> {animal.idade} anos</p>
                                 <p><strong>Raça:</strong> {animal.raca}</p>
@@ -163,7 +172,12 @@ export default function EditarAnimais() {
                             <label>Foto:</label>
                             <input type="file" accept="image/*" onChange={handleFileChange} />
                             {animalEditando.fotoUrl && !fotoFile && (
-                                <img src={animalEditando.fotoUrl} alt="Foto atual" className="modal-foto-preview" />
+                                <img
+                                    src={animalEditando.fotoUrl && (animalEditando.fotoUrl.startsWith('http') || animalEditando.fotoUrl.startsWith('data:')) ? animalEditando.fotoUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                                    alt="Foto atual"
+                                    className="modal-foto-preview"
+                                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                                />
                             )}
                         </div>
 

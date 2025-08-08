@@ -1,0 +1,638 @@
+/* ==============================================
+   SOLICITAÇÕES - DESIGN SIMPLES E LIMPO
+   ============================================== */
+
+/* Container principal das solicitações */
+.solicitacoes-container {
+    background: white;
+    border-radius: 8px;
+    padding: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border: 1px solid #e0e0e0;
+    margin: 1rem 0;
+}
+
+.solicitacoes-container h3 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 1.5rem;
+    text-align: left;
+    border-bottom: 2px solid #f0f0f0;
+    padding-bottom: 0.5rem;
+}
+
+/* Filtros simples */
+.filtros-solicitacoes {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding: 1rem;
+    background: #f8f9fa;
+    border-radius: 6px;
+    border: 1px solid #e0e0e0;
+}
+
+.filtros-solicitacoes > div {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.filtros-solicitacoes label {
+    font-weight: 500;
+    color: #555;
+    font-size: 0.9rem;
+    white-space: nowrap;
+}
+
+.filtros-solicitacoes select {
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: white;
+    color: #333;
+    font-size: 0.9rem;
+    min-width: 120px;
+}
+
+.filtros-solicitacoes select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
+}
+
+/* Lista de solicitações */
+.sollicitacoes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+/* Item de solicitação simples */
+.sollicitacao-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1.5rem;
+    position: relative;
+    transition: box-shadow 0.2s ease;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.sollicitacao-item:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.contato-item {
+    border-left: 4px solid #17a2b8;
+}
+
+.adocao-item {
+    border-left: 4px solid #28a745;
+}
+
+/* Header do card com badges */
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.badges-container {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+}
+
+/* Badges simples */
+.tipo-badge {
+    background: #007bff;
+    color: white;
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.status-badge {
+    padding: 0.25rem 0.75rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    text-transform: capitalize;
+}
+
+.status-badge.pendente {
+    background: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeaa7;
+}
+
+.status-badge.visualizada {
+    background: #d1ecf1;
+    color: #0c5460;
+    border: 1px solid #bee5eb;
+}
+
+.status-badge.concluida {
+    background: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+/* Conteúdo da solicitação */
+.solicitacao-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.usuario-info {
+    margin-bottom: 1rem;
+    padding: 0.75rem;
+    background: #f8f9fa;
+    border-radius: 4px;
+    border-left: 3px solid #007bff;
+}
+
+.usuario-info p {
+    margin: 0.25rem 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+.usuario-info strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Informações específicas */
+.adocao-info, .contato-info {
+    margin-bottom: 1rem;
+}
+
+.animal-info {
+    background: #e8f5e8;
+    padding: 0.75rem;
+    border-radius: 4px;
+    margin-bottom: 0.75rem;
+    border: 1px solid #d4edda;
+}
+
+.animal-info p {
+    margin: 0.25rem 0;
+    color: #333;
+    font-size: 0.9rem;
+}
+
+.animal-foto-mini {
+    max-width: 60px;
+    max-height: 60px;
+    border-radius: 4px;
+    object-fit: cover;
+    margin-top: 0.5rem;
+}
+
+.mensagem-box {
+    background: #f8f9fa;
+    padding: 0.75rem;
+    border-radius: 4px;
+    border-left: 3px solid #17a2b8;
+    margin-top: 0.75rem;
+}
+
+.mensagem-texto {
+    color: #555;
+    line-height: 1.5;
+    margin: 0.5rem 0 0 0;
+    font-size: 0.9rem;
+}
+
+/* Footer da solicitação */
+.solicitacao-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: auto;
+    padding-top: 1rem;
+    border-top: 1px solid #e0e0e0;
+    gap: 1rem;
+}
+
+.data-solicitacao {
+    color: #666;
+    font-size: 0.85rem;
+    margin: 0;
+    flex: 1;
+}
+
+/* Botão simples */
+.btn-responder {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: background-color 0.2s ease;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.btn-responder:hover {
+    background: #0056b3;
+}
+
+/* Controles de Paginação simples */
+.paginacao {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin-top: 2rem;
+    padding: 1rem;
+    border-top: 1px solid #e0e0e0;
+}
+
+.btn-paginacao {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ddd;
+    background: white;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+}
+
+.btn-paginacao:hover:not(:disabled) {
+    background: #007bff;
+    color: white;
+    border-color: #007bff;
+}
+
+.btn-paginacao:disabled {
+    background: #f8f9fa;
+    cursor: not-allowed;
+    color: #6c757d;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .solicitacoes-container {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+    
+    .filtros-solicitacoes {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .filtros-solicitacoes > div {
+        justify-content: space-between;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .card-header h4 {
+        font-size: 1rem;
+    }
+    
+    .badges-container {
+        justify-content: flex-start;
+    }
+    
+    .solicitacao-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .btn-responder {
+        text-align: center;
+    }
+    
+    .paginacao {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
+}
+
+/* ==============================================
+   MODAL - DESIGN SIMPLES E LIMPO
+   ============================================== */
+
+/* Modal Overlay */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        backdrop-filter: blur(0px);
+    }
+    to {
+        opacity: 1;
+        backdrop-filter: blur(4px);
+    }
+}
+
+/* Modal Content */
+.modal-content {
+    background: white;
+    border-radius: 8px;
+    width: 95%;
+    max-width: 700px;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+    border: 1px solid #e0e0e0;
+    animation: slideIn 0.3s ease;
+    overflow: hidden;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-30px) scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Modal Header */
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem;
+    border-bottom: 2px solid #f0f0f0;
+    background: #f8f9fa;
+}
+
+.modal-header h3 {
+    margin: 0;
+    color: #333;
+    font-size: 1.4rem;
+    font-weight: 600;
+}
+
+.btn-fechar {
+    background: #fff;
+    border: 1px solid #ddd;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #666;
+    padding: 0.5rem;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+    font-weight: bold;
+}
+
+.btn-fechar:hover {
+    background: #f5f5f5;
+    border-color: #bbb;
+    color: #333;
+    transform: scale(1.05);
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.status-atual {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.status-atual .status-badge {
+    position: relative;
+    font-size: 1rem;
+    padding: 0.5rem 1rem;
+}
+
+.usuario-detalhes, .animal-detalhes, .mensagem-detalhes, .data-detalhes {
+    margin-bottom: 1.5rem;
+}
+
+.usuario-detalhes h4, .animal-detalhes h4, .mensagem-detalhes h4 {
+    color: #333;
+    margin: 0 0 0.75rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-bottom: 1px solid #e0e0e0;
+    padding-bottom: 0.5rem;
+}
+
+.usuario-detalhes p, .animal-detalhes p, .mensagem-detalhes p, .data-detalhes p {
+    margin: 0.5rem 0;
+    color: #555;
+    line-height: 1.5;
+    font-size: 0.95rem;
+}
+
+.usuario-detalhes p strong, .animal-detalhes p strong, .data-detalhes p strong {
+    color: #333;
+    font-weight: 600;
+}
+
+/* Modal Footer */
+.modal-footer {
+    display: flex;
+    gap: 1rem;
+    padding: 1.5rem;
+    border-top: 2px solid #f0f0f0;
+    justify-content: flex-end;
+    background: #f8f9fa;
+    flex-shrink: 0;
+}
+
+.btn-concluir {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+}
+
+.btn-concluir:hover:not(:disabled) {
+    background: #218838;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+}
+
+.btn-concluir:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+}
+
+.btn-email {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+}
+
+.btn-email:hover {
+    background: #0056b3;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .filtros-solicitacoes {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+    }
+    
+    .filtros-solicitacoes > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.25rem;
+    }
+    
+    .tipo-badge, .status-badge {
+        position: static;
+        display: inline-block;
+        margin: 0.5rem 0.5rem 0.5rem 0;
+    }
+    
+    /* Modal responsivo */
+    .modal-content {
+        width: 98%;
+        max-height: 95vh;
+        margin: 1rem 0;
+    }
+    
+    .modal-header, .modal-body, .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    
+    .btn-concluir, .btn-email {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .btn-fechar {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+}
+    
+    .solicitacao-content {
+        padding-right: 0;
+    }
+    
+    .solicitacao-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .paginacao {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-paginacao {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+        max-height: 90vh;
+    }
+    
+    .modal-header, .modal-body, .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn-concluir, .btn-email {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .btn-fechar {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+}
