@@ -4,6 +4,7 @@ import React from 'react';
 import EventosAdmin from './eventos';
 import AnimaisAdmin from './animais';
 import EditarEstatisticas from './editarEstatisticas';
+import GerenciarColaboradores from '../colaboradores';
 import '../admin.css'; 
 
 const Editar = () => {
@@ -29,6 +30,12 @@ const Editar = () => {
                 <section className="admin-section-card">
                     <h3>Gerenciar Animais</h3>
                     <AnimaisAdmin />
+                </section>
+
+                {/* Seção de Colaboradores */}
+                <section className="admin-section-card">
+                    <h3>Gerenciar Colaboradores</h3>
+                    <GerenciarColaboradores />
                 </section>
             </main>
         </div>

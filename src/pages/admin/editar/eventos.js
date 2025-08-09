@@ -1,10 +1,8 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { collection, getDocs, doc, deleteDoc, updateDoc } from 'firebase/firestore';
-import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 import { db } from '../../../services/firebaseConnection';
-import '../admin.css';
-
-const storage = getStorage();
+import './eventos.css';
 
 export default function EventosAdmin() {
     const [eventos, setEventos] = useState([]);
@@ -57,10 +55,8 @@ export default function EventosAdmin() {
             let imagemUrlAtualizada = eventoEditando.imagemUrl;
 
             if (imagemFile) {
-                // Upload da nova imagem
-                const imageRef = ref(storage, `eventos/${eventoEditando.id}/${imagemFile.name}`);
-                await uploadBytes(imageRef, imagemFile);
-                imagemUrlAtualizada = await getDownloadURL(imageRef);
+                // Converter nova imagem para Base64
+                imagemUrlAtualizada = await convertToBase64(imagemFile);
             }
 
             const eventoRef = doc(db, 'eventos', eventoEditando.id);
@@ -80,6 +76,16 @@ export default function EventosAdmin() {
         }
     };
 
+    // Função para converter arquivo para Base64
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
+
     const excluirEvento = async (id) => {
         if (!window.confirm('Tem certeza que deseja excluir este evento?')) return;
 
@@ -91,58 +97,101 @@ export default function EventosAdmin() {
         }
     };
 
-    if (loading) return <p>Carregando eventos...</p>;
+    if (loading) return <div className="eventos-admin-container"><p>Carregando eventos...</p></div>;
 
     return (
-        <div>
+        <div className="eventos-admin-container">
+            <h3>Gerenciar Eventos</h3>
+            
             {eventos.length === 0 ? (
                 <p>Nenhum evento encontrado.</p>
             ) : (
-                <ul className="edit-list"> {/* CLASSE ATUALIZADA */}
+                <ul className="edit-list">
                     {eventos.map((evento) => (
-                        <li key={evento.id} className="edit-item"> {/* CLASSE ATUALIZADA */}
+                        <li key={evento.id} className="edit-item">
                             <div className="edit-item-content">
-                                {evento.imagemUrl && (
-                                    <img src={evento.imagemUrl} alt={evento.titulo} className="edit-item-image" />
-                                )}
-                                <p><strong>Título:</strong> {evento.titulo}</p>
-                                <p><strong>Data:</strong> {evento.data}</p>
+                                <img
+                                    src={evento.imagemUrl && (evento.imagemUrl.startsWith('http') || evento.imagemUrl.startsWith('data:')) ? evento.imagemUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                                    alt={evento.titulo}
+                                    className="edit-item-image"
+                                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                                />
+                                <div>
+                                    <p><strong>Título:</strong> {evento.titulo}</p>
+                                    <p><strong>Data:</strong> {new Date(evento.data).toLocaleDateString('pt-BR')}</p>
+                                </div>
                             </div>
-                            <div className="edit-item-actions"> {/* CLASSE NOVA */}
-                                <button className="btn-edit" onClick={() => abrirModalEdicao(evento)}>Editar</button>
-                                <button className="btn-delete" onClick={() => excluirEvento(evento.id)}>Excluir</button>
+                            <div className="edit-item-actions">
+                                <button className="btn-edit" onClick={() => abrirModalEdicao(evento)}>
+                                    ✏️ Editar
+                                </button>
+                                <button className="btn-delete" onClick={() => excluirEvento(evento.id)}>
+                                    🗑️ Excluir
+                                </button>
                             </div>
                         </li>
                     ))}
                 </ul>
             )}
 
-            {/* Modal de edição usando as classes do CSS */}
-            {eventoEditando && (
-                <div className="modal-overlay">
-                    <div className="modal-content">
-                        <h3>Editar Evento</h3>
+            {/* Modal de edição usando Portal */}
+            {eventoEditando && createPortal(
+                <div className="modal-overlay" onClick={fecharModal}>
+                    <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+                        <h3>✏️ Editar Evento</h3>
+                        
                         <div>
-                            <label>Título:</label>
-                            <input name="titulo" value={eventoEditando.titulo} onChange={handleInputChange} />
+                            <label htmlFor="titulo">Título:</label>
+                            <input 
+                                id="titulo"
+                                type="text"
+                                name="titulo" 
+                                value={eventoEditando.titulo} 
+                                onChange={handleInputChange} 
+                                placeholder="Digite o título do evento"
+                            />
                         </div>
+                        
                         <div>
-                            <label>Data:</label>
-                            <input type="date" name="data" value={eventoEditando.data} onChange={handleInputChange} />
+                            <label htmlFor="data">Data:</label>
+                            <input 
+                                id="data"
+                                type="date" 
+                                name="data" 
+                                value={eventoEditando.data} 
+                                onChange={handleInputChange} 
+                            />
                         </div>
+                        
                         <div>
-                            <label>Imagem:</label>
-                            <input type="file" accept="image/*" onChange={handleFileChange} />
+                            <label htmlFor="imagem">Nova Imagem (opcional):</label>
+                            <input 
+                                id="imagem"
+                                type="file" 
+                                accept="image/*" 
+                                onChange={handleFileChange} 
+                            />
                             {eventoEditando.imagemUrl && !imagemFile && (
-                                <img src={eventoEditando.imagemUrl} alt="Imagem atual" className="modal-foto-preview" />
+                                <img
+                                    src={eventoEditando.imagemUrl && (eventoEditando.imagemUrl.startsWith('http') || eventoEditando.imagemUrl.startsWith('data:')) ? eventoEditando.imagemUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                                    alt="Imagem atual"
+                                    className="modal-foto-preview"
+                                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                                />
                             )}
                         </div>
+                        
                         <div className="modal-buttons">
-                            <button className="btn-brown" onClick={salvarEdicao}>Salvar</button>
-                            <button className="btn-light" onClick={fecharModal}>Cancelar</button>
+                            <button className="btn-brown" onClick={salvarEdicao}>
+                                ✅ Salvar Alterações
+                            </button>
+                            <button className="btn-light" onClick={fecharModal}>
+                                ❌ Cancelar
+                            </button>
                         </div>
                     </div>
-                </div>
+                </div>,
+                document.body
             )}
         </div>
     );

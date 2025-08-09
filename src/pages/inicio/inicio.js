@@ -3,8 +3,15 @@ import './inicio.css';
 import './flipcards.css'; // Garantindo que ambos os CSS sejam importados
 import { Link } from 'react-router-dom';
 import pixQrCode from '../../assets/imagens/qrcode.png';
+// Imagens do carrossel "Quem Somos"
+import whatsapp1 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.04.jpeg';
+import whatsapp2 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.04 (1).jpeg';
+import whatsapp3 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05.jpeg';
+import whatsapp4 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (1).jpeg';
+import whatsapp5 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (2).jpeg';
+import whatsapp6 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (3).jpeg';
 
-import { collection, getDocs, doc, getDoc,onSnapshot } from "firebase/firestore"; // Importe 'doc' e 'getDoc'
+import { collection, getDocs, doc, getDoc, onSnapshot, addDoc } from "firebase/firestore"; // Importe 'doc' e 'getDoc'
 import { db } from "../../services/firebaseConnection";
 
 // Imagens de exemplo para a galeria e outras seções
@@ -12,17 +19,16 @@ const historiaLuna = "https://images.unsplash.com/photo-1543466835-00a7907e9de1?
 const historiaBidu = "https://images.unsplash.com/photo-1598133894022-76a087120b0d?auto=format&fit=crop&w=600&q=80";
 const historiaMimi = "https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=600&q=80";
 
-const colaborador1 = "https://randomuser.me/api/portraits/men/32.jpg";
-const colaborador2 = "https://randomuser.me/api/portraits/women/44.jpg";
-const colaborador3 = "https://randomuser.me/api/portraits/men/65.jpg";
-
 function Inicio() {
   const [pets, setPets] = useState([]);
   const [eventos, setEventos] = useState([]);
+  const [colaboradores, setColaboradores] = useState([]);
   const [eventoIndex, setEventoIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
   const [formData, setFormData] = useState({
     name: '', email: '', subject: '', message: '',
   });
+  const [enviandoMensagem, setEnviandoMensagem] = useState(false);
   const [estatisticas, setEstatisticas] = useState({
     animaisEncontrados: '...', animaisCastrados: '...', animaisRecuperados: '...',
   });
@@ -33,16 +39,37 @@ function Inicio() {
     setFormData(prev => ({ ...prev, [id]: value }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert(`Obrigado pelo contato, ${formData.name}! Sua mensagem foi recebida.`);
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setEnviandoMensagem(true);
+
+    try {
+      const solicitacaoData = {
+        nome: formData.name,
+        email: formData.email,
+        assunto: formData.subject,
+        mensagem: formData.message,
+        tipo: 'contato',
+        dataEnvio: new Date().toISOString(),
+        status: 'pendente'
+      };
+
+      await addDoc(collection(db, 'solicitacoes'), solicitacaoData);
+      
+      alert(`Obrigado pelo contato, ${formData.name}! Sua mensagem foi recebida e será analisada em breve.`);
+      setFormData({ name: '', email: '', subject: '', message: '' });
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      alert('Erro ao enviar mensagem. Tente novamente ou entre em contato por telefone.');
+    } finally {
+      setEnviandoMensagem(false);
+    }
   };
 
   // Efeito para buscar todos os dados do Firestore
    useEffect(() => {
-    // Busca Pets e Eventos (pode continuar com getDocs)
-    const fetchPetsAndEvents = async () => {
+    // Busca Pets, Eventos e Colaboradores
+    const fetchData = async () => {
       try {
         const petsSnapshot = await getDocs(collection(db, "animais"));
         setPets(petsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
@@ -52,9 +79,78 @@ function Inicio() {
         const eventosSnapshot = await getDocs(collection(db, "eventos"));
         setEventos(eventosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
       } catch (error) { console.error("Erro ao buscar eventos:", error); }
+
+      try {
+        const colaboradoresSnapshot = await getDocs(collection(db, "colaboradores"));
+        const colaboradoresList = colaboradoresSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        if (colaboradoresList.length > 0) {
+          // Ordenar colaboradores: presidente primeiro, depois por ordem alfabética
+          const colaboradoresOrdenados = colaboradoresList.sort((a, b) => {
+            if (a.cargo === 'presidente') return -1;
+            if (b.cargo === 'presidente') return 1;
+            return a.nome.localeCompare(b.nome);
+          });
+          setColaboradores(colaboradoresOrdenados);
+        } else {
+          // Colaboradores padrão caso não haja nenhum cadastrado
+          setColaboradores([
+            { 
+              nome: "Dr. João Silva", 
+              membroDesde: "Janeiro 2020", 
+              cargo: "presidente", 
+              descricao: "Veterinário dedicado à causa animal há mais de 15 anos. Fundador da APASFA, lidera nossa missão de resgatar, cuidar e encontrar lares amorosos para animais em situação de vulnerabilidade.", 
+              imagem: "https://randomuser.me/api/portraits/men/32.jpg" 
+            },
+            { 
+              nome: "Maria Oliveira", 
+              membroDesde: "Março 2019", 
+              cargo: "vice-presidente", 
+              descricao: "Coordena as ações de resgate e campanhas de adoção.",
+              imagem: "https://randomuser.me/api/portraits/women/44.jpg" 
+            },
+            { 
+              nome: "Dr. Carlos Souza", 
+              membroDesde: "Julho 2021", 
+              cargo: "veterinario", 
+              descricao: "Responsável pelos cuidados médicos de todos os animais resgatados.",
+              imagem: "https://randomuser.me/api/portraits/men/65.jpg" 
+            },
+          ]);
+        }
+      } catch (error) { 
+        console.error("Erro ao buscar colaboradores:", error);
+        if (error.code === 'permission-denied') {
+          console.warn("Permissões insuficientes para acessar colaboradores. Usando dados padrão.");
+        }
+        // Em caso de erro ou sem permissão, usar colaboradores padrão
+        setColaboradores([
+          { 
+            nome: "Dr. João Silva", 
+            membroDesde: "Janeiro 2020", 
+            cargo: "presidente", 
+            descricao: "Veterinário dedicado à causa animal há mais de 15 anos. Fundador da APASFA, lidera nossa missão de resgatar, cuidar e encontrar lares amorosos para animais em situação de vulnerabilidade.", 
+            imagem: "https://randomuser.me/api/portraits/men/32.jpg" 
+          },
+          { 
+            nome: "Maria Oliveira", 
+            membroDesde: "Março 2019", 
+            cargo: "vice-presidente", 
+            descricao: "Coordena as ações de resgate e campanhas de adoção.",
+            imagem: "https://randomuser.me/api/portraits/women/44.jpg" 
+          },
+          { 
+            nome: "Dr. Carlos Souza", 
+            membroDesde: "Julho 2021", 
+            cargo: "veterinario", 
+            descricao: "Responsável pelos cuidados médicos de todos os animais resgatados.",
+            imagem: "https://randomuser.me/api/portraits/men/65.jpg" 
+          },
+        ]);
+      }
     };
 
-    fetchPetsAndEvents();
+    fetchData();
 
     // A MÁGICA: Listener em tempo real para as estatísticas
     const docRef = doc(db, 'estatisticas', 'geral');
@@ -75,6 +171,7 @@ function Inicio() {
     };
 
   }, []);
+  
   const historiasResgate = [
     { nome: "Luna", descricao: "Resgatada com fome e frio, hoje vive feliz em um novo lar.", imagem: historiaLuna },
     { nome: "Bidu", descricao: "Machucado na rua, recebeu cuidados e muito amor.", imagem: historiaBidu },
@@ -87,17 +184,43 @@ function Inicio() {
     }
   };
 
-  const colaboradores = [
-    { nome: "João Silva", membroDesde: "Janeiro 2020", imagem: colaborador1 },
-    { nome: "Maria Oliveira", membroDesde: "Março 2019", imagem: colaborador2 },
-    { nome: "Carlos Souza", membroDesde: "Julho 2021", imagem: colaborador3 },
-  ];
-
   const compromissos = [
     { titulo: "Missão", texto: "• Manter o abrigo dentro da capacidade.\n• Socorrer animais agonizantes.\n• Apoiar famílias carentes com seus animais.\n• Promover a castração para evitar a superpopulação.\n• Reabilitar física e emocionalmente os animais resgatados.\n" },
     { titulo: "Visão", texto: "• Conscientizar e auxiliar no controle da espécie.\n• Participar de políticas públicas.\n• Educação em posse responsável.\n• Ser referência regional em proteção e bem-estar animal.\n• Criar programas de voluntariado e engajamento comunitário.\n• Desenvolver campanhas contínuas de adoção e castração." },
     { titulo: "Valores", texto: "• Fiscalizar crueldade animal.\n• Promover adoção.\n• Difundir leis de proteção animal.\n• Transparência e ética na gestão da ONG.\n• Respeito à vida em todas as suas formas.\n• Comprometimento com o bem-estar animal e social." },
   ];
+
+  // Imagens do carrossel "Quem Somos"
+  const carouselImages = [
+    { src: whatsapp1, alt: "Atividades da APASFA" },
+    { src: whatsapp2, alt: "Cuidados com os animais" },
+    { src: whatsapp3, alt: "Trabalho da equipe" },
+    { src: whatsapp4, alt: "Resgate de animais" },
+    { src: whatsapp5, alt: "Abrigo da APASFA" },
+    { src: whatsapp6, alt: "Voluntários em ação" }
+  ];
+
+  // Funções do carrossel
+  const nextImage = () => {
+    setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevImage = () => {
+    setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  const goToSlide = (index) => {
+    setCarouselIndex(index);
+  };
+
+  // Auto-play do carrossel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 5000); // Muda a imagem a cada 5 segundos
+    
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
 
   return (
     <div className="container">
@@ -164,6 +287,47 @@ function Inicio() {
                 </div>
               ))}
             </div>
+            
+            {/* Carrossel de imagens */}
+            <div className="carousel-container">
+              <div className="carousel-header">
+                <h3>Nossa Atuação</h3>
+                <p>Veja algumas fotos do nosso trabalho diário</p>
+              </div>
+              <div className="carousel-wrapper">
+                <button 
+                  className="carousel-btn carousel-btn-prev" 
+                  onClick={prevImage}
+                  aria-label="Imagem anterior"
+                >
+                  &#8249;
+                </button>
+                <div className="carousel-content">
+                  <img 
+                    src={carouselImages[carouselIndex].src} 
+                    alt={carouselImages[carouselIndex].alt}
+                    className="carousel-image"
+                  />
+                </div>
+                <button 
+                  className="carousel-btn carousel-btn-next" 
+                  onClick={nextImage}
+                  aria-label="Próxima imagem"
+                >
+                  &#8250;
+                </button>
+              </div>
+              <div className="carousel-indicators">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`carousel-indicator ${index === carouselIndex ? 'active' : ''}`}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Ir para imagem ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
           </div>
         </section>
 
@@ -204,7 +368,11 @@ function Inicio() {
               {pets.slice(0, 6).map((pet) => (
                 <div key={pet.id} className="pet-card">
                   <div className="pet-image">
-                    <img src={pet.fotoUrl || "https://via.placeholder.com/400x300?text=Sem+Imagem"} alt={`Animal para adoção ${pet.nome}`} />
+                    <img
+                      src={pet.fotoUrl && (pet.fotoUrl.startsWith('http') || pet.fotoUrl.startsWith('data:')) ? pet.fotoUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                      alt={`Animal para adoção ${pet.nome}`}
+                      onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                    />
                   </div>
                   <div className="pet-info">
                     <h3 className="pet-name">{pet.nome}</h3>
@@ -277,14 +445,54 @@ function Inicio() {
                 Conheça as pessoas que dedicam seu tempo e esforço para fazer a diferença na vida dos animais.
               </p>
             </div>
+            
+            {/* Layout especial para presidente */}
+            {colaboradores.find(colab => colab.cargo === 'presidente') && (
+              <div className="presidente-destaque">
+                {(() => {
+                  const presidente = colaboradores.find(colab => colab.cargo === 'presidente');
+                  return (
+                    <div className="presidente-card">
+                      <div className="presidente-img">
+                        <img
+                          src={presidente.imagem && (presidente.imagem.startsWith('http') || presidente.imagem.startsWith('data:')) ? presidente.imagem : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                          alt={`Foto de ${presidente.nome}`}
+                          onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                        />
+                      </div>
+                      <div className="presidente-info">
+                        <h3 className="presidente-nome">{presidente.nome}</h3>
+                        <p className="presidente-cargo">Presidente</p>
+                        <p className="presidente-desde">Membro desde: {presidente.membroDesde}</p>
+                        {presidente.descricao && (
+                          <p className="presidente-descricao">{presidente.descricao}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            {/* Grid para outros colaboradores */}
             <div className="colaboradores-grid">
-              {colaboradores.map((colab, idx) => (
+              {colaboradores.filter(colab => colab.cargo !== 'presidente').map((colab, idx) => (
                 <div key={idx} className="colaborador-card">
                   <div className="colaborador-img">
-                    <img src={colab.imagem} alt={`Foto de ${colab.nome}`} />
+                    <img
+                      src={colab.imagem && (colab.imagem.startsWith('http') || colab.imagem.startsWith('data:')) ? colab.imagem : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                      alt={`Foto de ${colab.nome}`}
+                      onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                    />
                   </div>
                   <h4 className="colaborador-nome">{colab.nome}</h4>
+                  {colab.cargo && colab.cargo !== 'colaborador' && (
+                    <p className="colaborador-cargo">{colab.cargo.charAt(0).toUpperCase() + colab.cargo.slice(1).replace('-', ' ')}</p>
+                  )}
                   <p className="colaborador-info">Membro desde: {colab.membroDesde}</p>
+                  {colab.descricao && (
+                    <p className="colaborador-descricao-mini">{colab.descricao.length > 80 ? colab.descricao.substring(0, 80) + '...' : colab.descricao}</p>
+                  )}
                 </div>
               ))}
             </div>
@@ -302,7 +510,11 @@ function Inicio() {
             {eventos.length > 0 && (
               <div className="evento-card">
                 <div className="evento-img">
-                  <img src={eventos[eventoIndex].imagemUrl || "https://via.placeholder.com/600x400?text=Sem+Imagem"} alt={`Imagem do evento ${eventos[eventoIndex].titulo}`} />
+                  <img
+                    src={eventos[eventoIndex].imagemUrl && eventos[eventoIndex].imagemUrl.startsWith('http') ? eventos[eventoIndex].imagemUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+'}
+                    alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
+                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+'; }}
+                  />
                 </div>
                 <div className="evento-info">
                   <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
@@ -369,7 +581,9 @@ function Inicio() {
                     <label htmlFor="message" className="form-label">Mensagem</label>
                     <textarea id="message" value={formData.message} onChange={handleInputChange} className="form-textarea" placeholder="Digite sua mensagem aqui..." required />
                   </div>
-                  <button type="submit" className="btn btn-primary btn-full">Enviar Mensagem</button>
+                  <button type="submit" className="btn btn-primary btn-full" disabled={enviandoMensagem}>
+                    {enviandoMensagem ? 'Enviando...' : 'Enviar Mensagem'}
+                  </button>
                 </form>
               </div>
 
