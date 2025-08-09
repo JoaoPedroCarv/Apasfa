@@ -1,8 +1,7 @@
 import { useState } from 'react';
 import './admin.css';
-import { db, storage } from '../../services/firebaseConnection';
+import { db } from '../../services/firebaseConnection';
 import { collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function CadastroAnimal() {
     const [nome, setNome] = useState('');
@@ -23,22 +22,17 @@ export default function CadastroAnimal() {
         }
 
         try {
-            // 1. Enviar imagem para o Storage
-            const storageRef = ref(storage, `animais/${Date.now()}_${foto.name}`);
-            await uploadBytes(storageRef, foto);
+            // Converter imagem para Base64
+            const fotoUrl = await convertToBase64(foto);
 
-            // 2. Obter URL da imagem
-            const fotoUrl = await getDownloadURL(storageRef);
-
-            // 3. Salvar dados no Firestore
+            // Salvar dados no Firestore com imagem em Base64
             await addDoc(collection(db, "animais"), {
                 nome,
-                idade,
-
+                idade: parseInt(idade),
                 raca,
                 sexo,
                 descricao,
-                fotoUrl,
+                fotoUrl, // Agora é uma string Base64
                 criadoEm: new Date()
             });
 
@@ -47,16 +41,30 @@ export default function CadastroAnimal() {
             // Resetar formulário
             setNome('');
             setIdade('');
-
             setRaca('');
             setSexo('');
             setDescricao('');
             setFoto(null);
+            
+            // Resetar o campo de arquivo
+            const fileInput = document.querySelector('input[type="file"]');
+            if (fileInput) fileInput.value = '';
+            
         } catch (err) {
             console.error("Erro ao cadastrar animal:", err);
-            setError("Erro ao cadastrar. Tente novamente.");
+            setError(`Erro ao cadastrar: ${err.message}`);
         }
     }
+
+    // Função para converter arquivo para Base64
+    const convertToBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+        });
+    };
 
     return (
         <div className="admin-container centralizado">

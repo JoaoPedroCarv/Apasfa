@@ -1,8 +1,7 @@
 import { useState } from 'react';
-import './admin.css';
-import { db, storage } from '../../services/firebaseConnection';
+import './cadastrarEvento.css';
+import { db } from '../../services/firebaseConnection';
 import { collection, addDoc } from 'firebase/firestore';
-import { ref, uploadBytes, getDownloadURL } from 'firebase/storage';
 
 export default function CadastrarEvento() {
   const [titulo, setTitulo] = useState('');
@@ -19,16 +18,14 @@ export default function CadastrarEvento() {
     }
 
     try {
-      // Upload da imagem para o Firebase Storage
-      const storageRef = ref(storage, `eventos/${Date.now()}_${imagem.name}`);
-      await uploadBytes(storageRef, imagem);
-      const imagemUrl = await getDownloadURL(storageRef);
+      // Converter imagem para Base64
+      const imagemUrl = await convertToBase64(imagem);
 
       // Salvar dados no Firestore
       await addDoc(collection(db, "eventos"), {
         titulo,
         data,
-        imagemUrl,
+        imagemUrl, // Agora é uma string Base64
         criadoEm: new Date()
       });
 
@@ -38,45 +35,69 @@ export default function CadastrarEvento() {
       setTitulo('');
       setData('');
       setImagem(null);
+      
+      // Resetar o campo de arquivo
+      const fileInput = document.querySelector('input[type="file"]');
+      if (fileInput) fileInput.value = '';
+      
     } catch (err) {
       console.error("Erro ao cadastrar evento:", err);
       setError("Erro ao cadastrar. Tente novamente.");
     }
   }
 
+  // Função para converter arquivo para Base64
+  const convertToBase64 = (file) => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+  };
+
   return (
-    <div className="admin-container centralizado">
-      <div className="form-box">
-        <h1>Cadastrar Evento</h1>
-        {error && <div className="error-message">{error}</div>}
-        <form onSubmit={handleSubmit}>
-          <div className="input-group">
-            <label>Título do Evento</label>
-            <input
-              type="text"
-              value={titulo}
-              onChange={(e) => setTitulo(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label>Data</label>
-            <input
-              type="date"
-              value={data}
-              onChange={(e) => setData(e.target.value)}
-            />
-          </div>
-          <div className="input-group">
-            <label>Imagem do Evento</label>
-            <input
-              type="file"
-              accept="image/*"
-              onChange={(e) => setImagem(e.target.files[0])}
-            />
-          </div>
-          <button type="submit">Cadastrar Evento</button>
-        </form>
-      </div>
+    <div className="cadastrar-evento-container">
+      <h3>📅 Cadastrar Novo Evento</h3>
+      
+      {error && <div className="error-message">{error}</div>}
+      
+      <form className="cadastrar-evento-form" onSubmit={handleSubmit}>
+        <div className="input-group">
+          <label htmlFor="titulo">Título do Evento:</label>
+          <input
+            id="titulo"
+            type="text"
+            placeholder="Digite o título do evento"
+            value={titulo}
+            onChange={(e) => setTitulo(e.target.value)}
+          />
+        </div>
+        
+        <div className="input-group">
+          <label htmlFor="data">Data do Evento:</label>
+          <input
+            id="data"
+            type="date"
+            value={data}
+            onChange={(e) => setData(e.target.value)}
+          />
+        </div>
+        
+        <div className="input-group">
+          <label htmlFor="imagem">Imagem do Evento:</label>
+          <input
+            id="imagem"
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImagem(e.target.files[0])}
+          />
+        </div>
+        
+        <button type="submit">
+          ✅ Cadastrar Evento
+        </button>
+      </form>
     </div>
   );
 }
