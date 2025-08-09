@@ -1,0 +1,649 @@
+import React, { useState, useEffect } from 'react';
+import './inicio.css';
+import './flipcards.css'; // Garantindo que ambos os CSS sejam importados
+import { Link } from 'react-router-dom';
+import InputMask from "react-input-mask";
+import pixQrCode from '../../assets/imagens/qrcode.png';
+// Imagens do carrossel "Quem Somos"
+import whatsapp1 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.04.jpeg';
+import whatsapp2 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.04 (1).jpeg';
+import whatsapp3 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05.jpeg';
+import whatsapp4 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (1).jpeg';
+import whatsapp5 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (2).jpeg';
+import whatsapp6 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (3).jpeg';
+
+
+import { collection, getDocs, doc,  onSnapshot, addDoc } from "firebase/firestore"; // Importe 'doc' e 'getDoc'
+import { db } from "../../services/firebaseConnection";
+
+
+function Inicio() {
+  const [pets, setPets] = useState([]);
+  const [eventos, setEventos] = useState([]);
+  const [colaboradores, setColaboradores] = useState([]);
+  const [eventoIndex, setEventoIndex] = useState(0);
+  const [carouselIndex, setCarouselIndex] = useState(0);
+  const [formData, setFormData] = useState({
+    name: '', email: '', subject: '', message: '',telefone: '',
+  });
+  const [enviandoMensagem, setEnviandoMensagem] = useState(false);
+  const [estatisticas, setEstatisticas] = useState({
+    animaisEncontrados: '...', animaisCastrados: '...', animaisRecuperados: '...',
+  });
+
+ // Funções do Formulário de Contato
+
+  // (Não precisa mudar o handleInputChange, ele já funciona para o novo campo)
+  const handleInputChange = (e) => {
+    const { id, value } = e.target;
+    // Precisamos tratar o caso do InputMask que usa 'name' em vez de 'id'
+    const fieldName = e.target.name || id;
+    setFormData(prev => ({ ...prev, [fieldName]: value }));
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setEnviandoMensagem(true);
+
+    try {
+      const solicitacaoData = {
+        nome: formData.name,
+        email: formData.email,
+        telefone: formData.telefone || '', // <-- MUDANÇA AQUI: Adiciona o telefone
+        assunto: formData.subject,
+        mensagem: formData.message,
+        tipo: 'contato',
+        dataEnvio: new Date().toISOString(),
+        status: 'pendente'
+      };
+
+      await addDoc(collection(db, 'solicitacoes'), solicitacaoData);
+      
+      alert(`Obrigado pelo contato, ${formData.name}! Sua mensagem foi recebida e será analisada em breve.`);
+      
+      // <-- MUDANÇA AQUI: Limpa o campo de telefone também
+      setFormData({ name: '', email: '', telefone: '', subject: '', message: '' }); 
+
+    } catch (error) {
+      console.error('Erro ao enviar mensagem:', error);
+      alert('Erro ao enviar mensagem. Tente novamente ou entre em contato por telefone.');
+    } finally {
+      setEnviandoMensagem(false);
+    }
+  };
+
+  // Efeito para buscar todos os dados do Firestore
+   useEffect(() => {
+    // Busca Pets, Eventos e Colaboradores
+    const fetchData = async () => {
+      try {
+        const petsSnapshot = await getDocs(collection(db, "animais"));
+        setPets(petsSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } catch (error) { console.error("Erro ao buscar animais:", error); }
+
+      try {
+        const eventosSnapshot = await getDocs(collection(db, "eventos"));
+        setEventos(eventosSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+      } catch (error) { console.error("Erro ao buscar eventos:", error); }
+
+      try {
+        const colaboradoresSnapshot = await getDocs(collection(db, "colaboradores"));
+        const colaboradoresList = colaboradoresSnapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+        
+        if (colaboradoresList.length > 0) {
+          // Ordenar colaboradores: presidente primeiro, depois por ordem alfabética
+          const colaboradoresOrdenados = colaboradoresList.sort((a, b) => {
+            if (a.cargo === 'presidente') return -1;
+            if (b.cargo === 'presidente') return 1;
+            return a.nome.localeCompare(b.nome);
+          });
+          setColaboradores(colaboradoresOrdenados);
+        } else {
+          // Colaboradores padrão caso não haja nenhum cadastrado
+          setColaboradores([
+            { 
+              nome: "Dr. João Silva", 
+              membroDesde: "Janeiro 2020", 
+              cargo: "presidente", 
+              descricao: "Veterinário dedicado à causa animal há mais de 15 anos. Fundador da APASFA, lidera nossa missão de resgatar, cuidar e encontrar lares amorosos para animais em situação de vulnerabilidade.", 
+              imagem: "https://randomuser.me/api/portraits/men/32.jpg" 
+            },
+            { 
+              nome: "Maria Oliveira", 
+              membroDesde: "Março 2019", 
+              cargo: "vice-presidente", 
+              descricao: "Coordena as ações de resgate e campanhas de adoção.",
+              imagem: "https://randomuser.me/api/portraits/women/44.jpg" 
+            },
+            { 
+              nome: "Dr. Carlos Souza", 
+              membroDesde: "Julho 2021", 
+              cargo: "veterinario", 
+              descricao: "Responsável pelos cuidados médicos de todos os animais resgatados.",
+              imagem: "https://randomuser.me/api/portraits/men/65.jpg" 
+            },
+          ]);
+        }
+      } catch (error) { 
+        console.error("Erro ao buscar colaboradores:", error);
+        if (error.code === 'permission-denied') {
+          console.warn("Permissões insuficientes para acessar colaboradores. Usando dados padrão.");
+        }
+        // Em caso de erro ou sem permissão, usar colaboradores padrão
+        setColaboradores([
+          { 
+            nome: "Dr. João Silva", 
+            membroDesde: "Janeiro 2020", 
+            cargo: "presidente", 
+            descricao: "Veterinário dedicado à causa animal há mais de 15 anos. Fundador da APASFA, lidera nossa missão de resgatar, cuidar e encontrar lares amorosos para animais em situação de vulnerabilidade.", 
+            imagem: "https://randomuser.me/api/portraits/men/32.jpg" 
+          },
+          { 
+            nome: "Maria Oliveira", 
+            membroDesde: "Março 2019", 
+            cargo: "vice-presidente", 
+            descricao: "Coordena as ações de resgate e campanhas de adoção.",
+            imagem: "https://randomuser.me/api/portraits/women/44.jpg" 
+          },
+          { 
+            nome: "Dr. Carlos Souza", 
+            membroDesde: "Julho 2021", 
+            cargo: "veterinario", 
+            descricao: "Responsável pelos cuidados médicos de todos os animais resgatados.",
+            imagem: "https://randomuser.me/api/portraits/men/65.jpg" 
+          },
+        ]);
+      }
+    };
+
+    fetchData();
+
+    // A MÁGICA: Listener em tempo real para as estatísticas
+    const docRef = doc(db, 'estatisticas', 'geral');
+    
+    // onSnapshot abre uma conexão e ouve por mudanças.
+    const unsubscribe = onSnapshot(docRef, (docSnap) => {
+      if (docSnap.exists()) {
+        console.log("Dados das estatísticas recebidos em tempo real: ", docSnap.data());
+        setEstatisticas(docSnap.data());
+      } else {
+        console.log("Documento de estatísticas não existe.");
+      }
+    });
+
+    // Função de limpeza: fecha a conexão quando o componente "desmonta"
+    return () => {
+      unsubscribe();
+    };
+
+  }, []);
+  
+
+
+  const proximoEvento = () => {
+    if (eventos.length > 0) {
+      setEventoIndex((prev) => (prev + 1) % eventos.length);
+    }
+  };
+
+  const compromissos = [
+    { titulo: "Missão", texto: "• Manter o abrigo dentro da capacidade.\n• Socorrer animais agonizantes.\n• Apoiar famílias carentes com seus animais.\n• Promover a castração para evitar a superpopulação.\n• Reabilitar física e emocionalmente os animais resgatados.\n" },
+    { titulo: "Visão", texto: "• Conscientizar e auxiliar no controle da espécie.\n• Participar de políticas públicas.\n• Educação em posse responsável.\n• Ser referência regional em proteção e bem-estar animal.\n• Criar programas de voluntariado e engajamento comunitário.\n• Desenvolver campanhas contínuas de adoção e castração." },
+    { titulo: "Valores", texto: "• Fiscalizar crueldade animal.\n• Promover adoção.\n• Difundir leis de proteção animal.\n• Transparência e ética na gestão da ONG.\n• Respeito à vida em todas as suas formas.\n• Comprometimento com o bem-estar animal e social." },
+  ];
+
+  // Imagens do carrossel "Quem Somos"
+  const carouselImages = [
+    { src: whatsapp1, alt: "Atividades da APASFA" },
+    { src: whatsapp2, alt: "Cuidados com os animais" },
+    { src: whatsapp3, alt: "Trabalho da equipe" },
+    { src: whatsapp4, alt: "Resgate de animais" },
+    { src: whatsapp5, alt: "Abrigo da APASFA" },
+    { src: whatsapp6, alt: "Voluntários em ação" }
+  ];
+
+  // Funções do carrossel
+  const nextImage = () => {
+    setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+  };
+
+  const prevImage = () => {
+    setCarouselIndex((prev) => (prev - 1 + carouselImages.length) % carouselImages.length);
+  };
+
+  const goToSlide = (index) => {
+    setCarouselIndex(index);
+  };
+
+  // Auto-play do carrossel
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCarouselIndex((prev) => (prev + 1) % carouselImages.length);
+    }, 5000); // Muda a imagem a cada 5 segundos
+    
+    return () => clearInterval(interval);
+  }, [carouselImages.length]);
+
+  return (
+    <div className="container">
+      <main>
+        
+        <section className="hero-section">
+          <div className="hero-content">
+            <div className="hero-text">
+              <h1 className="hero-title">Encontre seu Amigo Fiel</h1>
+              <p className="hero-description">
+                Somos a instituição APASFA e acreditamos que cada animal tem uma história. Junte-se a nós para dar a eles um final feliz. Adote, doe ou seja voluntário.
+              </p>
+              <div className="hero-actions">
+                <Link to="/adocao" className="btn btn-primary">Adote Agora</Link>
+                <a href="#como-ajudar" className="btn btn-accent">Como Ajudar</a>
+              </div>
+            </div>
+            <div className="hero-gallery">
+              <img src="https://images.unsplash.com/photo-1558788353-f76d92427f16?auto=format&fit=crop&w=400&q=80" alt="Cachorro feliz para adoção" className="gallery-img img-1" />
+              <img src="https://images.unsplash.com/photo-1596854407944-bf87f6fdd49e?auto=format&fit=crop&w=400&q=80" alt="Gato curioso para adoção" className="gallery-img img-2" />
+              <img src="https://images.unsplash.com/photo-1583511655826-05700d52f4d9?auto=format&fit=crop&w=400&q=80" alt="Cachorro brincando" className="gallery-img img-3" />
+            </div>
+          </div>
+        </section>
+
+        <section className="info-rapida">
+          <div className="info-card">
+            <h3>Animais Encontrados</h3>
+            <p>{estatisticas.animaisEncontrados}</p>
+          </div>
+          <div className="info-card">
+            <h3>Animais Castrados</h3>
+            <p>{estatisticas.animaisCastrados}</p>
+          </div>
+          <div className="info-card">
+            <h3>Animais Recuperados</h3>
+            <p>{estatisticas.animaisRecuperados}</p>
+          </div>
+        </section>
+
+        <section id="sobre" className="section">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Quem Somos</h2>
+              <p className="section-description">
+                A APASFA (Associação Protetora dos Animais São Francisco de Assis) em Prudentópolis é uma organização
+                sem fins lucrativos que visa proteger e promover o bem-estar dos animais.
+              </p>
+            </div>
+            <div className="flip-card-container">
+              {compromissos.map((item, idx) => (
+                <div className="flip-card" key={idx}>
+                  <div className="flip-card-inner">
+                    <div className="flip-card-front">
+                      <h3>{item.titulo}</h3>
+                      <span className="flip-icon"></span>
+                    </div>
+                    <div className="flip-card-back">
+                      {item.texto.split("\n").map((line, index) => (
+                        <p key={index}>{line}</p>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            
+            {/* Carrossel de imagens */}
+            <div className="carousel-container">
+              <div className="carousel-header">
+                <h3>Nossa Atuação</h3>
+                <p>Veja algumas fotos do nosso trabalho diário</p>
+              </div>
+              <div className="carousel-wrapper">
+                <button 
+                  className="carousel-btn carousel-btn-prev" 
+                  onClick={prevImage}
+                  aria-label="Imagem anterior"
+                >
+                  &#8249;
+                </button>
+                <div className="carousel-content">
+                  <img 
+                    src={carouselImages[carouselIndex].src} 
+                    alt={carouselImages[carouselIndex].alt}
+                    className="carousel-image"
+                  />
+                </div>
+                <button 
+                  className="carousel-btn carousel-btn-next" 
+                  onClick={nextImage}
+                  aria-label="Próxima imagem"
+                >
+                  &#8250;
+                </button>
+              </div>
+              <div className="carousel-indicators">
+                {carouselImages.map((_, index) => (
+                  <button
+                    key={index}
+                    className={`carousel-indicator ${index === carouselIndex ? 'active' : ''}`}
+                    onClick={() => goToSlide(index)}
+                    aria-label={`Ir para imagem ${index + 1}`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+
+
+        <section id="adocao" className="section section-light-orange">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Adote um Amigo</h2>
+              <p className="section-description">
+                Conheça alguns dos nossos animais que estão à espera de um lar amoroso. Todos são vacinados, castrados e
+                acompanhados por nossa equipe.
+              </p>
+            </div>
+            <div className="pets-grid">
+              {pets.slice(0, 6).map((pet) => (
+                <div key={pet.id} className="pet-card">
+                  <div className="pet-image">
+                    <img
+                      src={pet.fotoUrl && (pet.fotoUrl.startsWith('http') || pet.fotoUrl.startsWith('data:')) ? pet.fotoUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                      alt={`Animal para adoção ${pet.nome}`}
+                      onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                    />
+                  </div>
+                  <div className="pet-info">
+                    <h3 className="pet-name">{pet.nome}</h3>
+                    <p className="pet-details">
+                      {pet.raca} • {pet.idade} anos • {pet.sexo}
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="center-button">
+              <Link to="/adocao" className="btn btn-brown">Ver Todos os Animais</Link>
+            </div>
+          </div>
+        </section>
+
+        <section id="como-ajudar" className="section-ajuda">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Como Você Pode Ajudar</h2>
+              <p className="section-description">
+                Existem várias maneiras de contribuir com nossa causa e fazer a diferença na vida dos animais.
+              </p>
+            </div>
+            <div className="help-grid">
+              <div className="help-card card-blue">
+                <h3 className="help-title">Faça uma Doação</h3>
+                <p className="help-description">
+                  Sua contribuição financeira ajuda a custear tratamentos veterinários, alimentação, medicamentos e
+                  manutenção do nosso abrigo.
+                </p>
+                <div className="bank-info">
+                  <p className="bank-title">Dados Bancários:</p>
+                  <p className="bank-detail">Banco: Exemplo</p>
+                  <p className="bank-detail">Agência: 0000</p>
+                  <p className="bank-detail">Conta: 00000-0</p>
+                
+                </div>
+                
+                <div className="donation-section">
+                  <h4>Ajude a causa! Faça uma doação via Pix</h4>
+                  <p>Chave Pix:<br /><strong>apasfaprudentopolis@gmail.com</strong></p>
+                  <img src={pixQrCode} alt="QR Code para doação via Pix" className="pix-qrcode" />
+                </div>
+              </div>
+              <div className="help-option card-orange">
+                <h3 className="help-title">Gostou do nosso projeto? Seja Voluntário!</h3>
+                <p className="help-description">
+                 Doe seu tempo e faça parte da transformação na vida de muitos animais resgatados. O trabalho voluntário é essencial para manter nossas atividades e garantir que cada animal receba amor, cuidado e uma chance real de ser adotado.
+                </p>
+                <button
+                  className="btn btn-outline"
+                  onClick={() => { document.getElementById('contato')?.scrollIntoView({ behavior: 'smooth' }); }}
+                >
+                  Saiba Mais
+                </button>
+                <img src={require('../../assets/imagens/abrigo.png')} alt="Imagem do Abrigo" className="volunteer-image" />
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="section section-light-blue">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Nossos Colaboradores</h2>
+              <p className="section-description">
+                Conheça as pessoas que dedicam seu tempo e esforço para fazer a diferença na vida dos animais.
+              </p>
+            </div>
+            
+            {/* Layout especial para presidente */}
+            {colaboradores.find(colab => colab.cargo === 'presidente') && (
+              <div className="presidente-destaque">
+                {(() => {
+                  const presidente = colaboradores.find(colab => colab.cargo === 'presidente');
+                  return (
+                    <div className="presidente-card">
+                      <div className="presidente-img">
+                        <img
+                          src={presidente.imagem && (presidente.imagem.startsWith('http') || presidente.imagem.startsWith('data:')) ? presidente.imagem : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                          alt={`Foto de ${presidente.nome}`}
+                          onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                        />
+                      </div>
+                      <div className="presidente-info">
+                        <h3 className="presidente-nome">{presidente.nome}</h3>
+                        <p className="presidente-cargo">Presidente</p>
+                        <p className="presidente-desde">Membro desde: {presidente.membroDesde}</p>
+                        {presidente.descricao && (
+                          <p className="presidente-descricao">{presidente.descricao}</p>
+                        )}
+                      </div>
+                    </div>
+                  );
+                })()}
+              </div>
+            )}
+
+            {/* Grid para outros colaboradores */}
+            <div className="colaboradores-grid">
+              {colaboradores.filter(colab => colab.cargo !== 'presidente').map((colab, idx) => (
+                <div key={idx} className="colaborador-card">
+                  <div className="colaborador-img">
+                    <img
+                      src={colab.imagem && (colab.imagem.startsWith('http') || colab.imagem.startsWith('data:')) ? colab.imagem : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                      alt={`Foto de ${colab.nome}`}
+                      onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                    />
+                  </div>
+                  <h4 className="colaborador-nome">{colab.nome}</h4>
+                  {colab.cargo && colab.cargo !== 'colaborador' && (
+                    <p className="colaborador-cargo">{colab.cargo.charAt(0).toUpperCase() + colab.cargo.slice(1).replace('-', ' ')}</p>
+                  )}
+                  <p className="colaborador-info">Membro desde: {colab.membroDesde}</p>
+                  {colab.descricao && (
+                    <p className="colaborador-descricao-mini">{colab.descricao.length > 80 ? colab.descricao.substring(0, 80) + '...' : colab.descricao}</p>
+                  )}
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+<section className="section">
+  <div className="section-content">
+    <div className="section-header">
+      <h2 className="section-title">Próximos Eventos</h2>
+      <p className="section-description">
+        Fique por dentro dos nossos eventos e participe das nossas ações.
+      </p>
+    </div>
+    {eventos && eventos.length > 0 && (
+      <div className="evento-card">
+        {(() => {
+          const eventoAtual = eventos[eventoIndex];
+
+          // ======================= CORREÇÃO APLICADA AQUI =======================
+          // Agora a verificação aceita 'http' (http/https) OU 'data:'
+          const imagemValida = eventoAtual.imagemUrl && 
+                               (eventoAtual.imagemUrl.startsWith('http') || 
+                                eventoAtual.imagemUrl.startsWith('data:'));
+          // ====================================================================
+
+          const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+';
+
+          return (
+            <>
+              <div className="evento-img">
+                <img
+                  src={imagemValida ? eventoAtual.imagemUrl : fallbackImage}
+                  alt={`Imagem do evento ${eventoAtual.titulo}`}
+                  onError={e => { 
+                    e.target.onerror = null; 
+                    e.target.src = fallbackImage; 
+                  }}
+                />
+              </div>
+              <div className="evento-info">
+                <h3 className="evento-titulo">{eventoAtual.titulo}</h3>
+                <p className="evento-data">
+                  <strong>Data:</strong> {eventoAtual.data}
+                </p>
+                <p className="evento-descricao">{eventoAtual.descricao}</p>
+              </div>
+              <button className="pata-btn" onClick={proximoEvento}>🐾</button>
+            </>
+          );
+        })()}
+      </div>
+    )}
+  </div>
+</section>
+        <section id="contato" className="section">
+          <div className="section-content">
+            <div className="contact-grid">
+              <div className="contact-info">
+                <h2 className="contact-title">Entre em Contato</h2>
+                <p className="contact-description">
+                  Estamos à disposição para esclarecer dúvidas, receber sugestões ou conversar sobre como você pode ajudar.
+                </p>
+                <div className="contact-details">
+               
+                  <div className="contact-item">
+                    <svg className="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
+                    <span> apasfaprudentopolis@gmail.com</span>
+                  </div>
+                  <div className="contact-item">
+                    <svg className="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
+                    <span> Rua Reinaldo Vanzo, 577</span>
+                  </div>
+                </div>
+               
+              </div>
+
+<div className="contact-form-container">
+  <form className="contact-form" onSubmit={handleSubmit}>
+    {/* Linha com Nome e Email */}
+    <div className="form-row">
+      <div className="form-group">
+        <label htmlFor="name" className="form-label">Nome</label>
+        <input
+          id="name"
+          name="name" // Adicionar 'name' para consistência
+          value={formData.name}
+          onChange={handleInputChange}
+          className="form-input"
+          placeholder="Seu nome completo"
+          required
+        />
+      </div>
+      <div className="form-group">
+        <label htmlFor="email" className="form-label">Email</label>
+        <input
+          id="email"
+          name="email" // Adicionar 'name' para consistência
+          type="email"
+          value={formData.email}
+          onChange={handleInputChange}
+          className="form-input"
+          placeholder="seu.email@exemplo.com"
+          required
+        />
+      </div>
+    </div>
+
+    {/* ======================================================== */}
+    {/*        NOVO CAMPO DE TELEFONE ADICIONADO AQUI          */}
+    {/* ======================================================== */}
+    <div className="form-group">
+      <label htmlFor="telefone" className="form-label">Telefone (Opcional)</label>
+      <InputMask
+        mask="(99) 99999-9999"
+        id="telefone"
+        name="telefone"
+        value={formData.telefone}
+        onChange={handleInputChange}
+      >
+        {(inputProps) => (
+          <input
+            {...inputProps}
+            type="tel"
+            className="form-input" // Usando a mesma classe dos outros inputs
+            placeholder="(42) 99999-8888"
+          />
+        )}
+      </InputMask>
+    </div>
+    {/* ======================================================== */}
+
+    {/* Campo Assunto */}
+    <div className="form-group">
+      <label htmlFor="subject" className="form-label">Assunto</label>
+      <input
+        id="subject"
+        name="subject" // Adicionar 'name' para consistência
+        value={formData.subject}
+        onChange={handleInputChange}
+        className="form-input"
+        placeholder="Sobre o que você gostaria de falar?"
+        required
+      />
+    </div>
+
+    {/* Campo Mensagem */}
+    <div className="form-group">
+      <label htmlFor="message" className="form-label">Mensagem</label>
+      <textarea
+        id="message"
+        name="message" // Adicionar 'name' para consistência
+        value={formData.message}
+        onChange={handleInputChange}
+        className="form-textarea"
+        placeholder="Digite sua mensagem aqui..."
+        required
+      />
+    </div>
+
+    {/* Botão de Envio */}
+    <button type="submit" className="btn btn-primary btn-full" disabled={enviandoMensagem}>
+      {enviandoMensagem ? 'Enviando...' : 'Enviar Mensagem'}
+    </button>
+  </form>
+</div>
+
+            </div>
+          </div>
+        </section>
+
+      </main>
+    </div>
+  );
+}
+
+export default Inicio;
