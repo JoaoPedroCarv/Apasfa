@@ -1257,29 +1257,20 @@
   border-radius: 12px;
   overflow: hidden;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  position: relative;
   display: flex;
-  flex-direction: column; /* Garante que o texto fique abaixo da imagem */
-  height: 90%; /* Faz o card preencher o espaço no grid */
+  flex-direction: column;
 }
 
-/* Container da Imagem */
-.evento-img {
-  width: 100%;
-
-  aspect-ratio: 4 / 3; 
-  overflow: hidden; /* Garante que a imagem não vaze do container arredondado */
-}
-
-/* A Imagem em si */
 .evento-img img {
   width: 100%;
-  height: 100%; /* A imagem ocupa 100% do container */
-  object-fit: cover; /* Cobre todo o espaço, cortando o mínimo necessário, sem distorcer. */
+  height: 400px;
+  object-fit: cover;
 }
 
 .evento-info {
   padding: 1rem;
-  flex: 1; /* Permite que esta área cresça e empurre o rodapé para baixo, se necessário */
+  flex: 1;
 }
 
 
@@ -1294,7 +1285,6 @@
   font-size: 2rem;
   cursor: pointer;
   transition: transform 0.3s;
-  position: relative; /* <-- ADICIONE ESTA LINHA */
 }
 
 .pata-btn:hover {

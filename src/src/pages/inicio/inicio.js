@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import './inicio.css';
 import './flipcards.css'; // Garantindo que ambos os CSS sejam importados
 import { Link } from 'react-router-dom';
-import InputMask from "react-input-mask";
 import pixQrCode from '../../assets/imagens/qrcode.png';
 // Imagens do carrossel "Quem Somos"
 import whatsapp1 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.04.jpeg';
@@ -12,10 +11,13 @@ import whatsapp4 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.0
 import whatsapp5 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (2).jpeg';
 import whatsapp6 from '../../assets/imagens/WhatsApp Image 2025-05-30 at 14.34.05 (3).jpeg';
 
-
-import { collection, getDocs, doc,  onSnapshot, addDoc } from "firebase/firestore"; // Importe 'doc' e 'getDoc'
+import { collection, getDocs, doc, getDoc, onSnapshot, addDoc } from "firebase/firestore"; // Importe 'doc' e 'getDoc'
 import { db } from "../../services/firebaseConnection";
 
+// Imagens de exemplo para a galeria e outras seções
+const historiaLuna = "https://images.unsplash.com/photo-1543466835-00a7907e9de1?auto=format&fit=crop&w=600&q=80";
+const historiaBidu = "https://images.unsplash.com/photo-1598133894022-76a087120b0d?auto=format&fit=crop&w=600&q=80";
+const historiaMimi = "https://images.unsplash.com/photo-1561037404-61cd46aa615b?auto=format&fit=crop&w=600&q=80";
 
 function Inicio() {
   const [pets, setPets] = useState([]);
@@ -24,21 +26,17 @@ function Inicio() {
   const [eventoIndex, setEventoIndex] = useState(0);
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [formData, setFormData] = useState({
-    name: '', email: '', subject: '', message: '',telefone: '',
+    name: '', email: '', subject: '', message: '',
   });
   const [enviandoMensagem, setEnviandoMensagem] = useState(false);
   const [estatisticas, setEstatisticas] = useState({
     animaisEncontrados: '...', animaisCastrados: '...', animaisRecuperados: '...',
   });
 
- // Funções do Formulário de Contato
-
-  // (Não precisa mudar o handleInputChange, ele já funciona para o novo campo)
+  // Funções do Formulário de Contato
   const handleInputChange = (e) => {
     const { id, value } = e.target;
-    // Precisamos tratar o caso do InputMask que usa 'name' em vez de 'id'
-    const fieldName = e.target.name || id;
-    setFormData(prev => ({ ...prev, [fieldName]: value }));
+    setFormData(prev => ({ ...prev, [id]: value }));
   };
 
   const handleSubmit = async (e) => {
@@ -49,7 +47,6 @@ function Inicio() {
       const solicitacaoData = {
         nome: formData.name,
         email: formData.email,
-        telefone: formData.telefone || '', // <-- MUDANÇA AQUI: Adiciona o telefone
         assunto: formData.subject,
         mensagem: formData.message,
         tipo: 'contato',
@@ -60,10 +57,7 @@ function Inicio() {
       await addDoc(collection(db, 'solicitacoes'), solicitacaoData);
       
       alert(`Obrigado pelo contato, ${formData.name}! Sua mensagem foi recebida e será analisada em breve.`);
-      
-      // <-- MUDANÇA AQUI: Limpa o campo de telefone também
-      setFormData({ name: '', email: '', telefone: '', subject: '', message: '' }); 
-
+      setFormData({ name: '', email: '', subject: '', message: '' });
     } catch (error) {
       console.error('Erro ao enviar mensagem:', error);
       alert('Erro ao enviar mensagem. Tente novamente ou entre em contato por telefone.');
@@ -178,7 +172,11 @@ function Inicio() {
 
   }, []);
   
-
+  const historiasResgate = [
+    { nome: "Luna", descricao: "Resgatada com fome e frio, hoje vive feliz em um novo lar.", imagem: historiaLuna },
+    { nome: "Bidu", descricao: "Machucado na rua, recebeu cuidados e muito amor.", imagem: historiaBidu },
+    { nome: "Mimi", descricao: "Sobreviveu a maus-tratos e agora está saudável e brincalhona.", imagem: historiaMimi },
+  ];
 
   const proximoEvento = () => {
     if (eventos.length > 0) {
@@ -333,7 +331,29 @@ function Inicio() {
           </div>
         </section>
 
-
+        <section className="section section-light-blue">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Histórias de Resgate</h2>
+              <p className="section-description">
+                Conheça algumas das histórias de animais que resgatamos e transformamos suas vidas.
+              </p>
+            </div>
+            <div className="historias-container">
+              {historiasResgate.map((historia, index) => (
+                <div key={index} className="historia-card">
+                  <div className="historia-img">
+                    <img src={historia.imagem} alt={`Foto de ${historia.nome}`} />
+                  </div>
+                  <div className="historia-texto">
+                    <h3>{historia.nome}</h3>
+                    <p>{historia.descricao}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section id="adocao" className="section section-light-orange">
           <div className="section-content">
@@ -389,9 +409,11 @@ function Inicio() {
                   <p className="bank-detail">Banco: Exemplo</p>
                   <p className="bank-detail">Agência: 0000</p>
                   <p className="bank-detail">Conta: 00000-0</p>
-                  <p className="bank-detail">PIX: 15174490000110.</p>
+                  <p className="bank-detail">PIX: exemplo@apasfa.org.br</p>
                 </div>
-                
+                <a href="https://pagseguro.uol.com.br/checkout/v2/pre-approvals/nc/sender-identification.jhtml?t=b5fcc89f3048a0932b111aa41ae873aa&e=true#rmcl" target="_blank" rel="noopener noreferrer">
+                  <button className="btn btn-primary">Doar Agora</button>
+                </a>
                 <div className="donation-section">
                   <h4>Ajude a causa! Faça uma doação via Pix</h4>
                   <p>Chave Pix:<br /><strong>apasfaprudentopolis@gmail.com</strong></p>
@@ -476,55 +498,37 @@ function Inicio() {
             </div>
           </div>
         </section>
-<section className="section">
-  <div className="section-content">
-    <div className="section-header">
-      <h2 className="section-title">Próximos Eventos</h2>
-      <p className="section-description">
-        Fique por dentro dos nossos eventos e participe das nossas ações.
-      </p>
-    </div>
-    {eventos && eventos.length > 0 && (
-      <div className="evento-card">
-        {(() => {
-          const eventoAtual = eventos[eventoIndex];
 
-          // ======================= CORREÇÃO APLICADA AQUI =======================
-          // Agora a verificação aceita 'http' (http/https) OU 'data:'
-          const imagemValida = eventoAtual.imagemUrl && 
-                               (eventoAtual.imagemUrl.startsWith('http') || 
-                                eventoAtual.imagemUrl.startsWith('data:'));
-          // ====================================================================
-
-          const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+';
-
-          return (
-            <>
-              <div className="evento-img">
-                <img
-                  src={imagemValida ? eventoAtual.imagemUrl : fallbackImage}
-                  alt={`Imagem do evento ${eventoAtual.titulo}`}
-                  onError={e => { 
-                    e.target.onerror = null; 
-                    e.target.src = fallbackImage; 
-                  }}
-                />
+        <section className="section">
+          <div className="section-content">
+            <div className="section-header">
+              <h2 className="section-title">Próximos Eventos</h2>
+              <p className="section-description">
+                Fique por dentro dos nossos eventos e participe das nossas ações.
+              </p>
+            </div>
+            {eventos.length > 0 && (
+              <div className="evento-card">
+                <div className="evento-img">
+                  <img
+                    src={eventos[eventoIndex].imagemUrl && eventos[eventoIndex].imagemUrl.startsWith('http') ? eventos[eventoIndex].imagemUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+'}
+                    alt={`Imagem do evento ${eventos[eventoIndex].titulo}`}
+                    onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAwIiBoZWlnaHQ9IjQwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIyNCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjYwMHg0MDA8L3RleHQ+PC9zdmc+'; }}
+                  />
+                </div>
+                <div className="evento-info">
+                  <h3 className="evento-titulo">{eventos[eventoIndex].titulo}</h3>
+                  <p className="evento-data">
+                    <strong>Data:</strong> {eventos[eventoIndex].data}
+                  </p>
+                  <p className="evento-descricao">{eventos[eventoIndex].descricao}</p>
+                </div>
+                <button className="pata-btn" onClick={proximoEvento}>🐾</button>
               </div>
-              <div className="evento-info">
-                <h3 className="evento-titulo">{eventoAtual.titulo}</h3>
-                <p className="evento-data">
-                  <strong>Data:</strong> {eventoAtual.data}
-                </p>
-                <p className="evento-descricao">{eventoAtual.descricao}</p>
-              </div>
-              <button className="pata-btn" onClick={proximoEvento}>🐾</button>
-            </>
-          );
-        })()}
-      </div>
-    )}
-  </div>
-</section>
+            )}
+          </div>
+        </section>
+
         <section id="contato" className="section">
           <div className="section-content">
             <div className="contact-grid">
@@ -534,108 +538,54 @@ function Inicio() {
                   Estamos à disposição para esclarecer dúvidas, receber sugestões ou conversar sobre como você pode ajudar.
                 </p>
                 <div className="contact-details">
-               
+                  <div className="contact-item">
+                    <svg className="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" /></svg>
+                    <span>(42) 9999-8888</span>
+                  </div>
                   <div className="contact-item">
                     <svg className="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2" /><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" /></svg>
                     <span>contato@apasfa.org.br</span>
                   </div>
                   <div className="contact-item">
                     <svg className="contact-icon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z" /><circle cx="12" cy="10" r="3" /></svg>
-                    <span> Rua Reinaldo Vanzo, 577</span>
+                    <span>Rua Exemplo, 123 - Prudentópolis, PR</span>
                   </div>
                 </div>
-               
+                <div className="social-links">
+                  <a href="#" className="social-link" aria-label="Instagram">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+                  </a>
+                  <a href="#" className="social-link" aria-label="Facebook">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+                  </a>
+                </div>
               </div>
 
-<div className="contact-form-container">
-  <form className="contact-form" onSubmit={handleSubmit}>
-    {/* Linha com Nome e Email */}
-    <div className="form-row">
-      <div className="form-group">
-        <label htmlFor="name" className="form-label">Nome</label>
-        <input
-          id="name"
-          name="name" // Adicionar 'name' para consistência
-          value={formData.name}
-          onChange={handleInputChange}
-          className="form-input"
-          placeholder="Seu nome completo"
-          required
-        />
-      </div>
-      <div className="form-group">
-        <label htmlFor="email" className="form-label">Email</label>
-        <input
-          id="email"
-          name="email" // Adicionar 'name' para consistência
-          type="email"
-          value={formData.email}
-          onChange={handleInputChange}
-          className="form-input"
-          placeholder="seu.email@exemplo.com"
-          required
-        />
-      </div>
-    </div>
-
-    {/* ======================================================== */}
-    {/*        NOVO CAMPO DE TELEFONE ADICIONADO AQUI          */}
-    {/* ======================================================== */}
-    <div className="form-group">
-      <label htmlFor="telefone" className="form-label">Telefone (Opcional)</label>
-      <InputMask
-        mask="(99) 99999-9999"
-        id="telefone"
-        name="telefone"
-        value={formData.telefone}
-        onChange={handleInputChange}
-      >
-        {(inputProps) => (
-          <input
-            {...inputProps}
-            type="tel"
-            className="form-input" // Usando a mesma classe dos outros inputs
-            placeholder="(42) 99999-8888"
-          />
-        )}
-      </InputMask>
-    </div>
-    {/* ======================================================== */}
-
-    {/* Campo Assunto */}
-    <div className="form-group">
-      <label htmlFor="subject" className="form-label">Assunto</label>
-      <input
-        id="subject"
-        name="subject" // Adicionar 'name' para consistência
-        value={formData.subject}
-        onChange={handleInputChange}
-        className="form-input"
-        placeholder="Sobre o que você gostaria de falar?"
-        required
-      />
-    </div>
-
-    {/* Campo Mensagem */}
-    <div className="form-group">
-      <label htmlFor="message" className="form-label">Mensagem</label>
-      <textarea
-        id="message"
-        name="message" // Adicionar 'name' para consistência
-        value={formData.message}
-        onChange={handleInputChange}
-        className="form-textarea"
-        placeholder="Digite sua mensagem aqui..."
-        required
-      />
-    </div>
-
-    {/* Botão de Envio */}
-    <button type="submit" className="btn btn-primary btn-full" disabled={enviandoMensagem}>
-      {enviandoMensagem ? 'Enviando...' : 'Enviar Mensagem'}
-    </button>
-  </form>
-</div>
+              <div className="contact-form-container">
+                <form className="contact-form" onSubmit={handleSubmit}>
+                  <div className="form-row">
+                    <div className="form-group">
+                      <label htmlFor="name" className="form-label">Nome</label>
+                      <input id="name" value={formData.name} onChange={handleInputChange} className="form-input" placeholder="Seu nome completo" required />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="email" className="form-label">Email</label>
+                      <input id="email" type="email" value={formData.email} onChange={handleInputChange} className="form-input" placeholder="seu.email@exemplo.com" required />
+                    </div>
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="subject" className="form-label">Assunto</label>
+                    <input id="subject" value={formData.subject} onChange={handleInputChange} className="form-input" placeholder="Sobre o que você gostaria de falar?" required />
+                  </div>
+                  <div className="form-group">
+                    <label htmlFor="message" className="form-label">Mensagem</label>
+                    <textarea id="message" value={formData.message} onChange={handleInputChange} className="form-textarea" placeholder="Digite sua mensagem aqui..." required />
+                  </div>
+                  <button type="submit" className="btn btn-primary btn-full" disabled={enviandoMensagem}>
+                    {enviandoMensagem ? 'Enviando...' : 'Enviar Mensagem'}
+                  </button>
+                </form>
+              </div>
 
             </div>
           </div>

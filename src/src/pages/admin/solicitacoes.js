@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { collection, getDocs, getDoc, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { collection, getDocs, getDoc, doc, updateDoc } from 'firebase/firestore';
 import { db } from '../../services/firebaseConnection';
 import { getAuth } from 'firebase/auth';
 import './solicitacoes.css';
@@ -126,7 +126,9 @@ export default function SolicitacoesAdmin() {
         }
     }, [isAdmin]);
 
-  
+    function responderEmail(email) {
+        alert(`Abrir modal ou função para responder ${email}`);
+    }
 
     const abrirSolicitacao = async (solicitacao) => {
         setSolicitacaoSelecionada(solicitacao);
@@ -147,8 +149,6 @@ export default function SolicitacoesAdmin() {
             alert('Apenas administradores podem atualizar o status das solicitações.');
             return;
         }
-
-        
 
         // Verificar se o usuário está logado
         const auth = getAuth();
@@ -193,32 +193,6 @@ export default function SolicitacoesAdmin() {
             setAtualizandoStatus(false);
         }
     };
-
-    const handleExcluirSolicitacao = async (solicitacaoId) => {
-    // Medida de segurança: pedir confirmação ao usuário
-    if (!window.confirm("Tem certeza que deseja excluir esta solicitação? Esta ação não pode ser desfeita.")) {
-        return; // Cancela a exclusão se o usuário clicar em "Cancelar"
-    }
-
-    try {
-        // Cria a referência para o documento que será excluído
-        const solicitacaoRef = doc(db, 'solicitacoes', solicitacaoId);
-        
-        // Exclui o documento do Firestore
-        await deleteDoc(solicitacaoRef);
-
-        // Atualiza a lista local removendo o item excluído, para a UI responder imediatamente
-        setSolicitacoes(prevSolicitacoes => 
-            prevSolicitacoes.filter(s => s.id !== solicitacaoId)
-        );
-
-        alert("Solicitação excluída com sucesso!");
-
-    } catch (error) {
-        console.error("Erro ao excluir solicitação:", error);
-        alert("Ocorreu um erro ao tentar excluir a solicitação.");
-    }
-};
 
     if (loading) return <p>Carregando solicitações...</p>;
 
@@ -297,38 +271,19 @@ export default function SolicitacoesAdmin() {
                         {solicitacoesPagina.map((s) => (
                             <li key={s.id} className={`sollicitacao-item ${s.tipo === 'contato' ? 'contato-item' : 'adocao-item'}`}>
                                 
-                           {/* Header do card com badges e botão de excluir */}
-<div className="card-header">
-    <h4 style={{ margin: 0, color: '#333', fontSize: '1.1rem' }}>
-        {s.tipo === 'contato' ? '📧 Mensagem de Contato' : '🐾 Solicitação de Adoção'}
-    </h4>
-    <div className="badges-container">
-        {/* Badge de Status (código existente) */}
-        <div className={`status-badge ${s.status || 'pendente'}`}>
-            {s.status === 'pendente' ? '⏳ Pendente' : 
-             s.status === 'visualizada' ? '👁️ Visualizada' : 
-             s.status === 'concluida' ? '✅ Concluída' : '⏳ Pendente'}
-        </div>
-
-        {/* ======================================================== */}
-        {/*    BOTÃO DE EXCLUIR QUE APARECE CONDICIONALMENTE     */}
-        {/* ======================================================== */}
-        {(s.status === 'visualizada' || s.status === 'concluida') && (
-            <button
-                className="btn-excluir"
-                title="Excluir solicitação"
-                onClick={(e) => {
-                    // Impede que o modal abra ao clicar na lixeira
-                    e.stopPropagation(); 
-                    handleExcluirSolicitacao(s.id);
-                }}
-            >
-                🗑️
-            </button>
-        )}
-        {/* ======================================================== */}
-    </div>
-</div>
+                                {/* Header do card com badges */}
+                                <div className="card-header">
+                                    <h4 style={{ margin: 0, color: '#333', fontSize: '1.1rem' }}>
+                                        {s.tipo === 'contato' ? '📧 Mensagem de Contato' : '🐾 Solicitação de Adoção'}
+                                    </h4>
+                                    <div className="badges-container">
+                                        <div className={`status-badge ${s.status || 'pendente'}`}>
+                                            {s.status === 'pendente' ? '⏳ Pendente' : 
+                                             s.status === 'visualizada' ? '👁️ Visualizada' : 
+                                             s.status === 'concluida' ? '✅ Concluída' : '⏳ Pendente'}
+                                        </div>
+                                    </div>
+                                </div>
                             
                             <div className="solicitacao-content">
                                 <div className="usuario-info">
@@ -489,7 +444,12 @@ export default function SolicitacoesAdmin() {
                                     {atualizandoStatus ? 'Atualizando...' : '✅ Marcar como Concluída'}
                                 </button>
                             )}
-                           
+                            <button 
+                                className="btn-email"
+                                onClick={() => responderEmail(solicitacaoSelecionada.usuario?.email || solicitacaoSelecionada.email)}
+                            >
+                                📧 Responder por Email
+                            </button>
                         </div>
                     </div>
                 </div>,
