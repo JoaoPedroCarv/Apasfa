@@ -72,42 +72,35 @@ function Adocao() {
         <p>Nenhum animal disponível no momento.</p>
       ) : (
         <div className="pets-grid">
-  {animais.map((animal) => {
-    // ---- LÓGICA DE VERIFICAÇÃO CORRIGIDA ----
-    const imagemValida = animal.fotoUrl && (animal.fotoUrl.startsWith('http') || animal.fotoUrl.startsWith('data:'));
-    const fallbackImage = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+';
+          {animais.map((animal) => (
+            <div key={animal.id} className="pet-card">
+              <div className="pet-image">
+                <img
+                  src={animal.fotoUrl && animal.fotoUrl.startsWith('http') ? animal.fotoUrl : 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'}
+                  alt={animal.nome}
+                  onError={e => { e.target.onerror = null; e.target.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWxsPSIjZGRkIi8+PHRleHQgeD0iNTAlIiB5PSI1MCUiIGZvbnQtZmFtaWx5PSJBcmlhbCIgZm9udC1zaXplPSIxOCIgZmlsbD0iIzk5OSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZHk9Ii4zZW0iPjQwMHgzMDA8L3RleHQ+PC9zdmc+'; }}
+                />
+              </div>
+              <div className="pet-info">
+                <h3 className="pet-name">{animal.nome || "Sem nome"}</h3>
+                <p className="pet-details">
+                  <strong>Raça:</strong> {animal.raca || "Não informada"} <br />
+                  <strong>Idade:</strong> {animal.idade || "Desconhecida"}
+                </p>
+                {animal.descricao && (
+                  <p className="pet-details">{animal.descricao}</p>
+                )}
 
-    return (
-      <div key={animal.id} className="pet-card">
-        <div className="pet-image">
-          <img
-            // ---- SRC AGORA USA A LÓGICA CORRETA ----
-            src={imagemValida ? animal.fotoUrl : fallbackImage}
-            alt={animal.nome}
-            onError={e => { e.target.onerror = null; e.target.src = fallbackImage; }}
-          />
+                <button
+                  onClick={() => handleAdotarClick(animal)}
+                  className="btn btn-brown"
+                >
+                  Quero Adotar
+                </button>
+              </div>
+            </div>
+          ))}
         </div>
-        <div className="pet-info">
-          <h3 className="pet-name">{animal.nome || "Sem nome"}</h3>
-          <p className="pet-details">
-            <strong>Raça:</strong> {animal.raca || "Não informada"} <br />
-            <strong>Idade:</strong> {animal.idade || "Desconhecida"}
-          </p>
-          {animal.descricao && (
-            <p className="pet-details">{animal.descricao}</p>
-          )}
-
-          <button
-            onClick={() => handleAdotarClick(animal)}
-            className="btn btn-brown"
-          >
-            Quero Adotar
-          </button>
-        </div>
-      </div>
-    );
-  })}
-</div>
       )}
 
       {modalAberto && (

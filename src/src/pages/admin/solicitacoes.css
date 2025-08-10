@@ -1,5 +1,5 @@
 /* ==============================================
-   SOLICITAÇÕES - DESIGN SIMPLES E LIMPO
+   SOLICITAÇÕES - DESIGN SIMPLES E LIMPO (COM GRID)
    ============================================== */
 
 /* Container principal das solicitações */
@@ -64,31 +64,35 @@
     box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.25);
 }
 
-/* Lista de solicitações */
+/* =========================================
+   NOVO: Lista de solicitações em Grid
+   ========================================= */
 .sollicitacoes-list {
     list-style: none;
     padding: 0;
     margin: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+    display: grid;
+    /* Define colunas responsivas: preenche com colunas de no mínimo 350px */
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem; /* Espaçamento entre os cards */
 }
 
-/* Item de solicitação simples */
+/* Item de solicitação simples (card) */
 .sollicitacao-item {
     background: white;
     border: 1px solid #e0e0e0;
     border-radius: 6px;
     padding: 1.5rem;
     position: relative;
-    transition: box-shadow 0.2s ease;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
     display: flex;
-    flex-direction: column;
+    flex-direction: column; /* Mantém a organização interna do card */
     gap: 1rem;
 }
 
 .sollicitacao-item:hover {
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+    transform: translateY(-4px); /* Efeito de elevação sutil */
 }
 
 .contato-item {
@@ -149,20 +153,6 @@
     background: #d4edda;
     color: #155724;
     border: 1px solid #c3e6cb;
-}
-
-.btn-excluir {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem; /* Tamanho do ícone */
-    padding: 0 0.5rem;
-    color: #888;
-    transition: color 0.2s ease-in-out;
-}
-
-.btn-excluir:hover {
-    color: #e74c3c; /* Muda para vermelho ao passar o mouse */
 }
 
 /* Conteúdo da solicitação */
@@ -239,7 +229,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-top: auto;
+    margin-top: auto; /* Garante que o footer fique no final do card */
     padding-top: 1rem;
     border-top: 1px solid #e0e0e0;
     gap: 1rem;
@@ -304,205 +294,75 @@
     color: #6c757d;
 }
 
+/* ... (O código do MODAL continua o mesmo) ... */
+
 /* ==============================================
    MODAL - DESIGN SIMPLES E LIMPO
    ============================================== */
-
-/* Modal Overlay */
+/* O código do modal permanece inalterado */
 .modal-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    animation: fadeIn 0.3s ease;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0, 0, 0, 0.6); display: flex; justify-content: center; align-items: center; z-index: 9999; backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); animation: fadeIn 0.3s ease;
 }
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        backdrop-filter: blur(0px);
-    }
-    to {
-        opacity: 1;
-        backdrop-filter: blur(4px);
-    }
-}
-
-/* Modal Content */
+@keyframes fadeIn { from { opacity: 0; backdrop-filter: blur(0px); } to { opacity: 1; backdrop-filter: blur(4px); } }
 .modal-content {
-    background: white;
-    border-radius: 8px;
-    width: 95%;
-    max-width: 700px;
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-    border: 1px solid #e0e0e0;
-    animation: slideIn 0.3s ease;
-    overflow: hidden;
+    background: white; border-radius: 8px; width: 95%; max-width: 700px; max-height: 90vh; display: flex; flex-direction: column; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15); border: 1px solid #e0e0e0; animation: slideIn 0.3s ease; overflow: hidden;
 }
-
-@keyframes slideIn {
-    from {
-        opacity: 0;
-        transform: translateY(-30px) scale(0.95);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0) scale(1);
-    }
-}
-
-/* Modal Header */
+@keyframes slideIn { from { opacity: 0; transform: translateY(-30px) scale(0.95); } to { opacity: 1; transform: translateY(0) scale(1); } }
 .modal-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.5rem;
-    border-bottom: 2px solid #f0f0f0;
-    background: #f8f9fa;
+    display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 2px solid #f0f0f0; background: #f8f9fa;
 }
-
 .modal-header h3 {
-    margin: 0;
-    color: #333;
-    font-size: 1.4rem;
-    font-weight: 600;
+    margin: 0; color: #333; font-size: 1.4rem; font-weight: 600;
 }
-
 .btn-fechar {
-    background: #fff;
-    border: 1px solid #ddd;
-    font-size: 1.2rem;
-    cursor: pointer;
-    color: #666;
-    padding: 0.5rem;
-    width: 36px;
-    height: 36px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    transition: all 0.2s ease;
-    font-weight: bold;
+    background: #fff; border: 1px solid #ddd; font-size: 1.2rem; cursor: pointer; color: #666; padding: 0.5rem; width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; border-radius: 6px; transition: all 0.2s ease; font-weight: bold;
 }
-
 .btn-fechar:hover {
-    background: #f5f5f5;
-    border-color: #bbb;
-    color: #333;
-    transform: scale(1.05);
+    background: #f5f5f5; border-color: #bbb; color: #333; transform: scale(1.05);
 }
-
-/* Modal Body */
 .modal-body {
-    padding: 1.5rem;
-    overflow-y: auto;
-    flex: 1;
+    padding: 1.5rem; overflow-y: auto; flex: 1;
 }
-
 .status-atual {
-    text-align: center;
-    margin-bottom: 1.5rem;
+    text-align: center; margin-bottom: 1.5rem;
 }
-
 .status-atual .status-badge {
-    position: relative;
-    font-size: 1rem;
-    padding: 0.5rem 1rem;
+    position: relative; font-size: 1rem; padding: 0.5rem 1rem;
 }
-
 .usuario-detalhes, .animal-detalhes, .mensagem-detalhes, .data-detalhes {
     margin-bottom: 1.5rem;
 }
-
 .usuario-detalhes h4, .animal-detalhes h4, .mensagem-detalhes h4 {
-    color: #333;
-    margin: 0 0 0.75rem 0;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-bottom: 1px solid #e0e0e0;
-    padding-bottom: 0.5rem;
+    color: #333; margin: 0 0 0.75rem 0; font-size: 1.1rem; font-weight: 600; border-bottom: 1px solid #e0e0e0; padding-bottom: 0.5rem;
 }
-
 .usuario-detalhes p, .animal-detalhes p, .mensagem-detalhes p, .data-detalhes p {
-    margin: 0.5rem 0;
-    color: #555;
-    line-height: 1.5;
-    font-size: 0.95rem;
+    margin: 0.5rem 0; color: #555; line-height: 1.5; font-size: 0.95rem;
 }
-
 .usuario-detalhes p strong, .animal-detalhes p strong, .data-detalhes p strong {
-    color: #333;
-    font-weight: 600;
+    color: #333; font-weight: 600;
 }
-
-/* Modal Footer */
 .modal-footer {
-    display: flex;
-    gap: 1rem;
-    padding: 1.5rem;
-    border-top: 2px solid #f0f0f0;
-    justify-content: flex-end;
-    background: #f8f9fa;
-    flex-shrink: 0;
+    display: flex; gap: 1rem; padding: 1.5rem; border-top: 2px solid #f0f0f0; justify-content: flex-end; background: #f8f9fa; flex-shrink: 0;
 }
-
 .btn-concluir {
-    background: #28a745;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+    background: #28a745; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
 }
-
 .btn-concluir:hover:not(:disabled) {
-    background: #218838;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    background: #218838; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
 }
-
 .btn-concluir:disabled {
-    background: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-    box-shadow: none;
+    background: #6c757d; cursor: not-allowed; transform: none; box-shadow: none;
 }
-
 .btn-email {
-    background: #007bff;
-    color: white;
-    border: none;
-    padding: 0.75rem 1.5rem;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.9rem;
-    font-weight: 500;
-    transition: all 0.2s ease;
-    box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
+    background: #007bff; color: white; border: none; padding: 0.75rem 1.5rem; border-radius: 6px; cursor: pointer; font-size: 0.9rem; font-weight: 500; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0, 123, 255, 0.2);
 }
-
 .btn-email:hover {
-    background: #0056b3;
-    transform: translateY(-1px);
-    box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
+    background: #0056b3; transform: translateY(-1px); box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3);
 }
 
-/* Responsividade */
+/* ==============================================
+   ATUALIZAÇÃO: Responsividade
+   ============================================== */
 @media (max-width: 768px) {
     .solicitacoes-container {
         padding: 1rem;
@@ -517,6 +377,13 @@
     
     .filtros-solicitacoes > div {
         justify-content: space-between;
+    }
+
+    /* Ajuste para o grid em telas menores */
+    .sollicitacoes-list {
+        /* Em telas pequenas, volta a ser uma coluna única */
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
     
     .card-header {
@@ -548,7 +415,7 @@
         gap: 0.5rem;
     }
     
-    /* Modal responsivo */
+    /* Modal responsivo (sem alterações) */
     .modal-content {
         width: 98%;
         max-height: 95vh;

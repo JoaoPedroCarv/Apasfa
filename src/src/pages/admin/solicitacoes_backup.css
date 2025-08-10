@@ -151,20 +151,6 @@
     border: 1px solid #c3e6cb;
 }
 
-.btn-excluir {
-    background: none;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem; /* Tamanho do ícone */
-    padding: 0 0.5rem;
-    color: #888;
-    transition: color 0.2s ease-in-out;
-}
-
-.btn-excluir:hover {
-    color: #e74c3c; /* Muda para vermelho ao passar o mouse */
-}
-
 /* Conteúdo da solicitação */
 .solicitacao-content {
     flex: 1;
@@ -302,6 +288,53 @@
     background: #f8f9fa;
     cursor: not-allowed;
     color: #6c757d;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    .solicitacoes-container {
+        padding: 1rem;
+        margin: 0.5rem 0;
+    }
+    
+    .filtros-solicitacoes {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .filtros-solicitacoes > div {
+        justify-content: space-between;
+    }
+    
+    .card-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .card-header h4 {
+        font-size: 1rem;
+    }
+    
+    .badges-container {
+        justify-content: flex-start;
+    }
+    
+    .solicitacao-footer {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.5rem;
+    }
+    
+    .btn-responder {
+        text-align: center;
+    }
+    
+    .paginacao {
+        flex-wrap: wrap;
+        gap: 0.5rem;
+    }
 }
 
 /* ==============================================
@@ -504,48 +537,22 @@
 
 /* Responsividade */
 @media (max-width: 768px) {
-    .solicitacoes-container {
-        padding: 1rem;
-        margin: 0.5rem 0;
-    }
-    
     .filtros-solicitacoes {
         flex-direction: column;
         align-items: stretch;
-        gap: 0.5rem;
+        gap: 0.75rem;
     }
     
     .filtros-solicitacoes > div {
-        justify-content: space-between;
-    }
-    
-    .card-header {
+        display: flex;
         flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
+        gap: 0.25rem;
     }
     
-    .card-header h4 {
-        font-size: 1rem;
-    }
-    
-    .badges-container {
-        justify-content: flex-start;
-    }
-    
-    .solicitacao-footer {
-        flex-direction: column;
-        align-items: stretch;
-        gap: 0.5rem;
-    }
-    
-    .btn-responder {
-        text-align: center;
-    }
-    
-    .paginacao {
-        flex-wrap: wrap;
-        gap: 0.5rem;
+    .tipo-badge, .status-badge {
+        position: static;
+        display: inline-block;
+        margin: 0.5rem 0.5rem 0.5rem 0;
     }
     
     /* Modal responsivo */
@@ -579,3 +586,53 @@
         font-size: 1rem;
     }
 }
+    
+    .solicitacao-content {
+        padding-right: 0;
+    }
+    
+    .solicitacao-footer {
+        flex-direction: column;
+        gap: 0.5rem;
+        align-items: stretch;
+    }
+    
+    .paginacao {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+    
+    .btn-paginacao {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 1rem;
+        max-height: 90vh;
+    }
+    
+    .modal-header, .modal-body, .modal-footer {
+        padding: 1rem;
+    }
+    
+    .modal-footer {
+        flex-direction: column;
+    }
+    
+    .btn-concluir, .btn-email {
+        width: 100%;
+        text-align: center;
+    }
+    
+    .modal-header h3 {
+        font-size: 1.2rem;
+    }
+    
+    .btn-fechar {
+        width: 32px;
+        height: 32px;
+        font-size: 1rem;
+    }
+

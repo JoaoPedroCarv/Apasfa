@@ -1,0 +1,206 @@
+/* ==================================================
+   CSS REFINADO - GALERIA DE ANIMAIS E MODAL
+   ================================================== */
+
+/* --- Container Principal --- */
+.animais-container {
+  /* Padding drasticamente reduzido para um visual mais limpo */
+  padding: 3rem 1.5rem;
+  max-width: 1280px; /* Define uma largura máxima para o conteúdo */
+  margin: 0 auto;    /* Centraliza o container na página */
+  text-align: center;
+}
+
+/* --- Grid dos Pets --- */
+.pets-grid {
+  /* Padding-top de 200px removido (a causa do espaço excessivo) */
+  display: grid;
+  gap: 1.8rem; /* Espaçamento entre os cards ajustado */
+  margin-top: 2rem;
+  padding: 0; /* Removido padding desnecessário */
+}
+
+/* --- Media Queries para Responsividade do Grid --- */
+/* Mantive a lógica, mas pode ser ajustada se necessário */
+@media (min-width: 480px) {
+  .pets-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (min-width: 768px) {
+  .pets-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (min-width: 1024px) {
+  .pets-grid {
+    grid-template-columns: repeat(4, 1fr); /* Adicionada uma coluna para telas maiores */
+  }
+}
+
+
+/* --- Card do Pet Embelezado --- */
+.pet-card {
+  background: #ffffff;
+  border-radius: 12px; /* Bordas mais suaves */
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06); /* Sombra mais sutil */
+  border: 1px solid #e9ecef;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.09);
+}
+
+.pet-image {
+  width: 100%;
+  height: 220px; /* Altura da imagem reduzida */
+  background-color: #f2f2f2;
+}
+
+.pet-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pet-info {
+  padding: 1rem 1.25rem; /* Padding interno ajustado */
+  text-align: left;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.pet-name {
+  font-weight: 700;
+  font-size: 1.05rem; /* Fonte do nome sutilmente reduzida */
+  color: #1a2c50; /* Cor mais escura e profissional */
+  margin-bottom: 0.4rem;
+}
+
+.pet-details {
+  font-size: 0.9rem; /* Fonte dos detalhes ajustada */
+  color: #495057;
+  line-height: 1.5;
+  margin-bottom: 1rem;
+}
+
+/* --- Modal Embelezado --- */
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 20, 40, 0.5); /* Fundo mais escuro e azulado */
+  backdrop-filter: blur(5px); /* Efeito de vidro fosco no fundo */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
+}
+
+.modal {
+  background: #ffffff;
+  padding: 1.8rem 2rem; /* Padding interno do modal ajustado */
+  border-radius: 12px;
+  max-width: 480px;
+  width: 100%;
+  box-shadow: 0 5px 25px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e9ecef;
+}
+
+.modal h2 {
+  margin-top: 0;
+  margin-bottom: 1.8rem;
+  color: #1a2c50;
+  font-size: 1.4rem;
+  text-align: center;
+}
+
+.modal .input-group { /* Reutilizando a classe do admin para consistência */
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1rem; /* Espaçamento entre os grupos de input */
+}
+
+.modal label {
+  text-align: left;
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: #495057;
+}
+
+.modal input,
+.modal textarea,
+.modal select {
+  width: 100%;
+  padding: 0.75rem 0.9rem;
+  font-size: 0.95rem;
+  border: 1px solid #ced4da;
+  border-radius: 8px;
+  box-sizing: border-box;
+  background: #fdfdff;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.modal input:focus,
+.modal textarea:focus,
+.modal select:focus {
+  outline: none;
+  border-color: #1976d2;
+  box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.15);
+}
+
+.modal textarea {
+  resize: vertical;
+  min-height: 85px;
+}
+
+/* --- Botões do Modal --- */
+.modal-buttons {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  padding: 0.7rem 1.4rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 8px;
+  transition: all 0.2s;
+}
+
+.btn-brown {
+  background-color: #1976d2; /* Alterado para a cor primária para consistência */
+  color: white;
+  box-shadow: 0 2px 8px rgba(25, 118, 210, 0.2);
+}
+
+.btn-brown:hover {
+  background-color: #1565c0;
+  transform: translateY(-1px);
+}
+
+.btn-light {
+  background-color: #e9ecef;
+  color: #495057;
+  border: 1px solid #ced4da;
+}
+
+.btn-light:hover {
+  background-color: #dee2e6;
+  border-color: #adb5bd;
+}
